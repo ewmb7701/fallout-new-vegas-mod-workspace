@@ -1,0 +1,4 @@
+LIBRARY	"ewmb_nvse"
+EXPORTS
+NVSEPlugin_Query
+NVSEPlugin_Load
