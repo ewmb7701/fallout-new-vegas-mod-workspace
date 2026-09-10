@@ -3,7 +3,7 @@
 
 #include "ewmb_fn_actor.h"
 
-#define EWMB_VERSION 1
+#define EWMB_VERSION 2
 
 bool NVSEPlugin_Query(const NVSEInterface *nvse, PluginInfo *info)
 {
@@ -25,9 +25,9 @@ bool NVSEPlugin_Query(const NVSEInterface *nvse, PluginInfo *info)
 
 bool NVSEPlugin_Load(NVSEInterface *nvse)
 {
-  nvse->SetOpcodeBase(0x7700);
+  nvse->SetOpcodeBase(0x4318);
 
-  /*7700*/ nvse->RegisterCommand(&kCommandInfo_SetBaseActorValue);
+  /*0x4318*/ nvse->RegisterCommand(&kCommandInfo_SetBaseActorValue);
 
   PrintLog("ewmb NVSE loaded successfully");
 
