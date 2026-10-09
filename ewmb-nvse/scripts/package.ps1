@@ -1,10 +1,5 @@
 [CmdletBinding()]
-param(
-    [Parameter(Mandatory = $true)]
-    [ValidateNotNullOrEmpty()]
-    [ValidatePattern('^[A-Za-z0-9][A-Za-z0-9._-]*$')]
-    [string]$Version
-)
+param()
 
 $ErrorActionPreference = "Stop"
 
@@ -12,7 +7,7 @@ $repoRoot = Split-Path -Parent $PSScriptRoot
 $releaseDir = Join-Path $repoRoot "target\Release"
 $pluginFile = Join-Path $releaseDir "ewmb_nvse.dll"
 $distDir = Join-Path $repoRoot "dist"
-$outputFile = Join-Path $distDir "ewmb_nvse_$Version.zip"
+$outputFile = Join-Path $distDir "ewmb_nvse.zip"
 
 if (-not (Test-Path -LiteralPath $pluginFile -PathType Leaf)) {
     throw "Release DLL not found: '$pluginFile'. Run '.\scripts\build.ps1 -Configuration Release' first."

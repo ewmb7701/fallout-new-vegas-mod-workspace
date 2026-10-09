@@ -9,5 +9,5 @@
 ## Package
 
 ```powershell
-./scripts/package.ps1 -Version 1.0.0
+./scripts/package.ps1
 ```
