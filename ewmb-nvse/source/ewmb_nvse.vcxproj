@@ -82,11 +82,14 @@
       <ForcedIncludeFiles />
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="on_world_map_build.cpp" />
     <ClCompile Include="utility.cpp" />
     <ClCompile Include="nvse\GameAPI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ewmb_fn_actor.h" />
+    <ClInclude Include="on_world_map_build.h" />
+    <ClInclude Include="on_world_map_build_hook.h" />
     <ClInclude Include="prefix.h" />
     <ClInclude Include="utility.h" />
     <ClInclude Include="nvse\CommandTable.h" />

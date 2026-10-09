@@ -3,7 +3,18 @@
 
 #include "ewmb_fn_actor.h"
 
-#define EWMB_VERSION 2
+#include "on_world_map_build.h"
+
+#define EWMB_VERSION 3
+
+namespace
+{
+  void HandleNVSEMessage(NVSEMessagingInterface::Message *message)
+  {
+    if (message->type == NVSEMessagingInterface::kMessage_DeferredInit)
+      OnWorldMapBuild::InstallHook();
+  }
+}
 
 bool NVSEPlugin_Query(const NVSEInterface *nvse, PluginInfo *info)
 {
@@ -11,7 +22,7 @@ bool NVSEPlugin_Query(const NVSEInterface *nvse, PluginInfo *info)
   info->name = "ewmb NVSE";
   info->version = EWMB_VERSION;
 
-  if (nvse->isEditor)
+  if (nvse->isEditor || nvse->nvseVersion < 6 || nvse->isNogore)
     return false;
 
   CreateLog("Data\\NVSE\\Plugins\\ewmb_nvse.log");
@@ -25,6 +36,11 @@ bool NVSEPlugin_Query(const NVSEInterface *nvse, PluginInfo *info)
 
 bool NVSEPlugin_Load(NVSEInterface *nvse)
 {
+  auto *messaging = static_cast<NVSEMessagingInterface *>(nvse->QueryInterface(kInterface_Messaging));
+  auto *events = static_cast<NVSEEventManagerInterface *>(nvse->QueryInterface(kInterface_EventManager));
+  OnWorldMapBuild::RegisterEvent(events);
+  messaging->RegisterListener(nvse->GetPluginHandle(), "NVSE", HandleNVSEMessage);
+
   nvse->SetOpcodeBase(0x4318);
 
   /*0x4318*/ nvse->RegisterCommand(&kCommandInfo_SetBaseActorValue);
