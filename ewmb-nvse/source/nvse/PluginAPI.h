@@ -50,7 +50,7 @@ struct NVSEMessagingInterface
 
 struct NVSEEventManagerInterface
 {
-  enum ParamType : UInt8 { eParamType_Int = 1 };
+  enum ParamType : UInt8 { eParamType_Int = 1, eParamType_Reference = 5 };
   enum EventFlags : UInt32 { kFlags_None = 0, kFlag_FlushOnLoad = 1 };
   // This interface starts with function pointers, NOT a version field.
   bool (*RegisterEvent)(const char *name, UInt8 numParams, ParamType *params, EventFlags flags);

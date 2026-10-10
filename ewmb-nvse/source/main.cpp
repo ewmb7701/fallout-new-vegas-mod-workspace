@@ -4,15 +4,19 @@
 #include "ewmb_fn_actor.h"
 
 #include "on_world_map_build.h"
+#include "on_world_map_marker_selection_change.h"
 
-#define EWMB_VERSION 3
+#define EWMB_VERSION 4
 
 namespace
 {
   void HandleNVSEMessage(NVSEMessagingInterface::Message *message)
   {
     if (message->type == NVSEMessagingInterface::kMessage_DeferredInit)
+    {
       OnWorldMapBuild::InstallHook();
+      OnWorldMapMarkerSelectionChange::InstallHook();
+    }
   }
 }
 
@@ -39,6 +43,7 @@ bool NVSEPlugin_Load(NVSEInterface *nvse)
   auto *messaging = static_cast<NVSEMessagingInterface *>(nvse->QueryInterface(kInterface_Messaging));
   auto *events = static_cast<NVSEEventManagerInterface *>(nvse->QueryInterface(kInterface_EventManager));
   OnWorldMapBuild::RegisterEvent(events);
+  OnWorldMapMarkerSelectionChange::RegisterEvent(events);
   messaging->RegisterListener(nvse->GetPluginHandle(), "NVSE", HandleNVSEMessage);
 
   nvse->SetOpcodeBase(0x4318);
