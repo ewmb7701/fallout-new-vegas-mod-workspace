@@ -32,7 +32,10 @@ class TESForm
 public:
   const void *vtable;        // 00
   UInt8 typeID;              // 04
-  UInt8 opaque[0x18 - 0x05]; // Unused fields; preserve derived-class offsets.
+  UInt8 pad05[3];
+  UInt32 flags;            // 08
+  UInt32 refID;            // 0C
+  UInt8 opaque10[8];
 
   bool IsActorBase()
   {
@@ -45,6 +48,8 @@ public:
   }
 };
 STATIC_ASSERT(sizeof(TESForm) == 0x18);
+STATIC_ASSERT(offsetof(TESForm, flags) == 0x08);
+STATIC_ASSERT(offsetof(TESForm, refID) == 0x0C);
 STATIC_ASSERT(offsetof(TESForm, typeID) == 0x04);
 STATIC_ASSERT(offsetof(TESForm, vtable) == 0x00);
 

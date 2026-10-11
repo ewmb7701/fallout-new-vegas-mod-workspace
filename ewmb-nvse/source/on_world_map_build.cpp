@@ -1,6 +1,5 @@
 #include "on_world_map_build.h"
 #include "on_world_map_build_hook.h"
-#include "utility.h"
 
 namespace
 {
@@ -30,5 +29,4 @@ void OnWorldMapBuild::InstallHook()
 {
   nativeWorldMapBuild = reinterpret_cast<NativeWorldMapBuild>(WorldMapBuildHook::Install(
       kNativeWorldMapBuildAddress, reinterpret_cast<uintptr_t>(&BuildWorldMapAndDispatchEvent)));
-  PrintLog("OnWorldMapBuild: post-world-map-build hook installed at %08X", kNativeWorldMapBuildAddress);
 }

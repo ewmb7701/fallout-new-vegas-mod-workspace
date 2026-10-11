@@ -4,7 +4,9 @@
 
 enum ParamType
 {
+  kParamType_Integer = 0x01,
   kParamType_Float = 0x02,
+  kParamType_ObjectRef = 0x04,
   kParamType_ActorValue = 0x05,
   kParamType_ActorBase = 0x19,
 };

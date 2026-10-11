@@ -42,7 +42,8 @@ struct NVSEMessagingInterface
     UInt32 dataLen;
     void *data;
   };
-  enum { kMessage_DeferredInit = 18 };
+  enum { kMessage_ExitToMainMenu = 2, kMessage_PreLoadGame = 6,
+         kMessage_NewGame = 14, kMessage_DeferredInit = 18 };
   UInt32 version;
   bool (*RegisterListener)(UInt32 listener, const char *sender, void (*handler)(Message *));
   bool (*Dispatch)(UInt32 sender, UInt32 type, void *data, UInt32 dataLen, const char *receiver);
@@ -50,9 +51,21 @@ struct NVSEMessagingInterface
 
 struct NVSEEventManagerInterface
 {
+  // Read-only ABI view of NVSEArrayVarInterface::Element. Never own/free it.
+  struct ResultElement
+  {
+    union { double number; void *pointer; };
+    UInt8 type; // 1 = numeric
+  };
+  using DispatchCallback = bool (*)(ResultElement &, void *);
   enum ParamType : UInt8 { eParamType_Int = 1, eParamType_Reference = 5 };
   enum EventFlags : UInt32 { kFlags_None = 0, kFlag_FlushOnLoad = 1 };
   // This interface starts with function pointers, NOT a version field.
   bool (*RegisterEvent)(const char *name, UInt8 numParams, ParamType *params, EventFlags flags);
   bool (*DispatchEvent)(const char *name, TESObjectREFR *callingRef, ...);
+  enum DispatchReturn : signed char { kRetn_Error = -1, kRetn_Normal = 0 };
+  DispatchReturn (*DispatchEventAlt)(const char *name, DispatchCallback callback,
+                                   void *data, TESObjectREFR *callingRef, ...);
 };
+
+STATIC_ASSERT(offsetof(NVSEEventManagerInterface::ResultElement, type) == 8);
