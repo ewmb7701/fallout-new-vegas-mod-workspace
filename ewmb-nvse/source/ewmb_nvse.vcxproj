@@ -83,6 +83,9 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="on_fast_travel_begin.cpp" />
+    <ClCompile Include="on_enemy_health_target_change.cpp" />
+    <ClCompile Include="set_enemy_health_target.cpp" />
+    <ClCompile Include="get_enemy_health_target.cpp" />
     <ClCompile Include="on_world_map_build.cpp" />
     <ClCompile Include="on_world_map_marker_selection_change.cpp" />
     <ClCompile Include="utility.cpp" />
@@ -95,6 +98,9 @@
   <ItemGroup>
     <ClInclude Include="ewmb_fn_actor.h" />
     <ClInclude Include="on_fast_travel_begin.h" />
+    <ClInclude Include="on_enemy_health_target_change.h" />
+    <ClInclude Include="set_enemy_health_target.h" />
+    <ClInclude Include="get_enemy_health_target.h" />
     <ClInclude Include="on_world_map_build.h" />
     <ClInclude Include="on_world_map_marker_selection_change.h" />
     <ClInclude Include="on_world_map_build_hook.h" />

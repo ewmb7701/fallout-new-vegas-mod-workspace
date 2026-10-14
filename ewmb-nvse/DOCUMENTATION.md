@@ -1,7 +1,5 @@
 # ewmb NVSE
 
-Documentation for ewmb NVSE v5.
-
 ## Events
 
 ### OnWorldMapBuild
@@ -199,7 +197,212 @@ RemoveEventHandler "OnFastTravelBegin" MyFastTravelBeginHandler
 - Handlers are cleared on save load; register them again afterward.
 - Map-menu Pip-Boy closing still happens through the normal path.
 
+### OnEnemyHealthTargetChange
+
+An event handler added by the ewmb NVSE plugin version 5.
+
+#### Description
+
+Runs before the target of `HUDMainMenu/EnemyHealth` changes. The target is shared by the realtime
+and VATS health displays and is separate from the player's combat target.
+Handlers run synchronously and can prevent the change by returning `0` with
+`SetFunctionValue`. `GetEnemyHealthTarget` returns the previous target while the
+handlers run.
+
+##### Dispatched Args
+
+There is no calling reference. The handler receives:
+
+1. Ref: the proposed actor reference (`rTarget`), or `0` when clearing the target.
+
+#### Syntax
+
+```text
+SetEventHandler "OnEnemyHealthTargetChange" handler:userDefinedFunction
+```
+
+#### Handler Script
+
+```text
+scn MyEnemyHealthTargetChangeHandler
+
+ref rTarget
+
+Begin Function {rTarget}
+    SetFunctionValue 1
+    ; Return 0 to prevent this target change.
+End
+```
+
+#### Example
+
+Prevent player teammates from becoming the health-bar target, while allowing
+other actors and target clearing:
+
+```text
+scn HideTeammateHealthBarHandler
+
+ref rTarget
+
+Begin Function {rTarget}
+    SetFunctionValue 1
+    if rTarget
+        if rTarget.GetPlayerTeammate
+            SetFunctionValue 0
+        endif
+    endif
+End
+```
+
+Register the handler:
+
+```text
+SetEventHandler "OnEnemyHealthTargetChange" HideTeammateHealthBarHandler
+```
+
+Remove the handler:
+
+```text
+RemoveEventHandler "OnEnemyHealthTargetChange" HideTeammateHealthBarHandler
+```
+
+#### Notes
+
+- The name matches the native `<rect name="EnemyHealth">` in `hud_main_menu.xml`
+  (`HUDMainMenu/EnemyHealth`). Despite its name, this element can display friendly
+  actors, including companions; it is not restricted to enemies.
+
+- A numeric return value of `0` vetoes the change and retains the previous
+  target. All handlers run; a later result cannot undo an earlier veto.
+- Handlers are cleared when loading a save. Register them again after loading.
+- Covers native target selection, including damage and VATS, and changes made
+  through `SetEnemyHealthTarget`.
+- Assigning the same target does not dispatch the event. Repeated attempts to
+  select a vetoed target can dispatch repeatedly.
+- Constructor/load initialization and other plugins writing the target field
+  directly do not dispatch this event.
+- A rejected injured actor is not drawn as the health-bar target. VATS hides
+  the bar if a veto leaves no target.
+- The event does not change combat targets, hostility, or the activation
+  reference. Preventing a target change does not guarantee the activation
+  prompt will appear; other native visibility rules still apply.
+- Use `SetFunctionValue` to veto a change. Calling `SetEnemyHealthTarget` from
+  inside the handler can dispatch the event again.
+
+#### See Also
+
+- [GetEnemyHealthTarget](#getenemyhealthtarget)
+- [SetEnemyHealthTarget](#setenemyhealthtarget)
+- [SetEventHandler](https://geckwiki.com/index.php?title=SetEventHandler)
+- [RemoveEventHandler](https://geckwiki.com/index.php?title=RemoveEventHandler)
+- [SetFunctionValue](https://geckwiki.com/index.php?title=SetFunctionValue)
+
 ## Functions
+
+### GetEnemyHealthTarget
+
+A function added by the ewmb NVSE plugin version 5.
+
+#### Description
+
+Returns the actor reference currently stored as the `EnemyHealth` target, or `0`
+if there is none. This target is shared by the realtime and VATS health displays.
+
+#### Syntax
+
+```text
+(target:ref) GetEnemyHealthTarget
+```
+
+No calling reference or arguments.
+
+#### Example
+
+```text
+ref rTarget
+
+let rTarget := GetEnemyHealthTarget
+if rTarget
+    PrintC "Health-bar target: %n" rTarget
+endif
+```
+
+#### Notes
+
+- The name matches the native `<rect name="EnemyHealth">` in `hud_main_menu.xml`
+  (`HUDMainMenu/EnemyHealth`). Despite its name, this element can display friendly
+  actors, including companions; it is not restricted to enemies.
+
+- The returned reference identifies the stored target, not whether its health
+  bar is currently visible. Visibility and display timers are handled separately.
+- This is separate from the combat target returned by `GetCombatTarget`.
+- During `OnEnemyHealthTargetChange`, this function returns the previous target.
+  The proposed target is passed as the event's argument.
+
+#### See Also
+
+- [SetEnemyHealthTarget](#setenemyhealthtarget)
+- [OnEnemyHealthTargetChange](#onenemyhealthtargetchange)
+- [GetCombatTarget](https://geckwiki.com/index.php?title=GetCombatTarget)
+
+### SetEnemyHealthTarget
+
+A function added by the ewmb NVSE plugin version 5.
+
+#### Description
+
+Sets the `EnemyHealth` target to the specified actor. Omit the argument to clear
+the target. Returns `1` on success, or `0` for an invalid argument, an unavailable
+HUD, or a change vetoed by an `OnEnemyHealthTargetChange` handler.
+
+#### Syntax
+
+```text
+(success:bool) SetEnemyHealthTarget actor:ref{Optional}
+```
+
+No calling reference. The optional argument must be an actor reference.
+
+#### Example
+
+Set an actor as the health-bar target:
+
+```text
+; rActor is an actor reference selected by the script.
+SetEnemyHealthTarget rActor
+```
+
+Clear the target and refresh the activation prompt after a successful clear:
+
+```text
+if SetEnemyHealthTarget
+    UpdateCrosshairPrompt
+endif
+```
+
+#### Notes
+
+- The name matches the native `<rect name="EnemyHealth">` in `hud_main_menu.xml`
+  (`HUDMainMenu/EnemyHealth`). Despite its name, this element can display friendly
+  actors, including companions; it is not restricted to enemies.
+
+- Changes dispatch `OnEnemyHealthTargetChange` before updating the target. A veto
+  leaves the previous target intact. Setting the same target does not dispatch
+  another change event.
+- Setting an actor refreshes the displayed name and display timer. Native
+  visibility rules still apply.
+- Clearing the target does not substitute the current VATS target.
+- Does not change the player's combat target or the activation reference.
+- The activation prompt checks the health-bar target when deciding whether to
+  hide itself. This command does not refresh that prompt; use JohnnyGuitar NVSE's
+  `UpdateCrosshairPrompt` after a successful change when needed.
+
+#### See Also
+
+- [GetEnemyHealthTarget](#getenemyhealthtarget)
+- [OnEnemyHealthTargetChange](#onenemyhealthtargetchange)
+- [UpdateCrosshairPrompt](https://geckwiki.com/index.php?title=UpdateCrosshairPrompt)
+- [GetCombatTarget](https://geckwiki.com/index.php?title=GetCombatTarget)
 
 ### SetPendingFastTravelMarker
 

@@ -7,6 +7,11 @@ class TESObjectREFR;
 
 bool CanPlayerFastTravelWithMessage();
 
+// Actor displayed by HUDMainMenu/EnemyHealth (also used by VATS).
+// The XML name does not imply hostility: friendly actors are valid targets.
+TESObjectREFR *GetEnemyHealthTarget();
+bool SetEnemyHealthTarget(TESObjectREFR *target);
+
 // Native UI API for FalloutNV 1.4.0.525. Tile layout is opaque here.
 class Tile
 {

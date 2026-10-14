@@ -2,6 +2,9 @@
 
 #include "GameForms.h"
 
+// xNVSE command return type IDs.
+enum CommandReturnType { kRetnType_Default = 0, kRetnType_Form = 1 };
+
 enum ParamType
 {
   kParamType_Integer = 0x01,

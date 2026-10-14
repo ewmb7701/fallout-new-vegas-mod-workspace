@@ -5,11 +5,14 @@
 #include "on_fast_travel_begin.h"
 #include "fast_travel_to_map_marker.h"
 #include "set_pending_fast_travel_marker.h"
+#include "on_enemy_health_target_change.h"
+#include "set_enemy_health_target.h"
+#include "get_enemy_health_target.h"
 
 #include "on_world_map_build.h"
 #include "on_world_map_marker_selection_change.h"
 
-#define EWMB_VERSION 5
+#define EWMB_VERSION 6
 
 namespace
 {
@@ -20,7 +23,9 @@ namespace
       OnWorldMapBuild::InstallHook();
       OnWorldMapMarkerSelectionChange::InstallHook();
       OnFastTravelBegin::InstallHook();
+      OnEnemyHealthTargetChange::InstallHook();
     }
+
   }
 }
 
@@ -49,6 +54,7 @@ bool NVSEPlugin_Load(NVSEInterface *nvse)
   OnWorldMapBuild::RegisterEvent(events);
   OnWorldMapMarkerSelectionChange::RegisterEvent(events);
   OnFastTravelBegin::RegisterEvent(events);
+  OnEnemyHealthTargetChange::RegisterEvent(events);
   messaging->RegisterListener(nvse->GetPluginHandle(), "NVSE", HandleNVSEMessage);
 
   nvse->SetOpcodeBase(0x4318);
@@ -56,6 +62,8 @@ bool NVSEPlugin_Load(NVSEInterface *nvse)
   /*0x4318*/ nvse->RegisterCommand(&kCommandInfo_SetBaseActorValue);
   /*0x4319*/ nvse->RegisterCommand(&kCommandInfo_FastTravelToMapMarker);
   /*0x431A*/ nvse->RegisterCommand(&kCommandInfo_SetPendingFastTravelMarker);
+  /*0x431B*/ nvse->RegisterCommand(&kCommandInfo_SetEnemyHealthTarget);
+  /*0x431C*/ nvse->RegisterTypedCommand(&kCommandInfo_GetEnemyHealthTarget, kRetnType_Form);
 
   PrintLog("ewmb NVSE loaded successfully");
 
