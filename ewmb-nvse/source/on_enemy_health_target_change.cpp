@@ -27,7 +27,8 @@ namespace
       add esp, 4 // displaced caller argument cleanup
       pushfd
       push eax
-      mov eax, dword ptr [0x11D96C0]
+      mov eax, 0x11D96C0
+      mov eax, [eax] // explicitly dereference the HUD singleton pointer
       mov eax, [eax + 0x21C]
       cmp eax, [ebp - 8]
       jne cancelled
@@ -53,7 +54,8 @@ namespace
     __asm {
       pushfd
       push eax
-      mov eax, dword ptr [0x11D96C0]
+      mov eax, 0x11D96C0
+      mov eax, [eax] // explicitly dereference the HUD singleton pointer
       cmp dword ptr [eax + 0x21C], 0
       je cancelled
       pop eax

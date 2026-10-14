@@ -12,7 +12,7 @@
 #include "on_world_map_build.h"
 #include "on_world_map_marker_selection_change.h"
 
-#define EWMB_VERSION 6
+#define EWMB_VERSION 7
 
 namespace
 {
@@ -25,7 +25,6 @@ namespace
       OnFastTravelBegin::InstallHook();
       OnEnemyHealthTargetChange::InstallHook();
     }
-
   }
 }
 
