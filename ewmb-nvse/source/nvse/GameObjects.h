@@ -18,6 +18,7 @@ public:
   TESForm *baseForm; // 20
   UInt8 opaqueSlots2[0x68 - 0x24];
 
+  const float *GetPosition();
   MapMarkerData *GetMapMarkerData();
   bool IsAvailableMapMarker();
 

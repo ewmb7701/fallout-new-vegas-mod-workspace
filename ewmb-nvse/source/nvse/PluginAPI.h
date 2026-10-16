@@ -30,6 +30,7 @@ struct PluginInfo
 enum
 {
   kInterface_Messaging = 2,
+  kInterface_ArrayVar = 5,
   kInterface_EventManager = 8,
 };
 
@@ -69,3 +70,26 @@ struct NVSEEventManagerInterface
 };
 
 STATIC_ASSERT(offsetof(NVSEEventManagerInterface::ResultElement, type) == 8);
+
+// ABI prefix from xNVSE PluginAPI.h. Only outgoing borrowed elements are used.
+struct NVSEArrayVarInterface
+{
+  struct Array;
+  struct Element
+  {
+    union { double number; TESForm *form; const char *string; Array *array; };
+    UInt8 type;
+    static Element Number(double v) { Element e{}; e.number = v; e.type = 1; return e; }
+    static Element Form(TESForm *v) { Element e{}; e.form = v; e.type = 2; return e; }
+    static Element String(const char *v) { Element e{}; e.string = v; e.type = 3; return e; }
+    static Element ArrayValue(Array *v) { Element e{}; e.array = v; e.type = 4; return e; }
+  };
+  Array *(*CreateArray)(const Element *, UInt32, Script *);
+  Array *(*CreateStringMap)(const char **, const Element *, UInt32, Script *);
+  Array *(*CreateMap)(const double *, const Element *, UInt32, Script *);
+  bool (*AssignCommandResult)(Array *, double *);
+  void (*SetElement)(Array *, const Element &, const Element &);
+  void (*AppendElement)(Array *, const Element &);
+};
+STATIC_ASSERT(offsetof(NVSEArrayVarInterface::Element, type) == 8);
+STATIC_ASSERT(sizeof(NVSEArrayVarInterface::Element) == 16);

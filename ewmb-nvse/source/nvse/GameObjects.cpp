@@ -1,5 +1,11 @@
 #include "GameObjects.h"
 
+const float *TESObjectREFR::GetPosition()
+{
+  auto table = static_cast<const void *const *>(vtable);
+  return reinterpret_cast<const float *(__thiscall *)(TESObjectREFR *)>(table[0x1F4 / 4])(this);
+}
+
 MapMarkerData *TESObjectREFR::GetMapMarkerData()
 {
   return reinterpret_cast<MapMarkerData *(__thiscall *)(TESObjectREFR *)>(0x569060)(this);

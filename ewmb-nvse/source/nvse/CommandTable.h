@@ -3,15 +3,17 @@
 #include "GameForms.h"
 
 // xNVSE command return type IDs.
-enum CommandReturnType { kRetnType_Default = 0, kRetnType_Form = 1 };
+enum CommandReturnType { kRetnType_Default = 0, kRetnType_Form = 1, kRetnType_Array = 3 };
 
 enum ParamType
 {
   kParamType_Integer = 0x01,
   kParamType_Float = 0x02,
+  kParamType_AnyForm = 0x3D,
   kParamType_ObjectRef = 0x04,
   kParamType_ActorValue = 0x05,
   kParamType_ActorBase = 0x19,
+  kParamType_WorldSpace = 0x1B,
 };
 
 struct ParamInfo

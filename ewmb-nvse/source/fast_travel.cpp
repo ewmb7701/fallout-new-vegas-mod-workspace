@@ -1,11 +1,11 @@
-#include "fast_travel_to_map_marker.h"
+#include "fast_travel.h"
 #include "nvse/GameAPI.h"
 #include "nvse/GameUI.h"
 #include "nvse/GameObjects.h"
 
 namespace
 {
-  bool ExecuteFastTravelToMapMarker(COMMAND_ARGS)
+  bool ExecuteFastTravel(COMMAND_ARGS)
   {
     *result = 0;
     TESObjectREFR *marker = nullptr;
@@ -15,7 +15,7 @@ namespace
   }
   ParamInfo params[] = {{"map marker", kParamType_ObjectRef, 0}};
 }
-CommandInfo kCommandInfo_FastTravelToMapMarker = {
-    "FastTravelToMapMarker", "", 0,
+CommandInfo kCommandInfo_FastTravel = {
+    "FastTravel", "", 0,
     "Queues native fast travel to a marker without a prompt or Pip-Boy changes", 0,
-    1, params, ExecuteFastTravelToMapMarker, nullptr, nullptr, 0};
+    1, params, ExecuteFastTravel, nullptr, nullptr, 0};
