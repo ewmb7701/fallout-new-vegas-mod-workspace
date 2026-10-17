@@ -1,0 +1,37 @@
+if eval GetNVSEVersion < 6 || (GetNVSEVersion == 6 && GetNVSERevision < 3)
+    Print "Vanilla UI Companion Enhancements requires xNVSE 6.3+."
+    return
+endif
+if GetPluginVersion "UI Organizer Plugin" < 230
+    Print "Vanilla UI Companion Enhancements requires UIO 2.30+."
+    return
+endif
+if GetPluginVersion "ShowOffNVSE Plugin" < 155
+    Print "Vanilla UI Companion Enhancements requires ShowOff NVSE 1.55+."
+    return
+endif
+if GetPluginVersion "ewmb NVSE" < 5
+    Print "Vanilla UI Companion Enhancements requires ewmb NVSE with OnEnemyHealthTargetChange."
+    return
+endif
+ref rHit = CompileScript "VanillaUICompanionEnhancements/OnCompanionHit.txt"
+ref rEnemyHealthChange = CompileScript "VanillaUICompanionEnhancements/OnEnemyHealthTargetChange.txt"
+ref rActivationPromptVisible = CompileScript "VanillaUICompanionEnhancements/IsActivationPromptVisible.txt"
+ref rHealthBarTimerExpired = CompileScript "VanillaUICompanionEnhancements/OnCompanionHealthBarTimerExpired.txt"
+ref rSetCompanionHealthBarTarget = CompileScript "VanillaUICompanionEnhancements/SetCompanionHealthBarTarget.txt"
+ref rUpdateHealthBar = CompileScript "VanillaUICompanionEnhancements/UpdateCompanionHealthBar.txt"
+ref rSetup = CompileScript "VanillaUICompanionEnhancements/Setup.txt"
+ref rTeardown = CompileScript "VanillaUICompanionEnhancements/Teardown.txt"
+ref rConfigure = CompileScript "VanillaUICompanionEnhancements/Configure.txt"
+ref rUpdateCompanionHealthBarTarget = CompileScript "VanillaUICompanionEnhancements/UpdateCompanionHealthBarTarget.txt"
+ref rUpdateCompanionStats = CompileScript "VanillaUICompanionEnhancements/UpdateCompanionStats.txt"
+ref rSetCompanionStatsTarget = CompileScript "VanillaUICompanionEnhancements/SetCompanionStatsTarget.txt"
+ref rOnCrosshairOn = CompileScript "VanillaUICompanionEnhancements/OnCrosshairOn.txt"
+ref rOnCrosshairOff = CompileScript "VanillaUICompanionEnhancements/OnCrosshairOff.txt"
+if eval rHit == 0 || rHealthBarTimerExpired == 0 || rEnemyHealthChange == 0 || rActivationPromptVisible == 0 || rSetup == 0 || rTeardown == 0 || rConfigure == 0 || rUpdateCompanionHealthBarTarget == 0 || rUpdateCompanionStats == 0 || rSetCompanionStatsTarget == 0 || rOnCrosshairOn == 0 || rOnCrosshairOff == 0 || rSetCompanionHealthBarTarget == 0 || rUpdateHealthBar == 0
+    Print "Vanilla UI Companion Enhancements: script compilation failed. See the NVSE/JIP log."
+    return
+endif
+Call rTeardown
+CallAfterFrames 0 rSetup
+Print "Vanilla UI Companion Enhancements: reticle tracking registered."

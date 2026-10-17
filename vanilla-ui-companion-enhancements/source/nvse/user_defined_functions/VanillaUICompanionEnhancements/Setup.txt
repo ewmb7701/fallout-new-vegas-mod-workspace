@@ -1,0 +1,13 @@
+begin Function {}
+    Call (CompileScript "VanillaUICompanionEnhancements/Teardown.txt")
+    Call (CompileScript "VanillaUICompanionEnhancements/Configure.txt")
+    PlayerRef.SetOnAuxTimerStopHandler 1 (CompileScript "VanillaUICompanionEnhancements/OnCompanionHealthBarTimerExpired.txt") "*_VUICE_HealthBarExpiry"
+    SetOnHitEventHandler (CompileScript "VanillaUICompanionEnhancements/OnCompanionHit.txt") 1
+    ; Register activation events before reticle tracking starts.
+    SetEventHandler "OnEnemyHealthTargetChange" (CompileScript "VanillaUICompanionEnhancements/OnEnemyHealthTargetChange.txt")
+    SetEventHandler "OnCrosshairOn" (CompileScript "VanillaUICompanionEnhancements/OnCrosshairOn.txt")
+    SetEventHandler "OnCrosshairOff" (CompileScript "VanillaUICompanionEnhancements/OnCrosshairOff.txt")
+    ; Run every frame, with automatic removal on load.
+    PlayerRef.SetGameMainLoopCallback (CompileScript "VanillaUICompanionEnhancements/UpdateCompanionHealthBarTarget.txt") 1 1 11
+    Call (CompileScript "VanillaUICompanionEnhancements/UpdateCompanionHealthBarTarget.txt")
+end

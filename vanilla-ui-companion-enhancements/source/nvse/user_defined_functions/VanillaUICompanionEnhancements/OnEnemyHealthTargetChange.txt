@@ -1,0 +1,23 @@
+ref rTarget
+begin Function {rTarget}
+    SetFunctionValue 1
+    if GetVATSMode == 0
+        ; Native clearing does not dismiss our retained companion.
+        if IsReference rTarget == 0
+            return
+        endif
+        if rTarget.IsActor
+            if rTarget.GetPlayerTeammate
+                Call (CompileScript "VanillaUICompanionEnhancements/SetCompanionHealthBarTarget.txt") rTarget
+                SetFunctionValue 0
+                return
+            endif
+        endif
+    endif
+    ; Enemies replace CompanionHealthBar; VATS owns its native display entirely.
+    PlayerRef.AuxTimerStop "*_VUICE_HealthBarExpiry" 0
+    PlayerRef.AuxiliaryVariableErase "*_VUICE_CompanionHealthBarTarget"
+    if IsComponentLoaded "HUDMainMenu/CompanionHealthBar"
+        SetUIFloatAlt "HUDMainMenu/CompanionHealthBar/visible" 0
+    endif
+end

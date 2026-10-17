@@ -1,0 +1,3 @@
+; Armored Vault 13 and 21 Jumpsuits now use RepairVaultSuit
+SetRepairList RepairVaultSuit MS03VaultSuit21Armored
+SetRepairList RepairVaultSuit PreordArmorVault13Armored

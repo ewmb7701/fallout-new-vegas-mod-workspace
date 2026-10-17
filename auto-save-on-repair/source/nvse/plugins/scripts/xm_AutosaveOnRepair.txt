@@ -1,0 +1,1 @@
+RemoveEventHandler "OnRepair" (CompileScript "AutosaveOnRepair/OnRepair.txt")

@@ -1,0 +1,5 @@
+name OnCombatEnd;
+
+fn(ref rTarget, ref rEnder) {
+  AutoSave();
+}

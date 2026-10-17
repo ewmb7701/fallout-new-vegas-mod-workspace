@@ -1,0 +1,2 @@
+BaseAddItemHealth WeapNVRechargerRifle 1 0.65 NVProspectorMaleADEADJohnny
+BaseAddItemHealth WeapNVRechargerRifle 1 0.65 NVProspectorMaleADEADJohnnyStandIn

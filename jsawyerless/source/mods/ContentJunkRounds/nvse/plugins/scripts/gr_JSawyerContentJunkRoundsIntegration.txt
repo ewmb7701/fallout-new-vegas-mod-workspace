@@ -1,0 +1,15 @@
+; Adding Junk rounds to ammo lists
+ListAddForm AmmoList10mm Ammo10mmJunkRounds -2 1
+ListAddForm AmmoList127mm Ammo127mmJunkRounds -2 1
+ListAddForm AmmoList12Ga Ammo12GaJunkRounds -2 1
+ListAddForm AmmoList20Ga Ammo20GaJunkRounds -2 1
+ListAddForm AmmoList22LR Ammo22LRJunkRounds -2 1
+ListAddForm AmmoList308 Ammo308JunkRounds -2 1
+ListAddForm AmmoList357Magnum Ammo357MagnumJunkRounds -2 1
+ListAddForm AmmoList44Magnum Ammo44MagnumJunkRounds -2 1
+ListAddForm AmmoList4570 Ammo4570JunkRounds -2 1
+ListAddForm AmmoList50MG Ammo50MGJunkRounds -2 1
+ListAddForm AmmoList556mm Ammo556mmJunkRounds -2 1
+ListAddForm AmmoList5mm Ammo5mmJunkRounds -2 1
+ListAddForm AmmoList9mm Ammo9mmJunkRounds -2 1
+ListAddForm NVDLC02AmmoList45Auto JSawyerAmmo45AutoJunkRounds -2 1

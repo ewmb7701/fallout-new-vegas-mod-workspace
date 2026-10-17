@@ -1,0 +1,5 @@
+name OnSell;
+
+fn(ref rItem, ref rSeller) {
+  AutoSave();
+}

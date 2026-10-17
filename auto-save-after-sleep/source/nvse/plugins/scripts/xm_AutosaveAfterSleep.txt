@@ -1,0 +1,2 @@
+SetJohnnyOnSleepWaitEventHandler 0 (CompileScript "AutosaveAfterSleep/OnSleep.txt") 0 2
+SetOnMenuCloseEventHandler (CompileScript "AutosaveAfterSleep/OnMenuClose.txt") 0 1012

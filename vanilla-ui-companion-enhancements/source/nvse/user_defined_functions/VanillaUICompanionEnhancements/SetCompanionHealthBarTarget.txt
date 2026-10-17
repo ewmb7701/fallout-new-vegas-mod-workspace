@@ -1,0 +1,24 @@
+ref rTarget
+float fTimer
+begin Function {rTarget}
+    if GetVATSMode
+        return
+    endif
+    if GetEnemyHealthTarget
+        if SetEnemyHealthTarget == 0
+            return
+        endif
+        UpdateCrosshairPrompt
+    endif
+    ; Hide native children so the next native target can show them again.
+    SetUIFloatAlt "HUDMainMenu/EnemyHealth/enemy_health_bracket/visible" 0
+    SetUIFloatAlt "HUDMainMenu/EnemyHealth/meter/visible" 0
+    SetUIFloatAlt "HUDMainMenu/EnemyHealth/justify_center_text/visible" 0
+    PlayerRef.AuxiliaryVariableSetRef "*_VUICE_CompanionHealthBarTarget" rTarget
+    ; Seconds, GameMode only, removed on load/main menu (2 + 4 + 8).
+    let fTimer := GetINIFloat_Cached "Behavior:fCompanionHealthBarTimer" "VanillaUICompanionEnhancements.ini" 5.5
+    PlayerRef.AuxTimerStart "*_VUICE_HealthBarExpiry" fTimer 14
+    if IsComponentLoaded "HUDMainMenu/CompanionHealthBar"
+        SetUIStringAlt "HUDMainMenu/CompanionHealthBar/Name/string" "%n" rTarget
+    endif
+end

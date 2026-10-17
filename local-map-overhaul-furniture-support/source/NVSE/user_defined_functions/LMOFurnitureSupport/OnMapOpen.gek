@@ -1,0 +1,6 @@
+int iMenuID
+
+begin Function {iMenuID}
+	; Uses existing UI templates, independent of LMO's menu-open handler order.
+	Call (CompileScript "LMOFurnitureSupport\AddFurnitureIcons.gek")
+end

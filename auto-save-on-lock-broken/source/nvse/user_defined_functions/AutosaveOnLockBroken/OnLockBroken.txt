@@ -1,0 +1,5 @@
+name OnLockBroken;
+
+fn(ref rObject) {
+  AutoSave();
+}

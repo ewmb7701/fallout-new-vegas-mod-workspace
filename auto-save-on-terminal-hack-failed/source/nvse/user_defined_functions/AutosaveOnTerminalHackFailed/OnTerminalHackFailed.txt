@@ -1,0 +1,5 @@
+name OnTerminalHackFailed;
+
+fn(ref rTerminal) {
+  AutoSave();
+}

@@ -1,0 +1,1 @@
+SetEventHandler "OnSell" (CompileScript "AutosaveOnSell/OnSell.txt") "second"::PlayerRef

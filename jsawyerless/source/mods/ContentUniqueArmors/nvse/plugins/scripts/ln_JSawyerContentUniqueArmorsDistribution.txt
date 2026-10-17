@@ -1,0 +1,105 @@
+; Adding unique armors to Mick's store
+if eval AuxVarGetFlt "_JSawyerUniqueArmors_MickMerchantBoxREF" 0 OutfitUniqueMerc04 == 0
+    MickMerchantBoxREF.AddItemHealthPercent OutfitUniqueMerc04 1 0.85
+    AuxVarSetFlt "_JSawyerUniqueArmors_MickMerchantBoxREF" 1 0 OutfitUniqueMerc04
+endif
+if eval AuxVarGetFlt "_JSawyerUniqueArmors_MickMerchantBoxREF" 0 OutfitUniqueMerc05 == 0
+    MickMerchantBoxREF.AddItemHealthPercent OutfitUniqueMerc05 1 0.85
+    AuxVarSetFlt "_JSawyerUniqueArmors_MickMerchantBoxREF" 1 0 OutfitUniqueMerc05
+endif
+if eval AuxVarGetFlt "_JSawyerUniqueArmors_MickMerchantBoxREF" 0 OutfitUniqueMerc06 == 0
+    MickMerchantBoxREF.AddItemHealthPercent OutfitUniqueMerc06 1 0.85
+    AuxVarSetFlt "_JSawyerUniqueArmors_MickMerchantBoxREF" 1 0 OutfitUniqueMerc06
+endif
+if eval AuxVarGetFlt "_JSawyerUniqueArmors_MickMerchantBoxREF" 0 ArmorUniqueRaider02 == 0
+    MickMerchantBoxREF.AddItemHealthPercent ArmorUniqueRaider02 1 0.85
+    AuxVarSetFlt "_JSawyerUniqueArmors_MickMerchantBoxREF" 1 0 ArmorUniqueRaider02
+endif
+if eval AuxVarGetFlt "_JSawyerUniqueArmors_MickMerchantBoxREF" 0 ArmorUniqueRaider04 == 0
+    MickMerchantBoxREF.AddItemHealthPercent ArmorUniqueRaider04 1 0.85
+    AuxVarSetFlt "_JSawyerUniqueArmors_MickMerchantBoxREF" 1 0 ArmorUniqueRaider04
+endif
+if eval AuxVarGetFlt "_JSawyerUniqueArmors_MickMerchantBoxREF" 0 ArmorUniqueRaider04Helmet == 0
+    MickMerchantBoxREF.AddItemHealthPercent ArmorUniqueRaider04Helmet 1 0.85
+    AuxVarSetFlt "_JSawyerUniqueArmors_MickMerchantBoxREF" 1 0 ArmorUniqueRaider04Helmet
+endif
+if eval AuxVarGetFlt "_JSawyerUniqueArmors_MickMerchantBoxREF" 0 LLFFArmorRaider03Helmet == 0
+    MickMerchantBoxREF.AddItemHealthPercent LLFFArmorRaider03Helmet 1 0.85
+    AuxVarSetFlt "_JSawyerUniqueArmors_MickMerchantBoxREF" 1 0 LLFFArmorRaider03Helmet
+endif
+if eval AuxVarGetFlt "_JSawyerContentCommandoArmorDistributionDone" 0 JsawyerArmorUniqueMetalReinforced == 0
+    MickMerchantBoxREF.AddItemHealthPercent JsawyerArmorUniqueMetalReinforced 1 0.85
+    AuxVarSetFlt "_JSawyerContentCommandoArmorDistributionDone" 1 0 JsawyerArmorUniqueMetalReinforced
+endif
+if eval AuxVarGetFlt "_JSawyerUniqueArmors_MickMerchantBoxREF" 0 ArmorWanderersLeather == 0
+    MickMerchantBoxREF.AddItemHealthPercent ArmorWanderersLeather 1 0.85
+    AuxVarSetFlt "_JSawyerUniqueArmors_MickMerchantBoxREF" 1 0 ArmorWanderersLeather
+endif
+
+; Adding unique armors to Cliff Briscoe's store
+if eval AuxVarGetFlt "_JSawyerUniqueArmors_VendorContainerCliffBriscoeREF" 0 OutfitUniqueMerc01 == 0
+    VendorContainerCliffBriscoeREF.AddItemHealthPercent OutfitUniqueMerc01 1 0.85
+    AuxVarSetFlt "_JSawyerUniqueArmors_VendorContainerCliffBriscoeREF" 1 0 OutfitUniqueMerc01
+endif
+if eval AuxVarGetFlt "_JSawyerUniqueArmors_VendorContainerCliffBriscoeREF" 0 OutfitUniqueMerc02 == 0
+    VendorContainerCliffBriscoeREF.AddItemHealthPercent OutfitUniqueMerc02 1 0.85
+    AuxVarSetFlt "_JSawyerUniqueArmors_VendorContainerCliffBriscoeREF" 1 0 OutfitUniqueMerc02
+endif
+if eval AuxVarGetFlt "_JSawyerUniqueArmors_VendorContainerCliffBriscoeREF" 0 OutfitUniqueMerc03 == 0
+    VendorContainerCliffBriscoeREF.AddItemHealthPercent OutfitUniqueMerc03 1 0.85
+    AuxVarSetFlt "_JSawyerUniqueArmors_VendorContainerCliffBriscoeREF" 1 0 OutfitUniqueMerc03
+endif
+if eval AuxVarGetFlt "_JSawyerUniqueArmors_VendorContainerCliffBriscoeREF" 0 ArmorUniqueRaider01 == 0
+    VendorContainerCliffBriscoeREF.AddItemHealthPercent ArmorUniqueRaider01 1 0.85
+    AuxVarSetFlt "_JSawyerUniqueArmors_VendorContainerCliffBriscoeREF" 1 0 ArmorUniqueRaider01
+endif
+if eval AuxVarGetFlt "_JSawyerUniqueArmors_VendorContainerCliffBriscoeREF" 0 ArmorUniqueRaider01Helmet == 0
+    VendorContainerCliffBriscoeREF.AddItemHealthPercent ArmorUniqueRaider01Helmet 1 0.85
+    AuxVarSetFlt "_JSawyerUniqueArmors_VendorContainerCliffBriscoeREF" 1 0 ArmorUniqueRaider01Helmet
+endif
+if eval AuxVarGetFlt "_JSawyerUniqueArmors_VendorContainerCliffBriscoeREF" 0 LLFFArmorRaider03Helmet == 0
+    VendorContainerCliffBriscoeREF.AddItemHealthPercent LLFFArmorRaider03Helmet 1 0.85
+    AuxVarSetFlt "_JSawyerUniqueArmors_VendorContainerCliffBriscoeREF" 1 0 LLFFArmorRaider03Helmet
+endif
+if eval AuxVarGetFlt "_JSawyerUniqueArmors_VendorContainerCliffBriscoeREF" 0 ArmorUniqueMetal == 0
+    VendorContainerCliffBriscoeREF.AddItemHealthPercent ArmorUniqueMetal 1 0.85
+    AuxVarSetFlt "_JSawyerUniqueArmors_VendorContainerCliffBriscoeREF" 1 0 ArmorUniqueMetal
+endif
+if eval AuxVarGetFlt "_JSawyerUniqueArmors_VendorContainerCliffBriscoeREF" 0 ArmorUniqueMetalHelmet == 0
+    VendorContainerCliffBriscoeREF.AddItemHealthPercent ArmorUniqueMetalHelmet 1 0.85
+    AuxVarSetFlt "_JSawyerUniqueArmors_VendorContainerCliffBriscoeREF" 1 0 ArmorUniqueMetalHelmet
+endif
+if eval AuxVarGetFlt "_JSawyerUniqueArmors_VendorContainerCliffBriscoeREF" 0 ArmorUniqueLeather == 0
+    VendorContainerCliffBriscoeREF.AddItemHealthPercent ArmorUniqueLeather 1 0.85
+    AuxVarSetFlt "_JSawyerUniqueArmors_VendorContainerCliffBriscoeREF" 1 0 ArmorUniqueLeather
+endif
+if eval AuxVarGetFlt "_JSawyerUniqueArmors_VendorContainerCliffBriscoeREF" 0 ArmorUniqueWastelander == 0
+    VendorContainerCliffBriscoeREF.AddItemHealthPercent ArmorUniqueWastelander 1 0.85
+    AuxVarSetFlt "_JSawyerUniqueArmors_VendorContainerCliffBriscoeREF" 1 0 ArmorUniqueWastelander
+endif
+if eval AuxVarGetFlt "_JSawyerUniqueArmors_VendorContainerCliffBriscoeREF" 0 ArmorUniqueRaider04 == 0
+    VendorContainerCliffBriscoeREF.AddItemHealthPercent ArmorUniqueRaider04 1 0.85
+    AuxVarSetFlt "_JSawyerUniqueArmors_VendorContainerCliffBriscoeREF" 1 0 ArmorUniqueRaider04
+endif
+if eval AuxVarGetFlt "_JSawyerUniqueArmors_VendorContainerCliffBriscoeREF" 0 MS18RangerBattleArmor == 0
+    VendorContainerCliffBriscoeREF.AddItemHealthPercent MS18RangerBattleArmor 1 0.85
+    AuxVarSetFlt "_JSawyerUniqueArmors_VendorContainerCliffBriscoeREF" 1 0 MS18RangerBattleArmor
+endif
+
+; Adding unique armors to Nellis store
+if eval AuxVarGetFlt "_JSawyerUniqueArmors_VendorContainerNellisMunitionsREF" 0 ArmorUniqueCombat == 0
+    VendorContainerNellisMunitionsREF.AddItemHealthPercent ArmorUniqueCombat 1 0.85
+    AuxVarSetFlt "_JSawyerUniqueArmors_VendorContainerNellisMunitionsREF" 1 0 ArmorUniqueCombat
+endif
+if eval AuxVarGetFlt "_JSawyerUniqueArmors_VendorContainerNellisMunitionsREF" 0 ArmorUniqueCombatHelmet == 0
+    VendorContainerNellisMunitionsREF.AddItemHealthPercent ArmorUniqueCombatHelmet 1 0.85
+    AuxVarSetFlt "_JSawyerUniqueArmors_VendorContainerNellisMunitionsREF" 1 0 ArmorUniqueCombatHelmet
+endif
+if eval AuxVarGetFlt "_JSawyerUniqueArmors_VendorContainerNellisMunitionsREF" 0 ArmorUniqueRecon == 0
+    VendorContainerNellisMunitionsREF.AddItemHealthPercent ArmorUniqueRecon 1 0.85
+    AuxVarSetFlt "_JSawyerUniqueArmors_VendorContainerNellisMunitionsREF" 1 0 ArmorUniqueRecon
+endif
+if eval AuxVarGetFlt "_JSawyerUniqueArmors_VendorContainerNellisMunitionsREF" 0 ArmorUniqueReconHelmet == 0
+    VendorContainerNellisMunitionsREF.AddItemHealthPercent ArmorUniqueReconHelmet 1 0.85
+    AuxVarSetFlt "_JSawyerUniqueArmors_VendorContainerNellisMunitionsREF" 1 0 ArmorUniqueReconHelmet
+endif

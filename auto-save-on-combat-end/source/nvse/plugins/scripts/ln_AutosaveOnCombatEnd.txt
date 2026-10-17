@@ -1,0 +1,1 @@
+SetEventHandler "OnCombatEnd" (CompileScript "AutosaveOnCombatEnd/OnCombatEnd.txt") "first"::PlayerRef

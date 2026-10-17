@@ -1,0 +1,4 @@
+VanillaUICompanionEnhancements\Stats.xml::HUDMainMenu::HUDMainMenu
+true
+VanillaUICompanionEnhancements\CompanionHealthBar.xml::HUDMainMenu::HUDMainMenu
+true

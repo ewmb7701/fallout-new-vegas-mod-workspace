@@ -1,0 +1,3 @@
+PlayerRef.AuxiliaryVariableErase "*_AutosaveAfterSleep_WasSleeping"
+SetJohnnyOnSleepWaitEventHandler 1 (CompileScript "AutosaveAfterSleep/OnSleep.txt") 0 2
+SetOnMenuCloseEventHandler (CompileScript "AutosaveAfterSleep/OnMenuClose.txt") 1 1012

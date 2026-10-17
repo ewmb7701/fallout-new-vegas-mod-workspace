@@ -1,0 +1,6 @@
+SetActorBaseFlagsLow 16 VESGSGeckoman
+
+BaseRemoveItem WeapNV9mmPistol 1 VESGSGeckoman
+BaseRemoveItem Ammo9mm 25 VESGSGeckoman
+BaseAddItemHealth WeapPlasmaPistol 1 0.4 VESGSGeckoman
+BaseAddItem AmmoSmallEnergyCell 25 VESGSGeckoman

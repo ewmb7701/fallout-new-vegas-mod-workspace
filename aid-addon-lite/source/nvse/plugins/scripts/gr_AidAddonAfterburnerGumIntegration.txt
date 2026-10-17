@@ -1,0 +1,67 @@
+LeveledListAddForm FiendLoot LVLIAfterburnerGum25 1 1 0.0
+LeveledListAddForm FiendLoot LVLIAfterburnerGum25 1 2 0.0
+LeveledListAddForm VFSGoodBenefitKingHandoutList BubblegumAfterburner 1 1 1.0
+LeveledListAddForm VFSGoodBenefitKingHandoutList BubblegumAfterburner 1 2 1.0
+LeveledListAddForm LL0NPCPowderGangerTrinkets LVLIAfterburnerGum25 1 1 0.0
+LeveledListAddForm LL0NPCPowderGangerTrinkets50 LVLIAfterburnerGum25 1 1 0.0
+LeveledListAddForm LL0NPCTownTrinkets LVLIAfterburnerGum25 1 1 0.0
+LeveledListAddForm LL0NPCWastelandTrinkets LVLIAfterburnerGum25 1 1 0.0
+LeveledListAddForm LL0NPCWastelandTrinkets35 LVLIAfterburnerGum25 1 1 0.0
+LeveledListAddForm LL0NPCWastelandTrinkets50 LVLIAfterburnerGum25 1 1 0.0
+LeveledListAddForm VendorMiscItems BubblegumAfterburner 1 1 1.0
+LeveledListAddForm VendorMiscItems BubblegumAfterburner 1 2 1.0
+LeveledListAddForm VendorMiscItems BubblegumAfterburner 1 3 1.0
+LeveledListAddForm LL0NPCTownChemsDrugs LVLIAfterburnerGum25 1 1 0.0
+LeveledListAddForm LL0NPCTownChemsDrugs25 LVLIAfterburnerGum25 1 1 0.0
+LeveledListAddForm LL0NPCTownChemsDrugs50 LVLIAfterburnerGum25 1 1 0.0
+LeveledListAddForm LL0NPCTownChemsDrugs75 LVLIAfterburnerGum25 1 1 0.0
+LeveledListAddForm LootChemsDrugs100 LVLIAfterburnerGum25 1 1 0.0
+LeveledListAddForm LootChemsDrugs25 LVLIAfterburnerGum25 1 1 0.0
+LeveledListAddForm LootChemsDrugs75 LVLIAfterburnerGum25 1 1 0.0
+LeveledListAddForm LootChemsNVDrugs10 LVLIAfterburnerGum25 1 1 0.0
+LeveledListAddForm LootChemsNVDrugs10 LVLIAfterburnerGum25 1 1 0.0
+LeveledListAddForm LootChemsNVDrugs100 LVLIAfterburnerGum25 1 1 0.0
+LeveledListAddForm LootChemsNVDrugs25 LVLIAfterburnerGum25 1 1 0.0
+LeveledListAddForm LootChemsNVDrugs75 LVLIAfterburnerGum25 1 1 0.0
+LeveledListAddForm LL0NPCWastelandChemsDrugs LVLIAfterburnerGum25 1 1 0.0
+LeveledListAddForm LL0NPCWastelandChemsDrugs25 LVLIAfterburnerGum25 1 1 0.0
+LeveledListAddForm LL0NPCWastelandChemsDrugs50 LVLIAfterburnerGum25 1 1 0.0
+LeveledListAddForm LL0NPCWastelandChemsDrugs75 LVLIAfterburnerGum25 1 1 0.0
+LeveledListAddForm VendorChemsDrugs100 BubblegumAfterburner 1 1 1.0
+LeveledListAddForm VendorChemsDrugs75 BubblegumAfterburner 1 1 1.0
+LeveledListAddForm VendorChemsDrugs100 BubblegumAfterburner 1 2 1.0
+LeveledListAddForm VendorChemsDrugs75 BubblegumAfterburner 1 2 1.0
+LeveledListAddForm VendorChemsDrugs100 BubblegumAfterburner 1 3 1.0
+LeveledListAddForm VendorChemsDrugs75 BubblegumAfterburner 1 3 1.0
+LeveledListAddForm VendorChemsDrugs100 BubblegumAfterburner 1 4 1.0
+LeveledListAddForm VendorChemsDrugs75 BubblegumAfterburner 1 4 1.0
+LeveledListAddForm VendorAtomicWranglerChemsA BubblegumAfterburner 1 1 1.0
+LeveledListAddForm VendorAtomicWranglerChemsA BubblegumAfterburner 1 2 1.0
+LeveledListAddForm VendorAtomicWranglerChemsA BubblegumAfterburner 1 3 1.0
+LeveledListAddForm VendorAtomicWranglerChemsA BubblegumAfterburner 1 4 1.0
+LeveledListAddForm FFBittercupGift BubblegumAfterburner 1 1 1.0
+LeveledListAddForm FFLLKarmaGift BubblegumAfterburner 1 1 1.0
+LeveledListAddForm FFLLSupermutantCaptiveGift BubblegumAfterburner 1 1 1.0
+LeveledListAddForm FiendChems100 LVLIAfterburnerGum50 1 1 1.0
+LeveledListAddForm FiendChems50 LVLIAfterburnerGum50 1 1 1.0
+LeveledListAddForm FiendChems50 LVLIAfterburnerGum50 1 2 1.0
+LeveledListAddForm LL0NPCTownChemicals BubblegumAfterburner 1 1 1.0
+LeveledListAddForm LL0NPCTownChemicals25 BubblegumAfterburner 1 1 1.0
+LeveledListAddForm LL0NPCTownChemicals50 BubblegumAfterburner 1 1 1.0
+LeveledListAddForm LL0NPCWastelandBanditChemicals35 LVLIAfterburnerGum25 1 1 0.0
+LeveledListAddForm LootChemsAll100 BubblegumAfterburner 1 1 1.0
+LeveledListAddForm RaiderChems100 LVLIAfterburnerGum25 1 1 0.0
+LeveledListAddForm NVDLC04DuffleChems100 BubblegumAfterburner 1 1 1.0
+
+if IsModLoaded "TaleOfTwoWastelands.esm" == 1
+	LeveledListAddForm (EditorIdToFormId "RaiderLootDC") LVLIAfterburnerGum25 1 1 0.0
+	LeveledListAddForm (EditorIdToFormId "TalonLoot") LVLIAfterburnerGum25 1 1 0.0
+	LeveledListAddForm (EditorIdToFormId "RaiderChems100DC") LVLIAfterburnerGum25 1 1 0.0
+	LeveledListAddForm (EditorIdToFormId "TalonChems100") LVLIAfterburnerGum25 1 1 0.0
+	LeveledListAddForm (EditorIdToFormId "VendorChemsDrugs100DC") BubblegumAfterburner 1 1 1.0
+	LeveledListAddForm (EditorIdToFormId "VendorChemsDrugs75DC") BubblegumAfterburner 1 1 1.0
+	LeveledListAddForm (EditorIdToFormId "VendorChemsDrugs100DC") BubblegumAfterburner 1 2 1.0
+	LeveledListAddForm (EditorIdToFormId "VendorChemsDrugs75DC") BubblegumAfterburner 1 2 1.0
+	LeveledListAddForm (EditorIdToFormId "VendorChemsDrugs100DC") BubblegumAfterburner 1 3 1.0
+	LeveledListAddForm (EditorIdToFormId "VendorChemsDrugs75DC") BubblegumAfterburner 1 3 1.0
+endif

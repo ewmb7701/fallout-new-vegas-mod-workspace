@@ -1,0 +1,2 @@
+RightBracket.xml::@prefabs\TheHUDEditor\Prefabs(VUI+)\hudtemplates.xml::TheHUDEditor_RightBracketBottom
+true

@@ -1,0 +1,21 @@
+begin Function {}
+    SetOnHitEventHandler (CompileScript "VanillaUICompanionEnhancements/OnCompanionHit.txt") 0
+    PlayerRef.SetOnAuxTimerStopHandler 0 (CompileScript "VanillaUICompanionEnhancements/OnCompanionHealthBarTimerExpired.txt") "*_VUICE_HealthBarExpiry"
+    PlayerRef.SetGameMainLoopCallback (CompileScript "VanillaUICompanionEnhancements/UpdateCompanionHealthBarTarget.txt") 0
+    PlayerRef.SetGameMainLoopCallback (CompileScript "VanillaUICompanionEnhancements/UpdateCompanionStats.txt") 0
+    RemoveEventHandler "OnEnemyHealthTargetChange" (CompileScript "VanillaUICompanionEnhancements/OnEnemyHealthTargetChange.txt")
+    RemoveEventHandler "OnCrosshairOn" (CompileScript "VanillaUICompanionEnhancements/OnCrosshairOn.txt")
+    RemoveEventHandler "OnCrosshairOff" (CompileScript "VanillaUICompanionEnhancements/OnCrosshairOff.txt")
+    ; Remove tracking state left by earlier versions as well.
+    PlayerRef.AuxiliaryVariableErase "*_VUICE_ReticleRef"
+    PlayerRef.AuxiliaryVariableErase "*_VUICE_ActivationTarget"
+    PlayerRef.AuxiliaryVariableErase "*_VUICE_CompanionStatsTarget"
+    PlayerRef.AuxTimerStop "*_VUICE_HealthBarExpiry" 0
+    PlayerRef.AuxiliaryVariableErase "*_VUICE_CompanionHealthBarTarget"
+    if IsComponentLoaded "HUDMainMenu/CompanionHealthBar"
+        SetUIFloatAlt "HUDMainMenu/CompanionHealthBar/visible" 0
+    endif
+    if IsComponentLoaded "HUDMainMenu/VUICE"
+        SetUIFloatAlt "HUDMainMenu/VUICE/visible" 0
+    endif
+end

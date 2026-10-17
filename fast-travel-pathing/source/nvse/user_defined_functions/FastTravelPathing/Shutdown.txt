@@ -1,0 +1,46 @@
+; Unregister handlers and clear the owned connection lines.
+Begin Function {}
+    Call (CompileScript "FastTravelPathing\ClearActivePath.txt")
+    ref rOldUpdate = Player.AuxVarGetRef "*_FTP_rActivePathUpdateHandler"
+    if rOldUpdate
+        Player.SetGameMainLoopCallback rOldUpdate 0
+    endif
+    Player.AuxVarErase "*_FTP_rActivePathUpdateHandler"
+    Player.AuxVarErase "*_FTP_ActivePathMarkers"
+    Player.AuxVarErase "*_FTP_ActivePathIndex"
+    ref rTravelBegin = Player.AuxVarGetRef "*_FTP_rFastTravelBeginHandler"
+    if rTravelBegin
+        RemoveEventHandler "OnFastTravelBegin" rTravelBegin
+    endif
+    Player.AuxVarErase "*_FTP_rFastTravelBeginHandler"
+    ref rTravel = Player.AuxVarGetRef "*_FTP_rFastTravelHandler"
+    if rTravel
+        SetOnFastTravelEventHandler rTravel 0
+    endif
+    Player.AuxVarErase "*_FTP_rFastTravelHandler"
+    ref rLocationUpdateHandler = Player.AuxVarGetRef "*_FTP_rLocationUpdateHandler"
+    if rLocationUpdateHandler
+        Player.SetGameMainLoopCallback rLocationUpdateHandler 0
+    endif
+    Player.AuxVarErase "*_FTP_rLocationUpdateHandler"
+    ref rHover = Player.AuxVarGetRef "*_FTP_rHoverHandler"
+    if rHover
+        RemoveEventHandler "OnWorldMapMarkerSelectionChange" rHover
+    endif
+    Player.AuxVarErase "*_FTP_rHoverHandler"
+    ref rBuild = Player.AuxVarGetRef "*_FTP_rBuildHandler"
+    if rBuild
+        RemoveEventHandler "OnWorldMapBuild" rBuild
+    endif
+    ref rClose = Player.AuxVarGetRef "*_FTP_rCloseHandler"
+    if rClose
+        SetOnMenuCloseEventHandler rClose 0 1023
+    endif
+    Player.AuxVarErase "*_FTP_rBuildHandler"
+    Player.AuxVarErase "*_FTP_rCloseHandler"
+    Player.AuxVarErase "*_FTP_sPrevLocationId"
+    Player.AuxVarErase "*_FTP_bPrevLocationValid"
+    RemoveEventHandler "OnWorldMapBuild" (CompileScript "FastTravelPathing\OnWorldMapBuild.txt")
+    SetOnMenuCloseEventHandler (CompileScript "FastTravelPathing\OnWorldMapClose.txt") 0 1023
+    Call (CompileScript "FastTravelPathing\UnloadWorldMapSelectedPathUIComponents.txt")
+End

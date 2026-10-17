@@ -1,0 +1,1 @@
+SetEventHandler "OnTerminalHacked" (CompileScript "AutosaveOnTerminalHacked/OnTerminalHacked.txt")

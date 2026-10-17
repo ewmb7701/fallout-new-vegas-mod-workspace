@@ -1,0 +1,84 @@
+; All Junk Round values set to 0.
+SetValueAlt Ammo10mmJunkRounds 0
+SetValueAlt Ammo127mmJunkRounds 0
+SetValueAlt Ammo12GaJunkRounds 0
+SetValueAlt Ammo20GaJunkRounds 0
+SetValueAlt Ammo22LRJunkRounds 0
+SetValueAlt Ammo308JunkRounds 0
+SetValueAlt Ammo357MagnumJunkRounds 0
+SetValueAlt Ammo44magnumJunkRounds 0
+SetValueAlt Ammo4570JunkRounds 0
+SetValueAlt Ammo50MGJunkRounds 0
+SetValueAlt Ammo556mmJunkRounds 0
+SetValueAlt Ammo5mmJunkRounds 0
+SetValueAlt Ammo9mmJunkRounds 0
+SetValueAlt JSawyerAmmo45AutoJunkRounds 0
+
+; [undocumented] remove Junk Rounds Damage Reduction ammo effect from 12ga and 20ga junk rounds
+RemoveAmmoEffect Ammo12GaJunkRounds AmmoEffectJunkRoundsDamageReduction
+RemoveAmmoEffect Ammo20GaJunkRounds AmmoEffectJunkRoundsDamageReduction
+
+; [undocumented] add 5mm DT Reduction ammo effect to 5mm junk rounds.
+AddAmmoEffect Ammo5mmJunkRounds AmmoEffect5mmDTReduction
+
+; [undocumented] update ammo effects
+SetAmmoEffectTraitNumeric AmmoEffectJunkRoundsConditionPenalty 2 1.2 ; 1.5 -> 1.2
+SetAmmoEffectTraitNumeric AmmoEffectJunkRoundsDamageReduction 2 0.95 ; 0.75 -> 0.95
+
+; Junk Rounds recipes adjusted to create larger batches of junk rounds instead of normal rounds.
+SetRecipeInputCount JSawyerRecipe127mmJunkRounds TinCan01 2
+SetRecipeInputCount JSawyerRecipe127mmJunkRounds Case127mm 8
+SetRecipeOutputCount JSawyerRecipe127mmJunkRounds Ammo127mmJunkRounds 8
+
+SetRecipeInputCount JSawyerRecipe22LRJunkRounds TinCan01 2
+SetRecipeOutputCount JSawyerRecipe22LRJunkRounds Ammo22LRJunkRounds 15
+
+SetRecipeInputCount JSawyerRecipe45AutoJunkRounds NVDLC02Case45Auto 8
+ReplaceRecipeInputForm JSawyerRecipe45AutoJunkRounds TinCan01 TinCan02 ; nb, JSawyer uses TinCan02 "Bent Tin Can"
+SetRecipeInputCount JSawyerRecipe45AutoJunkRounds TinCan02 2
+SetRecipeOutputCount JSawyerRecipe45AutoJunkRounds JSawyerAmmo45AutoJunkRounds 8
+
+SetRecipeInputCount RecipeNVDLC0110mmJunkRounds Case10mm 10
+SetRecipeInputCount RecipeNVDLC0110mmJunkRounds TinCan01 2
+SetRecipeOutputCount RecipeNVDLC0110mmJunkRounds Ammo10mmJunkRounds 10
+
+SetRecipeInputCount RecipeNVDLC0112GaJunkRounds Hull12Ga 5
+SetRecipeInputCount RecipeNVDLC0112GaJunkRounds TinCan01 2
+SetRecipeOutputCount RecipeNVDLC0112GaJunkRounds Ammo12GaJunkRounds 5
+
+SetRecipeInputCount RecipeNVDLC0120GaJunkRounds Hull20Ga 7
+SetRecipeInputCount RecipeNVDLC0120GaJunkRounds TinCan01 2
+SetRecipeOutputCount RecipeNVDLC0120GaJunkRounds Ammo20GaJunkRounds 7
+
+SetRecipeInputCount RecipeNVDLC01308JunkRounds Case308 5
+SetRecipeInputCount RecipeNVDLC01308JunkRounds TinCan01 2
+SetRecipeOutputCount RecipeNVDLC01308JunkRounds Ammo308JunkRounds 5
+
+SetRecipeInputCount RecipeNVDLC01357MagnumJunkRounds Case357Magnum 9
+SetRecipeInputCount RecipeNVDLC01357MagnumJunkRounds TinCan01 2
+SetRecipeOutputCount RecipeNVDLC01357MagnumJunkRounds Ammo357MagnumJunkRounds 9
+
+SetRecipeInputCount RecipeNVDLC0144MagnumJunkRounds Case44Magnum 7
+SetRecipeInputCount RecipeNVDLC0144MagnumJunkRounds TinCan01 2
+SetRecipeOutputCount RecipeNVDLC0144MagnumJunkRounds Ammo44magnumJunkRounds 7
+
+SetRecipeInputCount RecipeNVDLC014570GovtJunkRounds Case4570Govt 6
+SetRecipeInputCount RecipeNVDLC014570GovtJunkRounds TinCan01 2
+SetRecipeOutputCount RecipeNVDLC014570GovtJunkRounds Ammo4570JunkRounds 6
+
+SetRecipeInputCount RecipeNVDLC0150MGJunkRounds Case50MG 2
+SetRecipeInputCount RecipeNVDLC0150MGJunkRounds TinCan01 2
+SetRecipeOutputCount RecipeNVDLC0150MGJunkRounds Ammo50MGJunkRounds 2
+
+SetRecipeInputCount RecipeNVDLC01556mmJunkRounds Case556mm 9
+SetRecipeInputCount RecipeNVDLC01556mmJunkRounds TinCan01 2
+SetRecipeOutputCount RecipeNVDLC01556mmJunkRounds Ammo556mmJunkRounds 9
+
+SetRecipeInputCount RecipeNVDLC015mmJunkRounds Case5mm 15
+SetRecipeInputCount RecipeNVDLC015mmJunkRounds TinCan01 2
+SetRecipeOutputCount RecipeNVDLC015mmJunkRounds Ammo5mmJunkRounds 15
+
+SetRecipeInputCount RecipeNVDLC019mmJunkRounds Case9mm 13
+SetRecipeInputCount RecipeNVDLC019mmJunkRounds TinCan01 2
+SetRecipeOutputCount RecipeNVDLC019mmJunkRounds Ammo9mmJunkRounds 13
+

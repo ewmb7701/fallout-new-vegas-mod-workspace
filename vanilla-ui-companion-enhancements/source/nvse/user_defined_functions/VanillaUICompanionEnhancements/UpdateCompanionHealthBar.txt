@@ -1,0 +1,39 @@
+ref rTarget
+float fHealth
+float fMaxHealth
+begin Function {}
+    if IsComponentLoaded "HUDMainMenu/CompanionHealthBar" == 0
+        return
+    endif
+    SetUIFloatAlt "HUDMainMenu/CompanionHealthBar/visible" 0
+    if GetVATSMode
+        PlayerRef.AuxTimerStop "*_VUICE_HealthBarExpiry" 0
+        PlayerRef.AuxiliaryVariableErase "*_VUICE_CompanionHealthBarTarget"
+        return
+    endif
+    if MenuMode
+        return
+    endif
+    let rTarget := PlayerRef.AuxiliaryVariableGetRef "*_VUICE_CompanionHealthBarTarget"
+    if IsReference rTarget == 0
+        return
+    endif
+    if eval rTarget.GetPlayerTeammate == 0 || rTarget.GetDead || rTarget.GetDisabled
+        PlayerRef.AuxTimerStop "*_VUICE_HealthBarExpiry" 0
+        PlayerRef.AuxiliaryVariableErase "*_VUICE_CompanionHealthBarTarget"
+        return
+    endif
+    let fHealth := rTarget.GetAV Health
+    ; Follow the native prompt decision rather than guessing from the ref type.
+    if eval Call (CompileScript "VanillaUICompanionEnhancements/IsActivationPromptVisible.txt")
+        PlayerRef.AuxTimerStop "*_VUICE_HealthBarExpiry" 0
+        PlayerRef.AuxiliaryVariableErase "*_VUICE_CompanionHealthBarTarget"
+        return
+    endif
+    let fMaxHealth := (rTarget.GetPermAV Health) + (rTarget.GetActorValueModifier Health 2)
+    if fMaxHealth <= 0
+        return
+    endif
+    SetUIFloatAlt "HUDMainMenu/CompanionHealthBar/_HealthBarFraction" (fHealth / fMaxHealth)
+    SetUIFloatAlt "HUDMainMenu/CompanionHealthBar/visible" 1
+end

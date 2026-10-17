@@ -1,0 +1,12 @@
+LeveledListAddForm Fiend2WeaponGunNV JSawyerWithAmmoNV556PistolNPC 1 1 0.0
+LeveledListAddForm FiendInt1WeaponGunNV JSawyerWithAmmoNV556PistolNPC 1 1 0.0
+LeveledListAddForm FiendInt2WeaponGunNV JSawyerWithAmmoNV556PistolNPC 1 1 0.0
+LeveledListAddForm LL2WastelanderJackalsWeaponNV JSawyerWithAmmoNV556PistolNPC 1 1 0.0
+LeveledListAddForm LL2WastelanderVipersWeaponNV JSawyerWithAmmoNV556PistolNPC 1 1 0.0
+LeveledListAddForm VFactionSquadLegionVeteranWeapons JSawyerWithAmmoNV556PistolNPC 1 1 0.0
+LeveledListAddForm VFactionSquadNCRVeteranTrooperWeapons JSawyerWithAmmoNV556PistolNPC 1 1 0.0
+
+LeveledListAddForm NCRHeavyTrooperWeapons JSawyerWithAmmoBattleRifleNPC 1 1 0.0
+LeveledListAddForm VFactionSquadLegionVeteranWeapons JSawyerWithAmmoBattleRifleNPC 1 1 0.0
+LeveledListAddForm VFactionSquadLegionVexillariusWeapons JSawyerWithAmmoBattleRifleNPC 1 1 0.0
+LeveledListAddForm VFactionSquadNCRVeteranTrooperWeapons JSawyerWithAmmoBattleRifleNPC 1 1 0.0

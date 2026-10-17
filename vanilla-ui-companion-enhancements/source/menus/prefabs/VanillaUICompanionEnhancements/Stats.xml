@@ -1,0 +1,94 @@
+<!-- Activation stats using the installed HUD prompt bracket. -->
+<rect name="VUICE">
+    <locus>1</locus>
+    <width>350</width>
+    <height>118</height>
+    <depth>1</depth>
+    <!-- Default activation-prompt position, with configurable stats offsets. -->
+    <_StatsOffsetX>0</_StatsOffsetX>
+    <_StatsOffsetY>0</_StatsOffsetY>
+    <_ShowDR>0</_ShowDR>
+    <_WeightMode>1</_WeightMode>
+    <_HealthMode>1</_HealthMode>
+    <x><copy><floor><copy src="screen()" trait="width"/><div>2</div></floor></copy><sub>175</sub><add src="me()" trait="_StatsOffsetX"/></x>
+    <y><copy src="screen()" trait="height"/><sub>124</sub><add src="me()" trait="_StatsOffsetY"/></y>
+    <rotateaxisx>171</rotateaxisx>
+    <rotateaxisy><copy src="me()" trait="height"/><div>2</div></rotateaxisy>
+    <visible>0</visible>
+    <!-- Follow the native activation prompt color. -->
+    <systemcolor><copy src="Info" trait="systemcolor"/></systemcolor>
+    <red><copy src="Info" trait="red"/></red>
+    <green><copy src="Info" trait="green"/></green>
+    <blue><copy src="Info" trait="blue"/></blue>
+    <alpha>255</alpha>
+
+    <rect name="Stats">
+        <locus>1</locus>
+        <width><copy src="parent()" trait="width"/></width>
+        <height><copy src="parent()" trait="height"/></height>
+        <visible><copy src="parent()" trait="visible"/></visible>
+        <systemcolor><copy src="parent()" trait="systemcolor"/></systemcolor>
+        <red><copy src="parent()" trait="red"/></red>
+        <green><copy src="parent()" trait="green"/></green>
+        <blue><copy src="parent()" trait="blue"/></blue>
+        <alpha><copy src="parent()" trait="alpha"/></alpha>
+
+        <!-- Unmodified native prompt atlas entry; the installed HUD supplies its pixels. -->
+        <image name="PromptBracket">
+            <filename>Interface\HUD\glow_hud_bottom_info_seperator_divider.dds</filename>
+            <texatlas>Interface\InterfaceShared.tai</texatlas>
+            <zoom>&scale;</zoom>
+            <x>15</x><y>16</y><width>500</width><height>136</height>
+            <include src="VanillaUICompanionEnhancements\ParentStyle.xml"/>
+            <visible><copy src="VUICE" trait="visible"/></visible>
+        </image>
+        <!-- Native Info is 320 wide; this container is 350, so add 15 to
+             its label/value anchors: 10/135 and 165/290. -->
+        <text name="HealthLabel">
+            <string>HP</string><font>7</font><justify>&left;</justify>
+            <x>25</x><y>72</y>
+            <include src="VanillaUICompanionEnhancements\ParentStyle.xml"/>
+                    <visible><copy src="VUICE" trait="visible"/><and><copy src="VUICE" trait="_HealthMode"/><eq>0</eq><eq>0</eq></and></visible>
+        </text>
+        <text name="Health">
+            <string>--</string><font>7</font><justify>&right;</justify>
+            <x>150</x><y>72</y><wrapwidth>110</wrapwidth>
+            <include src="VanillaUICompanionEnhancements\ParentStyle.xml"/>
+                    <visible><copy src="VUICE" trait="visible"/><and><copy src="VUICE" trait="_HealthMode"/><eq>0</eq><eq>0</eq></and></visible>
+        </text>
+        <text name="WeightLabel">
+            <string>WG</string><font>7</font><justify>&left;</justify>
+            <x>25</x><y>44</y>
+            <include src="VanillaUICompanionEnhancements\ParentStyle.xml"/>
+            <visible><copy src="VUICE" trait="visible"/><and><copy src="VUICE" trait="_WeightMode"/><eq>0</eq><eq>0</eq></and></visible>
+        </text>
+        <text name="Weight">
+            <string>--</string><font>7</font><justify>&right;</justify>
+            <x>150</x><y>44</y><wrapwidth>110</wrapwidth>
+            <include src="VanillaUICompanionEnhancements\ParentStyle.xml"/>
+            <visible><copy src="VUICE" trait="visible"/><and><copy src="VUICE" trait="_WeightMode"/><eq>0</eq><eq>0</eq></and></visible>
+        </text>
+        <text name="ArmorLabel">
+            <string>DT</string><font>7</font><justify>&left;</justify>
+            <x>180</x><y>44</y>
+            <include src="VanillaUICompanionEnhancements\ParentStyle.xml"/>
+        </text>
+        <text name="Armor">
+            <string>--</string><font>7</font><justify>&right;</justify>
+            <x>305</x><y>44</y><wrapwidth>110</wrapwidth>
+            <include src="VanillaUICompanionEnhancements\ParentStyle.xml"/>
+        </text>
+        <text name="ResistanceLabel">
+            <string>DR</string><font>7</font><justify>&left;</justify>
+            <x>180</x><y>72</y>
+            <include src="VanillaUICompanionEnhancements\ParentStyle.xml"/>
+            <visible><copy src="VUICE" trait="visible"/><and src="VUICE" trait="_ShowDR"/></visible>
+        </text>
+        <text name="Resistance">
+            <string>--%</string><font>7</font><justify>&right;</justify>
+            <x>305</x><y>72</y><wrapwidth>110</wrapwidth>
+            <include src="VanillaUICompanionEnhancements\ParentStyle.xml"/>
+            <visible><copy src="VUICE" trait="visible"/><and src="VUICE" trait="_ShowDR"/></visible>
+        </text>
+    </rect>
+</rect>

@@ -1,0 +1,1 @@
+RemoveEventHandler "OnLockBroken" (CompileScript "AutosaveOnLockBroken/OnLockBroken.txt")

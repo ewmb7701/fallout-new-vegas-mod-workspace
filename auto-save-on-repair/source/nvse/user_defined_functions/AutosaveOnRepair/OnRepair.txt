@@ -1,0 +1,5 @@
+name OnRepair;
+
+fn(ref rItem, ref rRepairer, int iRepairType) {
+  AutoSave();
+}

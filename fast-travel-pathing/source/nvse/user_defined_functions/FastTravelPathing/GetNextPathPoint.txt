@@ -1,0 +1,48 @@
+; Return {index, time} for the next required arrival, including skipped leg times.
+; Explicit policy: visit unvisited OR expired cells. Only visited, unexpired
+; intermediate cells may be skipped. Unresolved/unvisited cells and the final point stay.
+Begin Function {}
+    SetFunctionValue Ar_Null
+    int iIndex = (Player.AuxVarGetFlt "*_FTP_PathIndex") + 1
+    int iCount = Player.AuxVarSize "*_FTP_PathPoints"
+    if eval iIndex < 0 || iIndex >= iCount
+        return
+    endif
+    float fTime = 0
+    while iIndex < iCount
+        float fLegTime = Player.AuxVarGetFlt "*_FTP_PathTimes" iIndex
+        let fTime := fTime + fLegTime
+        ref rCell = Player.AuxVarGetRef "*_FTP_PathCells" iIndex
+        int iVisited = -1
+        int iExpired = -1
+        int iResolved = 0
+        ref rWorld = Player.AuxVarGetRef "*_FTP_PathWorlds" iIndex
+        if rWorld
+            float fX = Player.AuxVarGetFlt "*_FTP_PathX" iIndex
+            float fY = Player.AuxVarGetFlt "*_FTP_PathY" iIndex
+            ; Resolve the CELL record even when it is absent from the resident cell map.
+            int iGridX = Floor (fX / 4096)
+            int iGridY = Floor (fY / 4096)
+            let rCell := GetExteriorCellEx rWorld iGridX iGridY
+            if rCell
+                let iVisited := IsCellVisitedEx rCell
+                let iExpired := IsCellExpiredEx rCell
+                let iResolved := 1
+            endif
+        elseif rCell
+            let iResolved := 1
+            let iVisited := IsCellVisitedEx rCell
+            let iExpired := IsCellExpiredEx rCell
+        endif
+        if eval iIndex == (iCount - 1) || iResolved == 0 || iVisited != 1 || iExpired > 0
+            break
+        endif
+        ; Seen-data established a visit. Expiry -1 means no detach timestamp,
+        ; not an expired cell; do not force another load for this case.
+        let iIndex := iIndex + 1
+    loop
+    array_var aNext = Ar_Construct "stringmap"
+    let aNext["index"] := iIndex
+    let aNext["time"] := fTime
+    SetFunctionValue aNext
+End

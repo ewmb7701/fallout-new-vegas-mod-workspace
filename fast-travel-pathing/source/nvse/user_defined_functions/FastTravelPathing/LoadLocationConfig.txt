@@ -1,0 +1,9 @@
+; Load a location ID and its spatial scope from a location INI.
+Begin Function {string_var sFile}
+    string_var sPath = "FastTravelPathing\Locations\" + sFile
+    array_var aConfigScope = Call (CompileScript "FastTravelPathing\LoadLocationScopeConfig.txt") sPath
+    array_var aConfigLocation = Ar_Construct "stringmap"
+    let aConfigLocation["id"] := sFile[0:((Sv_Length sFile) - 5)]
+    let aConfigLocation["scope"] := aConfigScope
+    SetFunctionValue aConfigLocation
+End

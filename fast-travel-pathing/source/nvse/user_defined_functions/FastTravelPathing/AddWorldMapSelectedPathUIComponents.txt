@@ -1,0 +1,72 @@
+; Draw consecutive projected path points, including visible door transitions.
+Begin Function {array_var aPathPoints, array_var aMapPointsByPointIndex}
+    SetFunctionValue 0
+    string_var sMapClipTilePath = "MapMenu/GLOW_BRANCH/MM_MainRect/MM_WorldMap_ClipWindow"
+    string_var sConnectionsTilePath = sMapClipTilePath + "/FTP_Connections"
+    string_var sMapImageTilePath = sMapClipTilePath + "/MM_WorldMap_ParentImage/"
+    float fMapWidth = GetUIFloatAlt (sMapImageTilePath + "width")
+    float fMapHeight = GetUIFloatAlt (sMapImageTilePath + "height")
+    if eval fMapWidth <= 0 || fMapHeight <= 0 || (Ar_Size aPathPoints) == 0
+        return
+    endif
+    if IsComponentLoaded (sConnectionsTilePath) == 0
+        return
+    endif
+    SetUIFloatAlt (sConnectionsTilePath + "/visible") 0
+    int iDrawnSegmentCount = 0
+    int iPointIndex = 1
+    while iPointIndex < (Ar_Size aPathPoints)
+        string_var sStartIndex = $(iPointIndex - 1)
+        string_var sEndIndex = $iPointIndex
+        iPointIndex += 1
+        ; Projection determines whether both ends belong on the displayed map.
+        ; A door into a child world is still part of this route. Only missing
+        ; vertices (such as interiors or other maps) break the displayed line.
+        if eval (Ar_HasKey aMapPointsByPointIndex sStartIndex) == 0 || (Ar_HasKey aMapPointsByPointIndex sEndIndex) == 0
+            continue
+        endif
+        array_var aStartNormalizedPoint = aMapPointsByPointIndex[sStartIndex]
+        array_var aEndNormalizedPoint = aMapPointsByPointIndex[sEndIndex]
+        float fStartNormalizedX = aStartNormalizedPoint[0]
+        float fStartNormalizedY = aStartNormalizedPoint[1]
+        float fSegmentPixelDeltaX = (aEndNormalizedPoint[0] - fStartNormalizedX) * fMapWidth
+        float fSegmentPixelDeltaY = (aEndNormalizedPoint[1] - fStartNormalizedY) * fMapHeight
+        float fSegmentPixelLength = Sqrt (fSegmentPixelDeltaX * fSegmentPixelDeltaX + fSegmentPixelDeltaY * fSegmentPixelDeltaY)
+        ; Consecutive path points may share coordinates.
+        if fSegmentPixelLength <= 0
+            continue
+        endif
+        string_var sLineTileName = "Line" + $iDrawnSegmentCount
+        string_var sLineTilePath = sConnectionsTilePath + "/" + sLineTileName
+        string_var sLineTemplateSpec = sConnectionsTilePath + "|FTPConnectionLine|" + sLineTileName
+        AddTileFromTemplate (sLineTemplateSpec)
+        ; UI rotation is opposite to screen-space atan2, in radians.
+        float fSegmentAngleRadians = (fATan2 fSegmentPixelDeltaY fSegmentPixelDeltaX) * -0.0174532925199433
+        SetUIFloatAlt (sLineTilePath + "/_length") (fSegmentPixelLength / fMapWidth)
+        SetUIFloatAlt (sLineTilePath + "/_startX") fStartNormalizedX
+        SetUIFloatAlt (sLineTilePath + "/_startY") fStartNormalizedY
+        SetUIFloatAlt (sLineTilePath + "/rotateangle") fSegmentAngleRadians
+        SetUIFloatAlt (sLineTilePath + "/target") 0
+        SetUIFloatAlt (sLineTilePath + "/visible") 1
+        iDrawnSegmentCount += 1
+    loop
+    int iDrawnDotCount = 0
+    foreach array_var aPointEntry <- aPathPoints
+        string_var sPointIndex = $(aPointEntry["key"])
+        if eval (Ar_HasKey aMapPointsByPointIndex sPointIndex) == 0
+            continue
+        endif
+        array_var aNormalizedPoint = aMapPointsByPointIndex[sPointIndex]
+        string_var sDotTileName = "Dot" + $iDrawnDotCount
+        string_var sDotTilePath = sConnectionsTilePath + "/" + sDotTileName
+        AddTileFromTemplate (sConnectionsTilePath + "|FTPPathDot|" + sDotTileName)
+        SetUIFloatAlt (sDotTilePath + "/_x") (aNormalizedPoint[0])
+        SetUIFloatAlt (sDotTilePath + "/_y") (aNormalizedPoint[1])
+        SetUIFloatAlt (sDotTilePath + "/visible") 1
+        iDrawnDotCount += 1
+    loop
+    SetFunctionValue 1
+    if eval iDrawnSegmentCount > 0 || iDrawnDotCount > 0
+        SetUIFloatAlt (sConnectionsTilePath + "/visible") 1
+    endif
+End

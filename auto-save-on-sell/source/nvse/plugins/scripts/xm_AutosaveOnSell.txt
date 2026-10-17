@@ -1,0 +1,1 @@
+RemoveEventHandler "OnSell" (CompileScript "AutosaveOnSell/OnSell.txt")

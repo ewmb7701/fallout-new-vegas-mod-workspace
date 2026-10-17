@@ -1,0 +1,14 @@
+<x>
+  <copy src="sibling(Icon)" trait="x"/>
+  <sub>
+    <copy src="sibling(Icon)" trait="width"/>
+    <mult>0.15</mult>
+  </sub>
+</x>
+<y>
+  <copy src="sibling(Text)" trait="y"/>
+  <add>
+    <copy src="sibling(Text)" trait="height"/>
+    <mult>1.0</mult>
+  </add>
+</y>

@@ -1,0 +1,45 @@
+; Return whether the player satisfies every restriction in the location's scope.
+; Coordinates use inclusive horizontal limits; used for departure detection.
+Begin Function {array_var aConfigLocation}
+    SetFunctionValue 0
+    array_var aConfigScope = aConfigLocation["scope"]
+    ref rScopeWorldspace = aConfigScope["worldspace"]
+    if eval rScopeWorldspace == 0 || Player.GetParentWorldspace != rScopeWorldspace
+        return
+    endif
+    float fPlayerX = Player.GetPos X
+    float fPlayerY = Player.GetPos Y
+    if eval Ar_HasKey aConfigScope "positionMinX"
+        if eval fPlayerX < aConfigScope["positionMinX"]
+            return
+        endif
+    endif
+    if eval Ar_HasKey aConfigScope "positionMinY"
+        if eval fPlayerY < aConfigScope["positionMinY"]
+            return
+        endif
+    endif
+    if eval Ar_HasKey aConfigScope "positionMaxX"
+        if eval fPlayerX > aConfigScope["positionMaxX"]
+            return
+        endif
+    endif
+    if eval Ar_HasKey aConfigScope "positionMaxY"
+        if eval fPlayerY > aConfigScope["positionMaxY"]
+            return
+        endif
+    endif
+    if eval Ar_HasKey aConfigScope "centerDistanceMax"
+        ref rCenterRef = aConfigScope["centerRef"]
+        float fCenterDistanceMax = aConfigScope["centerDistanceMax"]
+        if Player.GetDistance2D rCenterRef > fCenterDistanceMax
+            return
+        endif
+    endif
+    ref rScopeRegion = aConfigScope["region"]
+    if rScopeRegion
+        SetFunctionValue (IsPlayerInRegion rScopeRegion)
+        return
+    endif
+    SetFunctionValue 1
+End

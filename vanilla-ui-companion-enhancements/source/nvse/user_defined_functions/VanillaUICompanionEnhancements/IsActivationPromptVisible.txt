@@ -1,0 +1,14 @@
+begin Function {}
+    SetFunctionValue 0
+    ; Native EnemyHealth checks these engine-written visible traits (HUD +9C/+A8).
+    ; Evaluate during the update loop, not inside the crosshair-change event.
+    if IsComponentLoaded "HUDMainMenu/InfoWrap/Info/justify_center_text"
+        if eval (GetUIFloatAlt "HUDMainMenu/InfoWrap/Info/justify_center_text/visible") || (GetUIFloatAlt "HUDMainMenu/InfoWrap/Info/justify_center_hotrect/visible")
+            SetFunctionValue 1
+        endif
+    elseif IsComponentLoaded "HUDMainMenu/Info/justify_center_text"
+        if eval (GetUIFloatAlt "HUDMainMenu/Info/justify_center_text/visible") || (GetUIFloatAlt "HUDMainMenu/Info/justify_center_hotrect/visible")
+            SetFunctionValue 1
+        endif
+    endif
+end

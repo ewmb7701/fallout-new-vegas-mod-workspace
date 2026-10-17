@@ -1,0 +1,5 @@
+name OnMenuOpenPause;
+
+fn(int iMenuId) {
+  SetUIFloat("StartMenu\\NOGLOW_BRANCH\\main_container\\lb_item_hotrect:2\\_enabled", 0);
+}

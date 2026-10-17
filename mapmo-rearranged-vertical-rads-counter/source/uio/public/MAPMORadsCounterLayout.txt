@@ -1,0 +1,6 @@
+MAPMORadsCounterLayout\Value.xml::@prefabs\mapmo\hudmainmenu\rads_counter.xml::Value
+true
+MAPMORadsCounterLayout\Text.xml::@prefabs\mapmo\hudmainmenu\rads_counter.xml::Text
+true
+MAPMORadsCounterLayout\Icon.xml::@prefabs\mapmo\hudmainmenu\rads_counter.xml::Icon
+true

@@ -1,0 +1,54 @@
+; Dijkstra's single-source shortest-path algorithm for nonnegative directed weights.
+; Linear minimum selection is O(V^2 + E), appropriate for this small static network.
+; A missing distance means unreachable. Strict relaxation preserves deterministic ties
+; and prevents predecessor cycles even with zero-cost connections/self edges.
+; The input graph is read-only. Returns {origin, distances, previous} for all vertices.
+Begin Function {array_var aGraph, string_var sOrigin}
+    array_var aResult = Ar_Construct "stringmap"
+    array_var aDistances = Ar_Construct "stringmap"
+    array_var aPrevious = Ar_Construct "stringmap"
+    array_var aVisited = Ar_Construct "stringmap"
+    let aResult["origin"] := sOrigin
+    let aResult["distances"] := aDistances
+    let aResult["previous"] := aPrevious
+    SetFunctionValue aResult
+    if eval (Ar_HasKey aGraph sOrigin) == 0
+        return
+    endif
+    let aDistances[sOrigin] := 0
+    while 1
+        string_var sNearest = ""
+        float fNearest = -1
+        foreach array_var aEntry <- aDistances
+            string_var sID = aEntry["key"]
+            if eval Ar_HasKey aVisited sID
+                continue
+            endif
+            float fDistance = aEntry["value"]
+            if eval fNearest < 0 || fDistance < fNearest
+                sNearest = sID
+                fNearest = fDistance
+            endif
+        loop
+        if eval fNearest < 0
+            break
+        endif
+        let aVisited[sNearest] := 1
+        array_var aVertex = aGraph[sNearest]
+        array_var aEdges = aVertex["edges"]
+        foreach array_var aEdge <- aEdges
+            sID = aEdge["key"]
+            if eval Ar_HasKey aVisited sID
+                continue
+            endif
+            float fCandidate = fNearest + aEdge["value"]
+            if eval Ar_HasKey aDistances sID
+                if eval fCandidate >= aDistances[sID]
+                    continue
+                endif
+            endif
+            let aDistances[sID] := fCandidate
+            let aPrevious[sID] := sNearest
+        loop
+    loop
+End

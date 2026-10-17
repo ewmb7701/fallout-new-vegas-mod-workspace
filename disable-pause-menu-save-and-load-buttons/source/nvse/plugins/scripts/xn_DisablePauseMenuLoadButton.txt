@@ -1,0 +1,1 @@
+SetOnMenuOpenEventHandler (CompileScript "DisablePauseMenuLoadButton/OnMenuOpenPause.txt") 0

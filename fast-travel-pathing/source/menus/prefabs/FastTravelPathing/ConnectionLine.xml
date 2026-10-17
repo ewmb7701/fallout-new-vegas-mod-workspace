@@ -1,0 +1,20 @@
+<!-- Set normalized connection geometry once. XML follows native map pan and zoom. -->
+<template name="FTPConnectionLine">
+  <image name="FTP_Line">
+    <filename> Interface\Worldmap\waypoint_path.dds </filename>
+    <tile> &scale; </tile>
+    <clips>1</clips><depth>0</depth><target>0</target>
+    <visible>0</visible><alpha>255</alpha><systemcolor>&pipboy;</systemcolor>
+    <_startX>0</_startX><_startY>0</_startY><_length>0</_length>
+    <x><copy src="me" trait="_startX"/><mul src="parent" trait="width"/></x>
+    <y>
+      <copy src="me" trait="_startY"/><mul src="parent" trait="height"/>
+      <sub><copy src="me" trait="height"/><div>2</div></sub>
+    </y>
+    <width><copy src="me" trait="_length"/><mul src="parent" trait="width"/></width>
+    <height><copy src="MM_WorldMap_ParentImage" trait="user0"/><mul>0.8</mul><div>3</div></height>
+    <rotateangle>0</rotateangle><rotateaxisx>0</rotateaxisx>
+    <rotateaxisy><copy src="me" trait="height"/><div>2</div></rotateaxisy>
+    <brightness><copy src="MM_WorldMapCursor" trait="brightness"/></brightness>
+  </image>
+</template>

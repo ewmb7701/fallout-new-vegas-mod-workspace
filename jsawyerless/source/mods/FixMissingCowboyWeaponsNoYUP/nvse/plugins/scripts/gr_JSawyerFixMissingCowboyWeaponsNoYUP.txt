@@ -1,0 +1,2 @@
+; Missing Cowboy weapons
+ListAddForm PerkCowboyWeapons NVDLC01WeapPolicePistol -2 1

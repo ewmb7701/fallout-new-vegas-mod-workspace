@@ -1,0 +1,32 @@
+ref rDistant
+int iType
+begin Function {}
+    Call (CompileScript "VanillaUICompanionEnhancements/UpdateCompanionHealthBar.txt")
+    if GetVATSMode
+        return
+    endif
+    if MenuMode
+        return
+    endif
+    if IsComponentLoaded "HUDMainMenu/VUICE" == 0
+        return
+    endif
+    if eval Call (CompileScript "VanillaUICompanionEnhancements/IsActivationPromptVisible.txt")
+        return
+    endif
+    ; Outside activation range, only actor base types can select the companion health panel.
+    let rDistant := ObjectUnderReticle 0 50000
+    if IsReference rDistant == 0
+        let rDistant := 0
+    else
+        let iType := rDistant.GetObjectType
+        if eval iType != 42 && iType != 43
+            let rDistant := 0
+        elseif rDistant.GetPlayerTeammate == 0
+            let rDistant := 0
+        endif
+    endif
+    if rDistant
+        Call (CompileScript "VanillaUICompanionEnhancements/SetCompanionHealthBarTarget.txt") rDistant
+    endif
+end

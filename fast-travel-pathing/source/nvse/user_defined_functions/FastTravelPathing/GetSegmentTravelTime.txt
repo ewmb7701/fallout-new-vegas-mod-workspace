@@ -1,0 +1,21 @@
+; Match native fast-travel formula: distance / GetRunSpeed / 3600 * TimeScale.
+; Keep sub-hour durations; truncate each segment >= 1 hour before summing.
+; Caller passes adjacent points in the same space, never exit -> arrival gaps.
+Begin Function {array_var aOrigin, array_var aDestination, float fSpeed, float fScale}
+    SetFunctionValue -1
+    if eval fSpeed <= 0 || fScale <= 0 || (fSpeed - fSpeed) != 0 || (fScale - fScale) != 0
+        return
+    endif
+    float fX = aDestination["x"] - aOrigin["x"]
+    float fY = aDestination["y"] - aOrigin["y"]
+    float fZ = aDestination["z"] - aOrigin["z"]
+    float fDistance = Sqrt (fX * fX + fY * fY + fZ * fZ)
+    float fHours = fDistance / fSpeed / 3600 * fScale
+    if eval fHours < 0 || fHours >= 2147483648 || (fHours - fHours) != 0
+        return
+    endif
+    if fHours >= 1
+        let fHours := Floor fHours
+    endif
+    SetFunctionValue fHours
+End

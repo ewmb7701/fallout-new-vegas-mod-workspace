@@ -1,0 +1,6 @@
+;  Commando Armor was given the same stats as Metal Armor, Reinforced in STARS
+SetValueAlt JSawyerArmorUniqueMetalReinforced 520
+SetObjectHealth 500 JSawyerArmorUniqueMetalReinforced
+SetWeight 28 JSawyerArmorUniqueMetalReinforced
+SetArmorArmorRating 30 JSawyerArmorUniqueMetalReinforced
+SetArmorDT 18 JSawyerArmorUniqueMetalReinforced

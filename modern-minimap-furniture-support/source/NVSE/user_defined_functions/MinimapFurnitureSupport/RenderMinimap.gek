@@ -1,0 +1,29 @@
+int iSize
+ref rIcon
+string_var sUIPath
+
+begin Function {}
+	if eval GetUIFloatAlt "HUDMainMenu\ModernMinimap\_ToggleUpdate" != 1 || GetUIFloatAlt "HUDMainMenu\ModernMinimap\_MapMode" != 1
+		return
+	endif
+	if eval (iSize = Goo1.AuxVarSize "*FurnitureMinimap_Refs") > 0
+		while (iSize -= 1) > -1
+			sUIPath = Sv_Construct "HUDMainMenu\ModernMinimap\FurnitureIcons\Icon:%g\" iSize
+			rIcon = Goo1.AuxVarGetRef "*FurnitureMinimap_Refs" iSize
+			if eval IsReference rIcon && rIcon.GetDisabled == 0 && rIcon.HasLoaded3D && rIcon.GetDestroyed == 0
+				; Neutral icons inherit Modern Minimap/Realtime Pip-Boy's color.
+				SetUIFloatAlt (sUIPath + "_Hostile") 0
+				SetUIFloatAlt (sUIPath + "_DepthMod") (iSize + 25)
+				SetUIFloatAlt (sUIPath + "_PosX") (rIcon.GetPos X)
+				SetUIFloatAlt (sUIPath + "_PosY") (rIcon.GetPos Y)
+				SetUIFloatAlt (sUIPath + "_PosZ") (rIcon.GetPos Z)
+				SetUIFloatAlt (sUIPath + "_Dist") (Player.GetDistance3D rIcon)
+				SetUIStringAlt (sUIPath + "filename") (rIcon.ySIGetTrait "filename")
+			else
+				; Hide unloaded/disabled refs until the next scan removes them.
+				SetUIFloatAlt (sUIPath + "_Hostile") -2
+			endif
+		loop
+	endif
+	sv_Destruct sUIPath
+end

@@ -1,0 +1,3 @@
+; A Light Shining in Darkness added to Religious Weapons challenge in GRA.
+ListAddForm NVDLC05ChallengeTheSameCouldBeSaidWeapons NVDLC02Weap45AutoPistolUnique -2 1
+SetFormDescription NVDLC05ChallengeTheSameCouldBeSaid "Kill Feral Ghouls with Maria, Gehenna, Holy Frag Grenades, and A Light Shining in Darkness."

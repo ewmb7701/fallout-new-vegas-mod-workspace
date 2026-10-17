@@ -1,0 +1,4 @@
+Begin Function {string_var sPath}
+    ref rDestination = Call (CompileScript "FastTravelPathing\LoadConfigMarker.txt") sPath "Destination"
+    SetFunctionValue rDestination
+End

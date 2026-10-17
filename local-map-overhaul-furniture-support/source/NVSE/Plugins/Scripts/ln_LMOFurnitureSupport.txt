@@ -1,0 +1,7 @@
+; Independent furniture icons for Local Map Overhaul Full with ySI.
+; Register on each load, using the same compiled handler to avoid duplicates.
+if eval FileExists "menus\ySI\ySI.xml" == 0 || GetPluginVersion "yUI" < 140
+	return
+endif
+
+SetOnMenuOpenEventHandler (CompileScript "LMOFurnitureSupport\OnMapOpen.gek") 1 1023

@@ -1,0 +1,840 @@
+<?xml version='1.0' encoding='utf-8'?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://qconsulting.ca/fo3/ModConfig5.0.xsd">
+  <moduleName>JSawyerless</moduleName>
+  <installSteps order="Explicit">
+    <installStep name="Installed Mods">
+      <optionalFileGroups order="Explicit">
+        <group name="" type="SelectAny">
+          <plugins order="Explicit">
+            <plugin name="YUP">
+              <description>Select whether YUP is installed. Fixes fully covered by YUP are unavailable when YUP is installed. Other fixes always install their base changes and automatically include their NoYUP addon only without YUP.</description>
+              <conditionFlags>
+                <flag name="InstalledYUP">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Optional" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="STARS">
+              <description>Select whether STARS is installed. STARS balance is required when Unique Armors content is selected.</description>
+              <conditionFlags>
+                <flag name="InstalledSTARS">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Optional" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="SPARE">
+              <description>Select whether SPARE is installed. SPARE balance is required when Junk Rounds content is selected; JSawyer Junk Rounds balance is unavailable.</description>
+              <conditionFlags>
+                <flag name="InstalledSPARE">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Optional" />
+              </typeDescriptor>
+            </plugin>
+          </plugins>
+        </group>
+      </optionalFileGroups>
+    </installStep>
+    <installStep name="Content">
+      <optionalFileGroups order="Explicit">
+        <group name="" type="SelectAny">
+          <plugins order="Explicit">
+            <plugin name="Barton the Wasteland Tech Salvager">
+              <description>
+Changes:
+* Barton Thorn's class is now JSawyerWastelandTechSalvager, with Energy Weapons tagged.
+* Replaces the 9mm Pistol and 9mm ammunition on Barton's base form with a Plasma Pistol and Energy Cells.
+* [undocumented] adjusts Barton Thorn's base actor values
+
+Requirements:
+* JIP LN NVSE
+* ewmb NVSE
+* Actor Value Patcher
+
+Installation:
+* Content - Wasteland Tech Salvager Class feature is installed automatically with this feature.
+              </description>
+              <files>
+                <file source="mods\ContentBartonTheWastelandTechSalvager\Config\ActorValuePatcher\JSawyerContentBartonTheWastelandTechSalvager.ini" destination="Config\ActorValuePatcher\JSawyerContentBartonTheWastelandTechSalvager.ini" priority="0" />
+                <file source="mods\ContentBartonTheWastelandTechSalvager\JSawyerContentBartonTheWastelandTechSalvager.esp" destination="JSawyerContentBartonTheWastelandTechSalvager.esp" priority="0" />
+                <file source="mods\ContentBartonTheWastelandTechSalvager\nvse\plugins\scripts\gr_JSawyerContentBartonTheWastelandTechSalvagerDistribution.txt" destination="nvse\plugins\scripts\gr_JSawyerContentBartonTheWastelandTechSalvagerDistribution.txt" priority="0" />
+              </files>
+              <conditionFlags>
+                <flag name="ContentBartonTheWastelandTechSalvager">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Recommended" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Deranged Bright Followers">
+              <description>
+Changes:
+* Created a pack of "Deranged Bright Followers" near Wolfhorn Point, armed with Tier 1/Tier 2 Energy Weapons.
+
+Installation:
+* Content - Wasteland Tech Salvager Class feature is installed automatically with this feature.
+              </description>
+              <files>
+                <file source="mods\ContentDerangedBrightFollowers\JSawyerContentDerangedBrightFollowers.esp" destination="JSawyerContentDerangedBrightFollowers.esp" priority="0" />
+              </files>
+              <conditionFlags>
+                <flag name="ContentDerangedBrightFollowers">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Recommended" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="GRA Weapon Leveled Items">
+              <description>
+Changes:
+* Created WithAmmo forms for the 5.56mm Pistol and Battle Rifle.
+* Placed 5.56mm Pistol and Battle Rifle on various drop lists.
+
+Requirements:
+* JIP LN NVSE
+              </description>
+              <files>
+                <file source="mods\ContentGRAWeaponLeveledItems\JSawyerContentGRAWeaponLeveledItems.esp" destination="JSawyerContentGRAWeaponLeveledItems.esp" priority="0" />
+                <file source="mods\ContentGRAWeaponLeveledItems\nvse\plugins\scripts\gr_JSawyerContentGRAWeaponLeveledItems.txt" destination="nvse\plugins\scripts\gr_JSawyerContentGRAWeaponLeveledItems.txt" priority="0" />
+              </files>
+              <conditionFlags>
+                <flag name="ContentGRAWeaponLeveledItems">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Recommended" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="I Never Axed For This">
+              <description>
+Changes:
+* I Never Axed For This challenge and perk added.
+* Added regular Hatchet to I Never Axed For This challenge + perk.
+* Fire Axe and Knock Knock added to Never Axed For This challenge weapon list.
+              </description>
+              <files>
+                <file source="mods\ContentINeverAxedForThis\JSawyerContentINeverAxedForThis.esp" destination="JSawyerContentINeverAxedForThis.esp" priority="0" />
+              </files>
+              <conditionFlags>
+                <flag name="ContentINeverAxedForThis">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Recommended" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Junk Rounds">
+              <description>
+Changes:
+* .45 Auto Junk Round and recipe created.
+* 12.7mm Junk Round recipe created.
+* [undocumented] .22LR Junk Round recipe created.
+
+Notes:
+* rounds and recipes are balanced for the base game
+              </description>
+              <files>
+                <file source="mods\ContentJunkRounds\JSawyerContentJunkRounds.esp" destination="JSawyerContentJunkRounds.esp" priority="0" />
+                <file source="mods\ContentJunkRounds\nvse\plugins\scripts\gr_JSawyerContentJunkRoundsIntegration.txt" destination="nvse\plugins\scripts\gr_JSawyerContentJunkRoundsIntegration.txt" priority="0" />
+              </files>
+              <conditionFlags>
+                <flag name="ContentJunkRounds">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Recommended" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Unique Armors">
+              <description>
+Changes:
+* Adds Commando Armor to Mick's store at 85% condition.
+* Wanderer's Leather and Highway Scar Armor placed in Mick and Cliff's stores respectively.
+* Ranger Battle Armor renamed to Lucky Battle Armor. [...] Reilly's Rangers decals removed.  Placed in Cliff's Store.
+* Shellshocked Combat Armor + Helmet and Composite Recon Armor + Helmet added to Nellis munitions vendor.
+* Other unique metal/leather/raider/merc armors split between Cliff Briscoe and Mick.
+
+Notes:
+* Commando Armor is balanced for the base game (same stats as Metal Armor, Reinforced and EnchSilencedMetalArmor object effect)
+
+Requirements:
+* JIP LN NVSE
+
+              </description>
+              <files>
+                <file source="mods\ContentUniqueArmors\JSawyerContentUniqueArmors.esp" destination="JSawyerContentUniqueArmors.esp" priority="0" />
+                <file source="mods\ContentUniqueArmors\nvse\plugins\scripts\ln_JSawyerContentUniqueArmorsDistribution.txt" destination="nvse\plugins\scripts\ln_JSawyerContentUniqueArmorsDistribution.txt" priority="0" />
+                <file source="mods\ContentUniqueArmors\nvse\plugins\scripts\gr_JSawyerContentUniqueArmorsIntegration.txt" destination="nvse\plugins\scripts\gr_JSawyerContentUniqueArmorsIntegration.txt" priority="0" />
+              </files>
+              <conditionFlags>
+                <flag name="ContentUniqueArmors">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Recommended" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Vending Machine Microfusion Cells">
+              <description>
+Changes:
+* Created a Sierra Madre vending machine recipe and note for Microfusion Cells (produces 6).
+* The note is located on the desk in the Utility room of the Puesta del Sol Switching Station.
+
+Requirements:
+* Dead Money
+              </description>
+              <files>
+                <file source="mods\ContentVendingMachineMicrofusionCells\JSawyerContentVendingMachineMicrofusionCells.esp" destination="JSawyerContentVendingMachineMicrofusionCells.esp" priority="0" />
+              </files>
+              <conditionFlags>
+                <flag name="ContentVendingMachineMicrofusionCells">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Recommended" />
+              </typeDescriptor>
+            </plugin>
+          </plugins>
+        </group>
+      </optionalFileGroups>
+    </installStep>
+    <installStep name="Balance">
+      <optionalFileGroups order="Explicit">
+        <group name="" type="SelectAny">
+          <plugins order="Explicit">
+            <plugin name="Armored Vault 21 Jumpsuit">
+              <description>
+Changes:
+* Armored Vault 21 Jumpsuit now available from Sarah Weintraub's store.
+
+Requirements:
+* JIP LN NVSE
+
+Notes:
+* ESPless
+              </description>
+              <files>
+                <file source="mods\BalanceArmoredVault21Jumpsuit\nvse\plugins\scripts\gr_JSawyerBalanceArmoredVault21JumpsuitDistribution.txt" destination="nvse\plugins\scripts\gr_JSawyerBalanceArmoredVault21JumpsuitDistribution.txt" priority="0" />
+              </files>
+              <conditionFlags>
+                <flag name="BalanceArmoredVault21Jumpsuit">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Recommended" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Barton the Fink">
+              <description>
+Changes:
+* Adds a 65% CND Recharger Rifle to Johnny/Johnny's stand-in base forms.
+
+Requirements:
+* JIP LN NVSE
+
+Notes:
+* ESPless
+              </description>
+              <files>
+                <file source="mods\BalanceBartonTheFink\nvse\plugins\scripts\gr_JSawyerBalanceBartonTheFinkDistribution.txt" destination="nvse\plugins\scripts\gr_JSawyerBalanceBartonTheFinkDistribution.txt" priority="0" />
+              </files>
+              <conditionFlags>
+                <flag name="BalanceBartonTheFink">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Recommended" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Components">
+              <description>
+Changes:
+* Sensor Module added to ClutterToolBoxLow
+* Sensor Modules and Cherry Bombs drop rate tripled on VendorMisc list
+
+Requirements:
+* JIP LN NVSE
+
+Notes:
+* ESPless
+              </description>
+              <files>
+                <file source="mods\BalanceComponents\nvse\plugins\scripts\gr_JSawyerBalanceComponents.txt" destination="nvse\plugins\scripts\gr_JSawyerBalanceComponents.txt" priority="0" />
+              </files>
+              <conditionFlags>
+                <flag name="BalanceComponents">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Recommended" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Food and Drink Scarcity">
+              <description>
+Changes:
+* All random NPC food and drink drops set to dramatically lower rates (25 = 5%, 50 = 10%, 75 = 20%). Also affects many containers.
+* NPC loot will drop fewer purified waters (vs. dirty waters) in general.
+* [undocumented] remove food and drink loot from Powder Ganger leveled lists
+
+Requirements:
+* JIP LN NVSE
+
+Notes:
+* ESPless
+              </description>
+              <files>
+                <file source="mods\BalanceFoodAndDrinkScarcity\nvse\plugins\scripts\gr_JSawyerBalanceFoodAndDrinkScarcity.txt" destination="nvse\plugins\scripts\gr_JSawyerBalanceFoodAndDrinkScarcity.txt" priority="0" />
+              </files>
+              <conditionFlags>
+                <flag name="BalanceFoodAndDrinkScarcity">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Recommended" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Hardcore Rates">
+              <description>
+Changes:
+* Dehydration, Sleep Deprivation, and Starvation Rates all halved (twice as fast)
+* Raised the fHCSleepDeprivationRate from 25 to 18 (faster).
+
+Requirements:
+* lStewieAl's Tweaks and Engine Fixes
+
+Notes:
+* ESPless
+              </description>
+              <files>
+                <file source="mods\BalanceHardcoreRates\nvse\plugins\Tweaks\GameSettings\JSawyerBalanceHardcoreRates.ini" destination="nvse\plugins\Tweaks\GameSettings\JSawyerBalanceHardcoreRates.ini" priority="0" />
+              </files>
+              <conditionFlags>
+                <flag name="BalanceHardcoreRates">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Recommended" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Legion Items">
+              <description>
+Changes:
+* LLCLCenturionMeleeWeapons leveled list had Sledgehammer added as default/level 1 weapon, Fire Axe as level 12 weapon.
+* [undocumented] LLCLCenturionMeleeWeapons, CondSuperSledgeNPC and CenturionThermicLanceWeapon set from level 1 to to 18
+* [undocumented] first CondSuperSledgeNPC removed from LLCLCenturionMeleeWeapons to halve Super Sledge frequency
+* VFactionSquadLegionVeteranArmor, CondLegionArmorVeteranAll set from level 15 to 1, CondLegionArmorCenturionAll set from level 1 to 15
+* CondLegionArmorCenturionAll removed from VFactionSquadLegionPraetorianArmor
+* Legion Assassin low-level gear lists thinned out/cleaned up overall to prevent odd low-level drops (see above).
+
+Requirements:
+* JIP LN NVSE
+
+Notes:
+* ESPless
+              </description>
+              <files>
+                <file source="mods\BalanceLegionItems\nvse\plugins\scripts\gr_JSawyerBalanceLegionItems.txt" destination="nvse\plugins\scripts\gr_JSawyerBalanceLegionItems.txt" priority="0" />
+              </files>
+              <conditionFlags>
+                <flag name="BalanceLegionItems">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Recommended" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Move Penalty">
+              <description>
+Changes:
+* fMoveHeavyArmorPenalty from 0.15 to 0.1 (10% speed penalty instead of 15%)
+* fMoveMediumArmorPenalty from 0.075 to 0.05 (5% speed penalty instead of 7.5%)
+* fMove2HBigPenalty and fMove2HRPenalty from 0.1 to 0.05 (5% speed penalty instead of 10%)
+
+Requirements:
+* lStewieAl's Tweaks and Engine Fixes
+
+Notes:
+* ESPless
+              </description>
+              <files>
+                <file source="mods\BalanceMovePenalty\nvse\plugins\Tweaks\GameSettings\JSawyerBalanceMovePenalty.ini" destination="nvse\plugins\Tweaks\GameSettings\JSawyerBalanceMovePenalty.ini" priority="0" />
+              </files>
+              <conditionFlags>
+                <flag name="BalanceMovePenalty">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Recommended" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="NPC Caravan Decks">
+              <description>
+Changes:
+* Adjusted Dale Barton's, Lacey's, and Little Buster's Caravan decks.
+              </description>
+              <files>
+                <file source="mods\BalanceNPCCaravanDecks\JSawyerBalanceNPCCaravanDecks.esp" destination="JSawyerBalanceNPCCaravanDecks.esp" priority="0" />
+              </files>
+              <conditionFlags>
+                <flag name="BalanceNPCCaravanDecks">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Recommended" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Player Health">
+              <description>
+Changes:
+* Lowered base player HP (before any bonuses) from 100 to 50.
+
+Requirements:
+* Actor Value Patcher
+
+Notes:
+* ESPless
+              </description>
+              <files>
+                <file source="mods\BalancePlayerHealth\Config\ActorValuePatcher\JSawyerBalancePlayerHealth.ini" destination="Config\ActorValuePatcher\JSawyerBalancePlayerHealth.ini" priority="0" />
+              </files>
+              <conditionFlags>
+                <flag name="BalancePlayerHealth">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Recommended" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Survival Stage Thresholds">
+              <description>
+Changes:
+* H2O, FOD, and SLP thresholds pushed back. The first comes later (400), but subsequent levels come more quickly (150 intervals).
+* Changed the fHC*TextThresholds to match the fixed H2O/FOD/SLP thresholds.
+* Set Radiation Stages to match the other HC stages because of how the HUD ticks over (all have to use the same value).
+
+Requirements:
+* lStewieAl's Tweaks and Engine Fixes
+* Configurable Survival Stages
+
+Notes:
+* ESPless
+              </description>
+              <files>
+                <file source="mods\BalanceSurvivalStageThresholds\Config\ConfigurableSurvivalStages\JSawyerBalanceSurvivalStageThresholds.ini" destination="Config\ConfigurableSurvivalStages\JSawyerBalanceSurvivalStageThresholds.ini" priority="0" />
+                <file source="mods\BalanceSurvivalStageThresholds\nvse\plugins\Tweaks\GameSettings\JSawyerBalanceSurvivalStageThresholds.ini" destination="nvse\plugins\Tweaks\GameSettings\JSawyerBalanceSurvivalStageThresholds.ini" priority="0" />
+              </files>
+              <conditionFlags>
+                <flag name="BalanceSurvivalStageThresholds">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Recommended" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="XP">
+              <description>
+Changes:
+* iXPBase set to 275 (from 200) &amp; iXPBumpBase set to 200 (from 150) - Increasing required XP by a little more than 1/3.
+
+Requirements:
+* lStewieAl's Tweaks and Engine Fixes
+
+Notes:
+* ESPless
+              </description>
+              <files>
+                <file source="mods\BalanceXP\nvse\plugins\Tweaks\GameSettings\JSawyerBalanceXP.ini" destination="nvse\plugins\Tweaks\GameSettings\JSawyerBalanceXP.ini" priority="0" />
+              </files>
+              <conditionFlags>
+                <flag name="BalanceXP">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Recommended" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Vending Machine .357 Magnum Rounds">
+              <description>
+Changes:
+* Moved the .357 Magnum Sierra Madre vending machine recipe to the desk immediately outside the contraband room door in the Police Station.
+
+Requirements:
+* Dead Money
+              </description>
+              <files>
+                <file source="mods\BalanceVendingMachine357MagnumRounds\JSawyerBalanceVendingMachine357MagnumRounds.esp" destination="JSawyerBalanceVendingMachine357MagnumRounds.esp" priority="0" />
+              </files>
+              <conditionFlags>
+                <flag name="BalanceVendingMachine357MagnumRounds">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Recommended" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Junk Rounds">
+              <description>
+Changes:
+* All Junk Round values set to 0.
+* Junk Rounds recipes adjusted to create larger batches of junk rounds instead of normal rounds.
+* [undocumented] remove Junk Rounds Damage Reduction ammo effect from 12ga and 20ga junk rounds.
+* [undocumented] add 5mm DT Reduction ammo effect to 5mm junk rounds.
+* [undocumented] change Junk Rounds condition penalty from 1.5 to 1.2 and damage multiplier from 0.75 to 0.95.
+
+Requirements:
+* JSawyer - Content - Junk Rounds
+* JIP LN NVSE
+
+Notes:
+* ESPless
+* Uses JSawyer balance without SPARE. With SPARE installed, uses SPARE recipe quantities and ammunition names instead.
+              </description>
+              <conditionFlags>
+                <flag name="BalanceJunkRounds">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <dependencyType>
+                  <defaultType name="NotUsable" />
+                  <patterns>
+                    <pattern>
+                      <dependencies operator="And">
+                        <flagDependency flag="ContentJunkRounds" value="On" />
+                        <flagDependency flag="InstalledSPARE" value="On" />
+                      </dependencies>
+                      <type name="Required" />
+                    </pattern>
+                    <pattern>
+                      <dependencies operator="And">
+                        <flagDependency flag="ContentJunkRounds" value="On" />
+                      </dependencies>
+                      <type name="Recommended" />
+                    </pattern>
+                  </patterns>
+                </dependencyType>
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Unique Armors">
+              <description>STARS balance for Unique Armors.
+
+Changes:
+* Commando Armor will be balanced for STARS (the same stats as Metal Armor, Reinforced)
+
+Requirements:
+* JSawyer - Content - Unique Armors
+* JIP LN NVSE
+
+Notes:
+* ESPless
+              </description>
+              <conditionFlags>
+                <flag name="BalanceUniqueArmors">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <dependencyType>
+                  <defaultType name="NotUsable" />
+                  <patterns>
+                    <pattern>
+                      <dependencies operator="And">
+                        <flagDependency flag="ContentUniqueArmors" value="On" />
+                        <flagDependency flag="InstalledSTARS" value="On" />
+                      </dependencies>
+                      <type name="Required" />
+                    </pattern>
+                  </patterns>
+                </dependencyType>
+              </typeDescriptor>
+            </plugin>
+          </plugins>
+        </group>
+      </optionalFileGroups>
+    </installStep>
+    <installStep name="Fix">
+      <optionalFileGroups order="Explicit">
+        <group name="" type="SelectAny">
+          <plugins order="Explicit">
+            <plugin name="Missing Grunt Weapons">
+              <description>
+Changes:
+* Battle Rifle and This Machine added to Grunt list.
+* Mercenary's Grenade Rifle, Great Bear Grenade Rifle, and Red Victory Grenade Rifle added to Grunt list.
+
+Requirements:
+* JIP LN NVSE
+
+Notes:
+* ESPless
+              </description>
+              <files>
+                <file source="mods\FixMissingGruntWeapons\nvse\plugins\scripts\gr_JSawyerFixMissingGruntWeapons.txt" destination="nvse\plugins\scripts\gr_JSawyerFixMissingGruntWeapons.txt" priority="0" />
+              </files>
+              <conditionFlags>
+                <flag name="FixMissingGruntWeapons">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Recommended" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Missing In Shining Armor Armors">
+              <description>
+Changes:
+* Missing metal armors (NCR Salvaged Power Armor, Gecko-Backed, etc.) added to In Shining Armor list.
+* Loneseome Road metal armors and helmets (e.g. Armor of the 87th Tribe, Marked Beast helmets) added to In Shining Armor lists.
+* Composite Recon Armor removed from In Shining Armor list.
+
+Requirements:
+* JIP LN NVSE
+
+Notes:
+* ESPless
+              </description>
+              <files>
+                <file source="mods\FixMissingInShiningArmorArmors\nvse\plugins\scripts\gr_JSawyerFixMissingInShiningArmorArmors.txt" destination="nvse\plugins\scripts\gr_JSawyerFixMissingInShiningArmorArmors.txt" priority="0" />
+              </files>
+              <conditionFlags>
+                <flag name="FixMissingInShiningArmorArmors">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Recommended" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Missing Repair Vault Suit Armors">
+              <description>
+Changes:
+* Armored Vault 13 and 21 Jumpsuits now use RepairVaultSuit, which now includes all F:NV base Vault Suits.
+
+Requirements:
+* JIP LN NVSE
+
+Notes:
+* ESPless
+              </description>
+              <files>
+                <file source="mods\FixMissingRepairVaultSuitArmors\nvse\plugins\scripts\gr_JSawyerFixMissingRepairVaultSuitArmors.txt" destination="nvse\plugins\scripts\gr_JSawyerFixMissingRepairVaultSuitArmors.txt" priority="0" />
+              </files>
+              <conditionFlags>
+                <flag name="FixMissingRepairVaultSuitArmors">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Recommended" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Missing Cowboy Weapons">
+              <description>
+Changes:
+* Police Pistol added to Cowboy weapons list
+
+Requirements:
+* JIP LN NVSE
+
+Notes:
+* ESPless
+* Fully covered by YUP; unavailable when YUP is selected in Installed Mods.
+              </description>
+              <files>
+                <file source="mods\FixMissingCowboyWeaponsNoYUP\nvse\plugins\scripts\gr_JSawyerFixMissingCowboyWeaponsNoYUP.txt" destination="nvse\plugins\scripts\gr_JSawyerFixMissingCowboyWeaponsNoYUP.txt" priority="0" />
+              </files>
+              <conditionFlags>
+                <flag name="FixMissingCowboyWeapons">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <dependencyType>
+                  <defaultType name="Recommended" />
+                  <patterns>
+                    <pattern>
+                      <dependencies operator="And">
+                        <flagDependency flag="InstalledYUP" value="On" />
+                      </dependencies>
+                      <type name="NotUsable" />
+                    </pattern>
+                  </patterns>
+                </dependencyType>
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Missing Deathclaw Hunter Pro Creatures">
+              <description>
+Changes:
+* Various missed adult Mojave Deathclaws added to Deathclaw Pro Hunter list.
+
+Requirements:
+* JIP LN NVSE
+
+Notes:
+* ESPless
+* Fully covered by YUP; unavailable when YUP is selected in Installed Mods.
+              </description>
+              <files>
+                <file source="mods\FixMissingDeathclawHunterProCreaturesNoYUP\nvse\plugins\scripts\gr_JSawyerFixMissingDeathclawHunterProCreaturesNoYUP.txt" destination="nvse\plugins\scripts\gr_JSawyerFixMissingDeathclawHunterProCreaturesNoYUP.txt" priority="0" />
+              </files>
+              <conditionFlags>
+                <flag name="FixMissingDeathclawHunterProCreatures">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <dependencyType>
+                  <defaultType name="Recommended" />
+                  <patterns>
+                    <pattern>
+                      <dependencies operator="And">
+                        <flagDependency flag="InstalledYUP" value="On" />
+                      </dependencies>
+                      <type name="NotUsable" />
+                    </pattern>
+                  </patterns>
+                </dependencyType>
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Missing Shotgun Surgeon Weapons">
+              <description>
+Changes:
+* Sturdy Caravan Shotgun added to ShotgunSurgeonWeaponsList
+
+Requirements:
+* JIP LN NVSE
+
+Notes:
+* ESPless
+* Fully covered by YUP; unavailable when YUP is selected in Installed Mods.
+              </description>
+              <files>
+                <file source="mods\FixMissingShotgunSurgeonWeaponsNoYUP\nvse\plugins\scripts\gr_JSawyerFixMissingShotgunSurgeonWeaponsNoYUP.txt" destination="nvse\plugins\scripts\gr_JSawyerFixMissingShotgunSurgeonWeaponsNoYUP.txt" priority="0" />
+              </files>
+              <conditionFlags>
+                <flag name="FixMissingShotgunSurgeonWeapons">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <dependencyType>
+                  <defaultType name="Recommended" />
+                  <patterns>
+                    <pattern>
+                      <dependencies operator="And">
+                        <flagDependency flag="InstalledYUP" value="On" />
+                      </dependencies>
+                      <type name="NotUsable" />
+                    </pattern>
+                  </patterns>
+                </dependencyType>
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Missing The Professional Weapons">
+              <description>
+Changes:
+* That Gun added to The Professional list
+
+Requirements:
+* JIP LN NVSE
+
+Notes:
+* ESPless
+* Fully covered by YUP; unavailable when YUP is selected in Installed Mods.
+              </description>
+              <files>
+                <file source="mods\FixMissingTheProfessionalWeaponsNoYUP\nvse\plugins\scripts\gr_JSawyerFixMissingTheProfessionalWeaponsNoYUP.txt" destination="nvse\plugins\scripts\gr_JSawyerFixMissingTheProfessionalWeaponsNoYUP.txt" priority="0" />
+              </files>
+              <conditionFlags>
+                <flag name="FixMissingTheProfessionalWeapons">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <dependencyType>
+                  <defaultType name="Recommended" />
+                  <patterns>
+                    <pattern>
+                      <dependencies operator="And">
+                        <flagDependency flag="InstalledYUP" value="On" />
+                      </dependencies>
+                      <type name="NotUsable" />
+                    </pattern>
+                  </patterns>
+                </dependencyType>
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Missing The Same Could Be Said Weapons">
+              <description>
+Changes:
+* A Light Shining in Darkness added to Religious Weapons challenge in GRA.
+
+Requirements:
+* JIP LN NVSE
+
+Notes:
+* ESPless
+* Fully covered by YUP; unavailable when YUP is selected in Installed Mods.
+              </description>
+              <files>
+                <file source="mods\FixMissingTheSameCouldBeSaidWeaponsNoYUP\nvse\plugins\scripts\gr_JSawyerFixMissingTheSameCouldBeSaidNoYUP.txt" destination="nvse\plugins\scripts\gr_JSawyerFixMissingTheSameCouldBeSaidNoYUP.txt" priority="0" />
+              </files>
+              <conditionFlags>
+                <flag name="FixMissingTheSameCouldBeSaidWeapons">On</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <dependencyType>
+                  <defaultType name="Recommended" />
+                  <patterns>
+                    <pattern>
+                      <dependencies operator="And">
+                        <flagDependency flag="InstalledYUP" value="On" />
+                      </dependencies>
+                      <type name="NotUsable" />
+                    </pattern>
+                  </patterns>
+                </dependencyType>
+              </typeDescriptor>
+            </plugin>
+          </plugins>
+        </group>
+      </optionalFileGroups>
+    </installStep>
+  </installSteps>
+  <conditionalFileInstalls>
+    <patterns>
+      <pattern>
+        <dependencies operator="Or">
+          <flagDependency flag="ContentBartonTheWastelandTechSalvager" value="On" />
+          <flagDependency flag="ContentDerangedBrightFollowers" value="On" />
+        </dependencies>
+        <files>
+          <file source="mods\ContentWastelandTechSalvagerClass\JSawyerContentWastelandTechSalvagerClass.esp" destination="JSawyerContentWastelandTechSalvagerClass.esp" priority="0" />
+        </files>
+      </pattern>
+      <pattern>
+        <dependencies operator="And">
+          <flagDependency flag="ContentJunkRounds" value="On" />
+          <flagDependency flag="BalanceJunkRounds" value="On" />
+        </dependencies>
+        <files>
+          <file source="mods\BalanceJunkRoundsJSawyer\nvse\plugins\scripts\gr_JSawyerBalanceJunkRoundsJSawyer.txt" destination="nvse\plugins\scripts\gr_JSawyerBalanceJunkRounds.txt" priority="0" />
+        </files>
+      </pattern>
+      <pattern>
+        <dependencies operator="And">
+          <flagDependency flag="ContentJunkRounds" value="On" />
+          <flagDependency flag="BalanceJunkRounds" value="On" />
+          <flagDependency flag="InstalledSPARE" value="On" />
+        </dependencies>
+        <files>
+          <file source="mods\BalanceJunkRoundsSPARENV\nvse\plugins\scripts\gr_JSawyerBalanceJunkRoundsSPARENV.txt" destination="nvse\plugins\scripts\gr_JSawyerBalanceJunkRounds.txt" priority="1" />
+        </files>
+      </pattern>
+      <pattern>
+        <dependencies operator="And">
+          <flagDependency flag="ContentUniqueArmors" value="On" />
+          <flagDependency flag="BalanceUniqueArmors" value="On" />
+          <flagDependency flag="InstalledSTARS" value="On" />
+        </dependencies>
+        <files>
+          <file source="mods\BalanceUniqueArmorsSTARS\nvse\plugins\scripts\gr_JSawyerBalanceUniqueArmorsSTARS.txt" destination="nvse\plugins\scripts\gr_JSawyerBalanceUniqueArmorsSTARS.txt" priority="0" />
+        </files>
+      </pattern>
+      <pattern>
+        <dependencies operator="And">
+          <flagDependency flag="FixMissingGruntWeapons" value="On" />
+          <flagDependency flag="InstalledYUP" value="" />
+        </dependencies>
+        <files>
+          <file source="mods\FixMissingGruntWeaponsNoYUP\nvse\plugins\scripts\gr_JSawyerFixMissingGruntWeaponsNoYUP.txt" destination="nvse\plugins\scripts\gr_JSawyerFixMissingGruntWeaponsNoYUP.txt" priority="0" />
+        </files>
+      </pattern>
+      <pattern>
+        <dependencies operator="And">
+          <flagDependency flag="FixMissingInShiningArmorArmors" value="On" />
+          <flagDependency flag="InstalledYUP" value="" />
+        </dependencies>
+        <files>
+          <file source="mods\FixMissingInShiningArmorArmorsNoYUP\nvse\plugins\scripts\gr_JSawyerFixMissingInShiningArmorArmorsNoYUP.txt" destination="nvse\plugins\scripts\gr_JSawyerFixMissingInShiningArmorArmorsNoYUP.txt" priority="0" />
+        </files>
+      </pattern>
+      <pattern>
+        <dependencies operator="And">
+          <flagDependency flag="FixMissingRepairVaultSuitArmors" value="On" />
+          <flagDependency flag="InstalledYUP" value="" />
+        </dependencies>
+        <files>
+          <file source="mods\FixMissingRepairVaultSuitArmorsNoYUP\nvse\plugins\scripts\gr_JSawyerFixMissingRepairVaultSuitArmorsNoYUP.txt" destination="nvse\plugins\scripts\gr_JSawyerFixMissingRepairVaultSuitArmorsNoYUP.txt" priority="0" />
+        </files>
+      </pattern>
+    </patterns>
+  </conditionalFileInstalls>
+</config>

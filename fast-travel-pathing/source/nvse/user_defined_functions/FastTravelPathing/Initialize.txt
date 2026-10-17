@@ -1,0 +1,32 @@
+; Configured directed graph selects markers; native paths expand each selected leg.
+Begin Function {}
+    Call (CompileScript "FastTravelPathing\Shutdown.txt")
+    if (GetPluginVersion "ewmb NVSE") < 8
+        return
+    endif
+    array_var aState = Ar_Construct "stringmap"
+    array_var aConfig = Call (CompileScript "FastTravelPathing\LoadConfig.txt")
+    array_var aGraph = Call (CompileScript "FastTravelPathing\BuildGraph.txt") aConfig
+    if eval aGraph == Ar_Null || (Ar_Size aGraph) == 0
+        return
+    endif
+    let aState["config"] := aConfig
+    let aState["graph"] := aGraph
+    let aState["graphPaths"] := Call (CompileScript "FastTravelPathing\BuildAllGraphPaths.txt") aGraph
+    let aState["enabled"] := Ar_Construct "stringmap"
+    ref rBuild = ({} => Call (CompileScript "FastTravelPathing\OnWorldMapBuild.txt") aState)
+    Player.AuxVarSetRef "*_FTP_rBuildHandler" rBuild
+    SetEventHandler "OnWorldMapBuild" rBuild
+    ref rClose = ({int iMenu} => Call (CompileScript "FastTravelPathing\OnWorldMapClose.txt") iMenu)
+    Player.AuxVarSetRef "*_FTP_rCloseHandler" rClose
+    SetOnMenuCloseEventHandler rClose 1 1023
+    ref rHover = ({ref rSelectedMarker} => Call (CompileScript "FastTravelPathing\OnWorldMapMarkerSelectionChange.txt") rSelectedMarker aState)
+    Player.AuxVarSetRef "*_FTP_rHoverHandler" rHover
+    SetEventHandler "OnWorldMapMarkerSelectionChange" rHover
+    ref rBegin = (begin function {ref rMarker}
+        SetFunctionValue (Call (CompileScript "FastTravelPathing\OnFastTravelBegin.txt") rMarker aState)
+    end)
+    Player.AuxVarSetRef "*_FTP_rFastTravelBeginHandler" rBegin
+    SetEventHandler "OnFastTravelBegin" rBegin
+    Call (CompileScript "FastTravelPathing\StartPlayerLocationUpdates.txt") aConfig aGraph
+End

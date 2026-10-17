@@ -1,0 +1,12 @@
+; Realtime Pip-Boy Map projects this same Modern Minimap UI.
+if eval FileExists "menus\ySI\ySI.xml" == 0 || GetPluginVersion "yUI" < 140
+	return
+endif
+if eval FileExists "menus\prefabs\Stentorious\ModernMinimap\Main.xml" == 0
+	return
+endif
+
+Goo1.AuxVarErase "*FurnitureMinimap_Refs"
+UnloadUIComponent "HUDMainMenu\ModernMinimap\FurnitureIcons"
+SetGameMainLoopCallback (CompileScript "MinimapFurnitureSupport\ScanMinimap.gek") 1 20 1
+SetOnRenderUpdateEventHandler 1 (CompileScript "MinimapFurnitureSupport\RenderMinimap.gek") 0

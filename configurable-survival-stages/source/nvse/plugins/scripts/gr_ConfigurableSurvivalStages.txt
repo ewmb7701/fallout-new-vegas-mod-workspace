@@ -1,0 +1,45 @@
+; Apply INIs in alphabetical order; later files override earlier entries.
+array_var iniFiles = GetFilesInFolder "Config\ConfigurableSurvivalStages" "*.ini"
+let iniFiles := Ar_SortAlpha iniFiles
+
+foreach array_var iniFile <- iniFiles
+    string_var iniPath = "ConfigurableSurvivalStages\" + iniFile["value"]
+    array_var thresholds = GetINISection "Thresholds" (iniPath) 1
+
+    foreach array_var thresholdEntry <- thresholds
+        string_var stageEditorID = thresholdEntry["key"]
+        ref stageForm = EditorIDToFormID (stageEditorID)
+        int stageType = GetType stageForm
+        ; RADS = 90, DEHY = 118, HUNG = 119, SLPD = 120.
+        if eval (!stageForm) || ((stageType != 90) && (stageType != 118) && (stageType != 119) && (stageType != 120))
+            continue
+        endif
+
+        float threshold = thresholdEntry["value"]
+        ; Reject nonpositive, fractional, and out-of-range values before conversion.
+        if eval (threshold <= 0) || (threshold > 2147483647) || (threshold != (Floor threshold))
+            continue
+        endif
+
+        SetHardcoreStageThreshold stageForm threshold
+    loop
+
+    array_var effects = GetINISection "Effects" (iniPath)
+    foreach array_var effectEntry <- effects
+        string_var effectStageEditorID = effectEntry["key"]
+        ref effectStageForm = EditorIDToFormID (effectStageEditorID)
+        int effectStageType = GetType effectStageForm
+        if eval (!effectStageForm) || ((effectStageType != 90) && (effectStageType != 118) && (effectStageType != 119) && (effectStageType != 120))
+            continue
+        endif
+
+        string_var effectEditorID = effectEntry["value"]
+        ref effectForm = EditorIDToFormID (effectEditorID)
+        ; Stage effects must be SPEL (Actor Effect) records, not MGEF records.
+        if eval (!effectForm) || ((GetType effectForm) != 20)
+            continue
+        endif
+
+        SetHardcoreStageEffect effectStageForm effectForm
+    loop
+loop

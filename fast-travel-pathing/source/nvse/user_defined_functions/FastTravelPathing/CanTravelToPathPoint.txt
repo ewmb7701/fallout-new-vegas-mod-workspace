@@ -1,0 +1,42 @@
+; keep path permissions in FTP, outside coordinate relocation.
+Begin Function {ref rPoint, ref rArrival}
+    SetFunctionValue 0
+    if eval rPoint == 0 || rArrival == 0
+        return
+    endif
+    if eval rPoint.GetDisabled || rArrival.GetDisabled
+        return
+    endif
+    if rPoint.IsMapMarker
+        if eval rPoint.GetMapMarkerVisible == 0 || rPoint.GetMapMarkerTravel == 0
+            return
+        endif
+        ref rLanding = rPoint.GetLinkedRef
+        if rLanding == 0
+            let rLanding := rPoint
+        endif
+        if rLanding != rArrival
+            return
+        endif
+    elseif rPoint.GetTeleportDoor != rArrival
+        return
+    endif
+    array_var aCheck = GetPath Player rArrival
+    if eval aCheck == Ar_Null
+        return
+    endif
+    if rPoint.IsMapMarker == 0
+        ref rLastExit = 0
+        array_var aPoints = aCheck["points"]
+        foreach array_var aEntry <- aPoints
+            array_var aPoint = aEntry["value"]
+            if eval aPoint["kind"] == "exit"
+                let rLastExit := aPoint["reference"]
+            endif
+        loop
+        if rLastExit != rPoint
+            return
+        endif
+    endif
+    SetFunctionValue 1
+End

@@ -1,0 +1,8 @@
+string_var sTimerName
+ref rOwner
+begin Function {sTimerName, rOwner}
+    PlayerRef.AuxiliaryVariableErase "*_VUICE_CompanionHealthBarTarget"
+    if IsComponentLoaded "HUDMainMenu/CompanionHealthBar"
+        SetUIFloatAlt "HUDMainMenu/CompanionHealthBar/visible" 0
+    endif
+end

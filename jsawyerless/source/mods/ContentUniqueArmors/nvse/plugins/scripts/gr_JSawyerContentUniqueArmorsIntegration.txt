@@ -1,0 +1,4 @@
+; Ranger Battle Armor renamed to Lucky Battle Armor. [...] Reilly's Rangers decals removed.
+SetName "Lucky Battle Armor" MS18RangerBattleArmor
+ClearArmorAltTexture MS18RangerBattleArmor 1 7
+ClearArmorAltTexture MS18RangerBattleArmor 2 5

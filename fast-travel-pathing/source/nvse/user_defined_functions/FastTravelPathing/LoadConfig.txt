@@ -1,0 +1,39 @@
+Begin Function {}
+
+    array_var aConfigLocations = Ar_Construct "stringmap"
+    array_var aConfigConnections = Ar_Construct "array"
+    array_var aFiles = GetFilesInFolder "Config\FastTravelPathing\Locations" "*.ini"
+    let aFiles := Ar_SortAlpha aFiles
+    foreach array_var aFile <- aFiles
+        string_var sFile = aFile["value"]
+        array_var aConfigLocation = Call (CompileScript "FastTravelPathing\LoadLocationConfig.txt") sFile
+        string_var sID = aConfigLocation["id"]
+        let aConfigLocations[sID] := aConfigLocation
+    loop
+
+    let aFiles := GetFilesInFolder "Config\FastTravelPathing\Connections" "*.ini"
+    let aFiles := Ar_SortAlpha aFiles
+    foreach aFile <- aFiles
+        sFile = aFile["value"]
+        string_var sPath = "FastTravelPathing\Connections\" + sFile
+        ClearFileCacheShowOff (sPath) 0
+        sID = GetINIStringOrDefault_Cached "Origin:sLocationID" (sPath)
+        string_var sDestinationID = GetINIStringOrDefault_Cached "Destination:sLocationID" (sPath)
+        ref rDestination = Call (CompileScript "FastTravelPathing\LoadDestinationConfig.txt") sPath
+        array_var aConfigConnection = Ar_Construct "stringmap"
+        let aConfigConnection["origin"] := sID
+        let aConfigConnection["destination"] := rDestination
+        let aConfigConnection["destinationID"] := sDestinationID
+        Ar_Append aConfigConnections aConfigConnection
+        ClearFileCacheShowOff (sPath) 0
+    loop
+
+    ClearFileCacheShowOff "FastTravelPathing\Messages.ini" 0
+    string_var sMessage = GetINIStringOrDefault_Cached "Messages:sCannotDepart" "FastTravelPathing\Messages.ini" "You cannot fast travel from this location."
+    SetStringSetting "sNoFastTravelUndiscovered" (sMessage)
+
+    array_var aConfig = Ar_Construct "stringmap"
+    let aConfig["locations"] := aConfigLocations
+    let aConfig["connections"] := aConfigConnections
+    SetFunctionValue aConfig
+End

@@ -1,0 +1,6 @@
+; Various missed adult Mojave Deathclaws added to Deathclaw Pro Hunter list.
+ListAddForm NVDLC05ChallengeDeathclawProHunterEnemies CrDeathClawMother -2 1
+ListAddForm NVDLC05ChallengeDeathclawProHunterEnemies CrDeathClawEnclave -2 1
+ListAddForm NVDLC05ChallengeDeathclawProHunterEnemies CrDeathClawAlphaVariant -2 1
+ListAddForm NVDLC05ChallengeDeathclawProHunterEnemies CrDeathClawAlpha -2 1
+ListAddForm NVDLC05ChallengeDeathclawProHunterEnemies CrDeathClaw -2 1

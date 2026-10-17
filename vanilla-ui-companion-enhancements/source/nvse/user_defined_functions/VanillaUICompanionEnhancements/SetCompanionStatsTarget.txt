@@ -1,0 +1,31 @@
+ref rTarget
+ref rPrevious
+begin Function {rTarget}
+    let rPrevious := PlayerRef.AuxiliaryVariableGetRef "*_VUICE_CompanionStatsTarget"
+    if eval rTarget == rPrevious
+        return
+    endif
+    PlayerRef.SetGameMainLoopCallback (CompileScript "VanillaUICompanionEnhancements/UpdateCompanionStats.txt") 0
+    if rTarget
+        ; Activation stats replace our standalone companion health panel.
+        PlayerRef.AuxiliaryVariableSetRef "*_VUICE_CompanionStatsTarget" rTarget
+        PlayerRef.AuxTimerStop "*_VUICE_HealthBarExpiry" 0
+        PlayerRef.AuxiliaryVariableErase "*_VUICE_CompanionHealthBarTarget"
+        SetUIFloatAlt "HUDMainMenu/CompanionHealthBar/visible" 0
+        PlayerRef.SetGameMainLoopCallback (CompileScript "VanillaUICompanionEnhancements/UpdateCompanionStats.txt") 1 1 11
+        Call (CompileScript "VanillaUICompanionEnhancements/UpdateCompanionStats.txt")
+    else
+        ; Hand off to our own health panel after leaving activation range.
+        PlayerRef.AuxiliaryVariableErase "*_VUICE_CompanionStatsTarget"
+        if IsComponentLoaded "HUDMainMenu/VUICE"
+            SetUIFloatAlt "HUDMainMenu/VUICE/visible" 0
+        endif
+        if GetVATSMode == 0
+            if IsReference rPrevious
+                if rPrevious.GetPlayerTeammate
+                    Call (CompileScript "VanillaUICompanionEnhancements/SetCompanionHealthBarTarget.txt") rPrevious
+                endif
+            endif
+        endif
+    endif
+end

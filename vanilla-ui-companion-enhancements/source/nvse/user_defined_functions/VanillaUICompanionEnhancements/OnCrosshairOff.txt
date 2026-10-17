@@ -1,0 +1,10 @@
+ref rTarget
+ref rNoTarget
+begin Function {rTarget}
+    ; A late off event must not clear a newly selected companion.
+    if eval rTarget != (PlayerRef.AuxiliaryVariableGetRef "*_VUICE_CompanionStatsTarget")
+        return
+    endif
+    let rNoTarget := 0
+    Call (CompileScript "VanillaUICompanionEnhancements/SetCompanionStatsTarget.txt") rNoTarget
+end

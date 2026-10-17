@@ -1,0 +1,28 @@
+string_var sFile
+string_var sColor
+int iRGB
+begin Function {}
+    let sFile := "VanillaUICompanionEnhancements.ini"
+    SetUIFloatAlt "HUDMainMenu/CompanionHealthBar/_HealthBarOffsetX" (GetINIFloat_Cached "Position:fHealthBarOffsetX" sFile 0)
+    SetUIFloatAlt "HUDMainMenu/CompanionHealthBar/_HealthBarOffsetY" (GetINIFloat_Cached "Position:fHealthBarOffsetY" sFile 0)
+    SetUIFloatAlt "HUDMainMenu/VUICE/_StatsOffsetX" (GetINIFloat_Cached "Position:fStatsOffsetX" sFile 0)
+    SetUIFloatAlt "HUDMainMenu/VUICE/_StatsOffsetY" (GetINIFloat_Cached "Position:fStatsOffsetY" sFile 0)
+    let sColor := GetINIStringOrDefault_Cached "Appearance:uHealthBarRGB" sFile "0x2ECEFF"
+    let iRGB := ToNumber sColor 1
+    if eval iRGB < 0 || iRGB > 0xFFFFFF
+        let iRGB := 0x2ECEFF
+    endif
+    SetUIFloatAlt "HUDMainMenu/CompanionHealthBar/red" (LogicalAnd (RightShift iRGB 16) 255)
+    SetUIFloatAlt "HUDMainMenu/CompanionHealthBar/green" (LogicalAnd (RightShift iRGB 8) 255)
+    SetUIFloatAlt "HUDMainMenu/CompanionHealthBar/blue" (LogicalAnd iRGB 255)
+    SetUIFloatAlt "HUDMainMenu/VUICE/_HealthMode" (GetINIFloat_Cached "Appearance:iHPStatDisplayMode" sFile 1)
+    if GetUIFloatAlt "HUDMainMenu/VUICE/_HealthMode" == 5
+        SetUIStringAlt "HUDMainMenu/VUICE/Stats/HealthLabel/string" "DAM"
+    else
+        SetUIStringAlt "HUDMainMenu/VUICE/Stats/HealthLabel/string" "HP"
+    endif
+    SetUIFloatAlt "HUDMainMenu/VUICE/_WeightMode" (GetINIFloat_Cached "Appearance:iWGStatDisplayMode" sFile 1)
+    SetUIFloatAlt "HUDMainMenu/VUICE/_ShowDR" ((GetINIFloat_Cached "Appearance:bShowDRStat" sFile 0) != 0)
+    sv_Destruct sFile
+    sv_Destruct sColor
+end

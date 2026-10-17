@@ -1,0 +1,52 @@
+int iDist
+int iSize
+int iCount
+int iDelta
+ref rIcon
+array_var aRefs
+string_var sTexture
+
+begin Function {}
+	if eval GetUIFloatAlt "HUDMainMenu\ModernMinimap\_ToggleUpdate" != 1 || GetUIFloatAlt "HUDMainMenu\ModernMinimap\_MapMode" != 1
+		return
+	endif
+	iDist = GetUIFloatAlt "HUDMainMenu\ModernMinimap\_Dist"
+	if iDist <= 0
+		return
+	endif
+
+	if eval GetUIFloatAlt "HUDMainMenu\ModernMinimap\FurnitureIcons\visible" == -999
+		AddTileFromTemplate "HUDMainMenu\ModernMinimap|Minimap_Icon_Rect|FurnitureIcons"
+	endif
+	Goo1.AuxVarErase "*FurnitureMinimap_Refs"
+	aRefs = Player.GetRefs 39 2 1 iDist
+	if eval (iSize = Ar_Size aRefs) > 0
+		while (iSize -= 1) > -1
+			rIcon = aRefs[iSize]
+			if eval IsReference rIcon && rIcon.GetDisabled == 0 && rIcon.HasLoaded3D && rIcon.GetDestroyed == 0
+				if eval HasKeyword rIcon "MinimapIcon" || AuxVarGetFlt "*MinimapIcon" 0 (rIcon.GBO)
+					sTexture = rIcon.ySIGetTrait "filename"
+					if eval (Sv_Length sTexture) > 0
+						Goo1.AuxVarSetRef "*FurnitureMinimap_Refs" rIcon -1
+					endif
+				endif
+			endif
+		loop
+	endif
+
+	; Maintain our own tile pool; never touch Modern Minimap's ref arrays.
+	iCount = GetMaxOf 0 (GetUIFloatAlt "HUDMainMenu\ModernMinimap\FurnitureIcons\childcount")
+	iDelta = (GetMaxOf 0 (Goo1.AuxVarSize "*FurnitureMinimap_Refs")) - iCount
+	if iDelta > 0
+		while (iDelta -= 1) > -1
+			AddTileFromTemplate "HUDMainMenu\ModernMinimap\FurnitureIcons|Minimap_Icon_Local_Template|Icon"
+		loop
+	elseif iDelta < 0
+		while (iDelta += 1) < 1
+			UnloadUIComponent "HUDMainMenu\ModernMinimap\FurnitureIcons\Icon:0"
+		loop
+	endif
+	Call (CompileScript "MinimapFurnitureSupport\RenderMinimap.gek")
+	aRefs = ar_Null
+	sv_Destruct sTexture
+end

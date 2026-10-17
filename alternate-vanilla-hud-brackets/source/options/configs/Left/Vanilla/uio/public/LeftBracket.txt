@@ -1,0 +1,2 @@
+LeftBracket.xml::@prefabs\hudtemplates.xml::left_bracket
+true

@@ -1,0 +1,8 @@
+; Read the configured marker form from its plugin and local FormID.
+Begin Function {string_var sPath, string_var sSection}
+    ClearFileCacheShowOff (sPath) 0
+    string_var sMod = GetINIStringOrDefault_Cached (sSection + ":sModName") (sPath)
+    string_var sForm = GetINIStringOrDefault_Cached (sSection + ":sMapMarkerFormId") (sPath)
+    ClearFileCacheShowOff (sPath) 0
+    SetFunctionValue (GetFormFromMod (sMod) (sForm))
+End

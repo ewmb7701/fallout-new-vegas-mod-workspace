@@ -1,0 +1,5 @@
+name OnSleep;
+
+fn(int iMode) {
+  PlayerRef.AuxiliaryVariableSetFloat("*_AutosaveAfterSleep_WasSleeping", 1);
+}

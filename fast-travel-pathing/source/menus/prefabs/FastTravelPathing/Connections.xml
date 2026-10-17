@@ -1,0 +1,10 @@
+<!-- Keep the overlay in the clip window, aligned to the map through bindings.
+     Do not inherit the map image's alpha or MAPMO color settings. -->
+<rect name="FTP_Connections">
+  <visible>0</visible><target>0</target><clips>1</clips><locus>1</locus>
+  <depth>6</depth><alpha>255</alpha>
+  <x><copy src="sibling(MM_WorldMap_ParentImage)" trait="x"/></x>
+  <y><copy src="sibling(MM_WorldMap_ParentImage)" trait="y"/></y>
+  <width><copy src="sibling(MM_WorldMap_ParentImage)" trait="width"/></width>
+  <height><copy src="sibling(MM_WorldMap_ParentImage)" trait="height"/></height>
+</rect>

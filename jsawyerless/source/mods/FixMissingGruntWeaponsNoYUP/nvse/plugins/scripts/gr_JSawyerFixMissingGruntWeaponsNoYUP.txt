@@ -1,0 +1,5 @@
+; Missing Grunt weapons
+ListAddForm NVDLC02PerkGruntWeapons NVDLC04WeapGrenadeRifleRED -2 1
+ListAddForm NVDLC02PerkGruntWeapons NVDLC04WeapGrenadeRifleBLUE -2 1
+ListAddForm NVDLC02PerkGruntWeapons WeapNVMarksmanCarbineUnique -2 1
+ListAddForm NVDLC02PerkGruntWeapons WeapNVMarksmanCarbine -2 1

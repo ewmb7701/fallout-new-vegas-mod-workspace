@@ -1,0 +1,4 @@
+; Missing Grunt weapons
+ListAddForm NVDLC02PerkGruntWeapons WeapPreordGrenadeRifle -2 1
+ListAddForm NVDLC02PerkGruntWeapons WeapNVBattleRifleUnique -2 1
+ListAddForm NVDLC02PerkGruntWeapons NVDLC05WeapNVBattleRifleCustom -2 1

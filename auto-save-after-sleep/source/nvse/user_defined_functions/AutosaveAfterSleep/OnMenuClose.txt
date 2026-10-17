@@ -1,0 +1,10 @@
+name OnMenuClose;
+
+fn(int iMenuID) {
+  float bWasSleeping = PlayerRef.AuxiliaryVariableGetFloat("*_AutosaveAfterSleep_WasSleeping");
+  PlayerRef.AuxiliaryVariableErase("*_AutosaveAfterSleep_WasSleeping");
+  if (!bWasSleeping) {
+    return;
+  }
+  AutoSave();
+}

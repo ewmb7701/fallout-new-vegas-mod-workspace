@@ -1,0 +1,4 @@
+; this script matches the original implementation in JSawyer which also adds to the container base form (despite the container being set to respawn)
+
+; Armored Vault 21 Jumpsuit now available from Sarah Weintraub's store.
+BaseAddItem MS03VaultSuit21Armored 1 VendorContainerSarahWeintraub

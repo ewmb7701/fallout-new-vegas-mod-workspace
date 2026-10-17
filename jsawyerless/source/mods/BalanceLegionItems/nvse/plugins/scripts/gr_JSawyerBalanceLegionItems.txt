@@ -1,0 +1,35 @@
+; we must process leveled lists in level order
+
+; [undocumented] first CondSuperSledgeNPC removed from LLCLCenturionMeleeWeapons to change equipment frequency
+RemoveNthLevItem LLCLCenturionMeleeWeapons (GetLevItemIndexByForm LLCLCenturionMeleeWeapons CondSuperSledgeNPC)
+
+; [undocumented] LLCLCenturionMeleeWeapons, CondSuperSledgeNPC and CenturionThermicLanceWeapon set from level 1 to to 18
+SetNthLevItemLevel LLCLCenturionMeleeWeapons (GetLevItemIndexByForm LLCLCenturionMeleeWeapons CondSuperSledgeNPC) 18
+SetNthLevItemLevel LLCLCenturionMeleeWeapons (GetLevItemIndexByForm LLCLCenturionMeleeWeapons CenturionThermicLanceWeapon) 18
+
+; LLCLCenturionMeleeWeapons leveled list had Sledgehammer added as default/level 1 weapon, Fire Axe as level 12 weapon.
+LeveledListAddForm LLCLCenturionMeleeWeapons CondNVFireaxeLoot 12 1 0.0
+LeveledListAddForm LLCLCenturionMeleeWeapons CondSledgehammerLoot 1 1 0.0
+
+; VFactionSquadLegionVeteranArmor, CondLegionArmorVeteranAll set from level 15 to 1, CondLegionArmorCenturionAll set from level 1 to 15
+SetNthLevItem VFactionSquadLegionVeteranArmor (GetLevItemIndexByForm VFactionSquadLegionVeteranArmor CondLegionArmorVeteranAll) CondLegionArmorCenturionAll
+SetNthLevItem VFactionSquadLegionVeteranArmor (GetLevItemIndexByForm VFactionSquadLegionVeteranArmor CondLegionArmorCenturionAll) CondLegionArmorVeteranAll ; there are now 2 CondLegionArmorCenturionAll, set the item of the first index
+
+; CondLegionArmorCenturionAll removed from VFactionSquadLegionPraetorianArmor
+LeveledListRemoveForm VFactionSquadLegionPraetorianArmor CondLegionArmorCenturionAll
+
+; Legion Assassin low-level gear lists thinned out/cleaned up overall to prevent odd low-level drops (see above).
+BaseRemoveItem LootLegionMoney25 1 VEFR02LegionThug03HM
+BaseRemoveItem LL0NPCLegionWater50 1 VEFR02LegionThug03HM
+BaseRemoveItem LL0NPCLegionMoney50 1 VEFR02LegionThug03HM
+BaseRemoveItem LL0NPCLegionChemicals50 1 VEFR02LegionThug03HM
+BaseRemoveItem LootLegionMoney25 1 VEFR02LegionThug04AAM
+BaseRemoveItem LL0NPCLegionWater50 1 VEFR02LegionThug04AAM
+BaseRemoveItem LL0NPCLegionMoney50 1 VEFR02LegionThug04AAM
+BaseRemoveItem LL0NPCLegionChemicals50 1 VEFR02LegionThug04AAM
+BaseRemoveItem CondThrowingSpearLoot 1 VEFR02LegionThugLeaderCM
+BaseRemoveItem CondThrowingSpearLoot75 1 VEFR02LegionThugLeaderCM
+BaseRemoveItem LL0NPCLegionFood50 1 VEFR02LegionThugLeaderCM
+BaseRemoveItem LL0NPCLegionWater50 1 VEFR02LegionThugLeaderCM
+BaseRemoveItem LL0NPCLegionMoney50 1 VEFR02LegionThugLeaderCM
+BaseRemoveItem LL0NPCLegionChemicals25 1 VEFR02LegionThugLeaderCM

@@ -1,0 +1,60 @@
+LeveledListAddForm BrotherhoodChems100 Bandage 1 1 1.0
+LeveledListAddForm EnclaveChems100 Bandage 1 1 1.0
+LeveledListAddForm LL0NPCNCRChemicals Bandage 1 1 1.0
+LeveledListAddForm LL0NPCNCRChemicals35 Bandage 1 1 1.0
+LeveledListAddForm LL0NPCNCRTrooperChemicals Bandage 1 1 1.0
+LeveledListAddForm LL0NPCNCRTrooperChemicals25 Bandage 1 1 1.0
+LeveledListAddForm LL0NPCNCRTrooperChemicals35 Bandage 1 1 1.0
+LeveledListAddForm LL0NPCNCRTrooperChemicals50 Bandage 1 1 1.0
+LeveledListAddForm LL0NPCTownChemicals Bandage 1 1 1.0
+LeveledListAddForm LL0NPCTownChemicals25 Bandage 1 1 1.0
+LeveledListAddForm LL0NPCTownChemicals50 Bandage 1 1 1.0
+LeveledListAddForm NVDLC04DuffleChems100 Bandage 1 1 1.0
+LeveledListAddForm LL0NPCWastelandBanditChemicals35 Bandage 1 1 1.0
+LeveledListAddForm LL0NPCTownHealing Bandage 1 1 1.0
+LeveledListAddForm LL0NPCTownHealing25 Bandage 1 1 1.0
+LeveledListAddForm LL0NPCTownHealing50 Bandage 1 1 1.0
+LeveledListAddForm LL0NPCTownHealing75 Bandage 1 1 1.0
+LeveledListAddForm LL0NPCWastelandHealing Bandage 1 1 1.0
+LeveledListAddForm LL0NPCWastelandHealing25 Bandage 1 1 1.0
+LeveledListAddForm LL0NPCWastelandHealing50 Bandage 1 1 1.0
+LeveledListAddForm LL0NPCWastelandHealing75 Bandage 1 1 1.0
+LeveledListAddForm LL0Tier1ChemsHealing Bandage 1 1 1.0
+LeveledListAddForm LL0Tier1ChemsHealing25 Bandage 1 1 1.0
+LeveledListAddForm LL0Tier1ChemsHealing50 Bandage 1 1 1.0
+LeveledListAddForm LL0Tier1ChemsHealing75 Bandage 1 1 1.0
+LeveledListAddForm LL0Tier2ChemsHealing Bandage 1 1 1.0
+LeveledListAddForm LL0Tier2ChemsHealing25 Bandage 1 1 1.0
+LeveledListAddForm LL0Tier2ChemsHealing50 Bandage 1 1 1.0
+LeveledListAddForm LL0Tier2ChemsHealing75 Bandage 1 1 1.0
+LeveledListAddForm LL0Tier3ChemsHealing Bandage 1 1 1.0
+LeveledListAddForm LL0Tier3ChemsHealing25 Bandage 1 1 1.0
+LeveledListAddForm LL0Tier3ChemsHealing50 Bandage 1 1 1.0
+LeveledListAddForm LL0Tier3ChemsHealing75 Bandage 1 1 1.0
+LeveledListAddForm LootChemsHealing100 Bandage 1 1 1.0
+LeveledListAddForm LootChemsHealing75 Bandage 1 1 1.0
+LeveledListAddForm LootChemsHealingClean100 Bandage 1 1 1.0
+LeveledListAddForm LootChemsHealingClean75 Bandage 1 1 1.0
+LeveledListAddForm LootChemsNVHealing100 Bandage 1 1 1.0
+LeveledListAddForm LootChemsNVHealing75 Bandage 1 1 1.0
+LeveledListAddForm LootChemsNVHealingClean100 Bandage 1 1 1.0
+LeveledListAddForm LootChemsNVHealingClean75 Bandage 1 1 1.0
+LeveledListAddForm NVDLC02ChemsHealthOldWorld100 Bandage 1 1 1.0
+LeveledListAddForm NVDLC02ChemsHealthOldWorld50 Bandage 1 1 1.0
+LeveledListAddForm NVDLC02ChemsHealthOldWorld75 Bandage 1 1 1.0
+LeveledListAddForm NVDLC02DanielVendorItems Bandage 1 1 1.0
+LeveledListAddForm NVDLC02DanielVendorItems Bandage 1 1 1.0
+LeveledListAddForm NVDLC04LootChemsHealing75 Bandage 1 1 1.0
+LeveledListAddForm NVDLC04LootChemsHealingPreWar100 Bandage 1 1 1.0
+LeveledListAddForm VendorChemsHealing100 Bandage 1 1 1.0
+LeveledListAddForm VendorChemsHealing75 Bandage 1 1 1.0
+LeveledListAddForm VendorChemsHealing75Boomer Bandage 1 1 1.0
+
+BaseAddItem Bandage 2 VendorContainerDocMitchell
+
+if IsModLoaded "TaleOfTwoWastelands.esm"
+	LeveledListAddForm (EditorIDToFormID "OutcastChems100") Bandage 1 1 1.0
+	LeveledListAddForm (EditorIDToFormID "TalonChems100") Bandage 1 1 1.0
+	LeveledListAddForm (EditorIDToFormID "VendorChemsHealing100DC") Bandage 1 1 1.0
+	LeveledListAddForm (EditorIDToFormID "VendorChemsHealing75DC") Bandage 1 1 1.0
+endif

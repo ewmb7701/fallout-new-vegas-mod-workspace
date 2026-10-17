@@ -1,0 +1,36 @@
+; The configured directed graph is authoritative for reachability and marker order.
+; Native paths expand the selected legs; they never introduce new graph connections.
+Begin Function {ref rMarker, array_var aState}
+    SetFunctionValue Ar_Null
+    if eval rMarker == 0 || (rMarker.IsMapMarker == 0)
+        return
+    endif
+    if eval rMarker.GetDisabled || (rMarker.GetMapMarkerVisible == 0) || (rMarker.GetMapMarkerTravel == 0)
+        return
+    endif
+    array_var aConfig = aState["config"]
+    array_var aLocations = aConfig["locations"]
+    array_var aGraph = aState["graph"]
+    string_var sOrigin = Call (CompileScript "FastTravelPathing\GetPlayerLocation.txt") aLocations
+    array_var aCache = aState["graphPaths"]
+    if eval (Ar_HasKey aCache sOrigin) == 0
+        ; Outside configured scopes there is no cached route to select.
+        return
+    endif
+    array_var aSearch = aCache[sOrigin]
+    array_var aPaths = aSearch["paths"]
+    string_var sMarker = GetFormIDString rMarker
+    if eval (Ar_HasKey aPaths sMarker) == 0
+        return
+    endif
+    array_var aEnabled = Call (CompileScript "FastTravelPathing\GetWorldMapMarkerEnabledStates.txt") aGraph sOrigin aPaths
+    string_var sName = rMarker.GetMapMarkerName
+    if eval (Ar_HasKey aEnabled sName) == 0
+        return
+    endif
+    if eval aEnabled[sName] == 0
+        return
+    endif
+    array_var aIDs = aPaths[sMarker]
+    SetFunctionValue (Call (CompileScript "FastTravelPathing\ExpandGraphPath.txt") aGraph aIDs rMarker)
+End

@@ -1,0 +1,7 @@
+<!-- Inherit the containing stats panel appearance. -->
+<systemcolor><copy src="parent()" trait="systemcolor"/></systemcolor>
+<red><copy src="parent()" trait="red"/></red>
+<green><copy src="parent()" trait="green"/></green>
+<blue><copy src="parent()" trait="blue"/></blue>
+<alpha><copy src="parent()" trait="alpha"/></alpha>
+<visible><copy src="parent()" trait="visible"/></visible>

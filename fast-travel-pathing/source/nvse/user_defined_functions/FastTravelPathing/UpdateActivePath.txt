@@ -1,0 +1,55 @@
+Begin Function {}
+    int iCount = Player.AuxVarSize "*_FTP_PathPoints"
+    if iCount <= 0
+        Call (CompileScript "FastTravelPathing\ClearActivePath.txt")
+        return
+    endif
+    if eval (Player.AuxVarGetFlt "*_FTP_PathExecuting") == 1
+        return
+    endif
+    if MenuMode 1007
+        return
+    endif
+    int iWait = (Player.AuxVarGetFlt "*_FTP_PathWaitFrames") + 1
+    Player.AuxVarSetFlt "*_FTP_PathWaitFrames" iWait
+    ; Bound waiting for native seen data.
+    if iWait > 600
+        Call (CompileScript "FastTravelPathing\TraceTravel.txt") "STOP arrival-timeout"
+        Call (CompileScript "FastTravelPathing\ClearActivePath.txt")
+        return
+    endif
+    int iIndex = Player.AuxVarGetFlt "*_FTP_PathIndex"
+    if eval iWait == 1 || iWait == 600
+        Call (CompileScript "FastTravelPathing\TraceTravel.txt") "UPDATE arrival-check"
+    endif
+    if iIndex == -1
+        Call (CompileScript "FastTravelPathing\TravelToNextPathPoint.txt")
+        return
+    endif
+    if eval iIndex < 0 || iIndex >= iCount
+        return
+    endif
+    ref rDestinationCell = Player.AuxVarGetRef "*_FTP_PathCells" iIndex
+    ref rActualCell = Player.GetParentCell
+    if eval rDestinationCell == 0 || rActualCell != rDestinationCell
+        WriteStringToFile "FastTravelPathing_Debug.log" 1 "ERROR arrival cell mismatch index=%g expected=%i actual=%i%r" iIndex rDestinationCell rActualCell
+        Print ("Fast Travel Pathing: arrival cell mismatch at point " + $iIndex + ": expected " + $rDestinationCell + ", actual " + $rActualCell)
+        Call (CompileScript "FastTravelPathing\ClearActivePath.txt")
+        Assert rDestinationCell != 0 && rActualCell == rDestinationCell
+        return
+    endif
+    if iIndex == (iCount - 1)
+        Call (CompileScript "FastTravelPathing\TraceTravel.txt") "COMPLETE final-point"
+        Call (CompileScript "FastTravelPathing\ClearActivePath.txt")
+    else
+        ; Matching destination: wait for its live seen data before continuing.
+        if (IsCellVisited rDestinationCell) == 0
+            if eval iWait == 1 || iWait == 600
+                Call (CompileScript "FastTravelPathing\TraceTravel.txt") "WAIT destination-cell-unvisited"
+            endif
+            return
+        endif
+        Call (CompileScript "FastTravelPathing\TraceTravel.txt") "ARRIVED continuing"
+        Call (CompileScript "FastTravelPathing\TravelToNextPathPoint.txt")
+    endif
+End

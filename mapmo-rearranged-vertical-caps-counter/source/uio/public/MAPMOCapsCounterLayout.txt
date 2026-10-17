@@ -1,0 +1,4 @@
+MAPMOCapsCounterLayout\AddCaps.xml::@prefabs\mapmo\hudmainmenu\caps_counter.xml::AddCaps
+true
+MAPMOCapsCounterLayout\Icon.xml::@prefabs\mapmo\hudmainmenu\caps_counter.xml::Icon
+true

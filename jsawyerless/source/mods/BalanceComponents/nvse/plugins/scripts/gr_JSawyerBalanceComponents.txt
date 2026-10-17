@@ -1,0 +1,11 @@
+; Sensor Module added to ClutterToolBoxLow
+LeveledListAddForm ClutterToolBoxLow SensorModule 1 1 0.0
+LeveledListAddForm ClutterToolBoxLow SensorModule 1 1 0.0
+
+; Sensor Modules and Cherry Bombs drop rate tripled on VendorMisc list
+LeveledListAddForm VendorMiscItems SensorModule 1 1 0.0
+LeveledListAddForm VendorMiscItems SensorModule 1 1 0.0
+LeveledListAddForm VendorMiscItems CherryBomb 1 1 0.0
+LeveledListAddForm VendorMiscItems CherryBomb 1 1 0.0
+
+; nb, this script matches the original implementation in JSawyer which also adds multiple entries to the leveled lists

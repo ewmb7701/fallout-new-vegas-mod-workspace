@@ -1,0 +1,34 @@
+; Reconstruct Dijkstra's predecessor chain as origin -> ... -> destination IDs.
+; Unreachable destinations return an empty array; origin -> origin has one vertex.
+; Does not alter the graph or the cached shortest-path tree.
+Begin Function {array_var aSearch, string_var sDestination}
+    array_var aPath = Ar_Construct "array"
+    SetFunctionValue aPath
+    array_var aDistances = aSearch["distances"]
+    array_var aPrevious = aSearch["previous"]
+    string_var sOrigin = aSearch["origin"]
+    if eval (Ar_HasKey aDistances sDestination) == 0
+        return
+    endif
+    array_var aReverse = Ar_Construct "array"
+    string_var sCurrent = sDestination
+    int iLimit = Ar_Size aDistances
+    ; Unwind this loop with break, not return. Callers also have active NVSE
+    ; loops, and a return here would leave this loop's instruction offsets active.
+    while iLimit > 0
+        Ar_Append aReverse sCurrent
+        if eval sCurrent == sOrigin
+            int iIndex = (Ar_Size aReverse) - 1
+            while iIndex >= 0
+                Ar_Append aPath (aReverse[iIndex])
+                iIndex -= 1
+            loop
+            break
+        endif
+        if eval (Ar_HasKey aPrevious sCurrent) == 0
+            break
+        endif
+        sCurrent = aPrevious[sCurrent]
+        iLimit -= 1
+    loop
+End

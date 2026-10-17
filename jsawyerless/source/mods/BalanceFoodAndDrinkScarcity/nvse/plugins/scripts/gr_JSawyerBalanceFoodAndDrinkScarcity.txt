@@ -1,0 +1,46 @@
+; All random NPC food and drink drops set to dramatically lower rates (25 = 5%, 50 = 10%, 75 = 20%). Also affects many containers.
+SetChanceNone LL0NPCLegionFood25 95
+SetChanceNone LL0NPCLegionFood50 90
+SetChanceNone LL0NPCLegionFood75 80
+SetChanceNone LL0NPCNCRFood25 95
+SetChanceNone LL0NPCNCRFood50 90
+SetChanceNone LL0NPCNCRFood75 80
+SetChanceNone LL0NPCPowderGangerFood50 90
+SetChanceNone LL0NPCPowderGangerDrink50 90
+SetChanceNone LL0NPCStripDrink50 90
+SetChanceNone LL0NPCStripDrink75 80
+SetChanceNone LL0NPCTownDrink50 90
+SetChanceNone LL0NPCTownFood50 90
+SetChanceNone LL0NPCTownDrink75 80
+SetChanceNone LL0NPCTownFood75 80
+SetChanceNone LL0NPCWastelandFood75 80
+SetChanceNone LL0NPCWastelandFood50 90
+
+; NPC loot will drop fewer purified waters (vs. dirty waters) in general.
+RemoveNthLevItem LL0NPCTownWater (GetLevItemIndexByForm LL0NPCTownWater WaterPurified)
+RemoveNthLevItem LL0NPCTownWater25 (GetLevItemIndexByForm LL0NPCTownWater25 WaterPurified)
+RemoveNthLevItem LL0NPCTownWater50 (GetLevItemIndexByForm LL0NPCTownWater50 WaterPurified)
+RemoveNthLevItem LL0NPCTownWater75 (GetLevItemIndexByForm LL0NPCTownWater75 WaterPurified)
+RemoveNthLevItem LL0NPCWastelandWater (GetLevItemIndexByForm LL0NPCWastelandWater WaterPurified)
+RemoveNthLevItem LL0NPCWastelandWater25 (GetLevItemIndexByForm LL0NPCWastelandWater25 WaterPurified)
+RemoveNthLevItem LL0NPCWastelandWater35 (GetLevItemIndexByForm LL0NPCWastelandWater35 WaterPurified)
+RemoveNthLevItem LL0NPCWastelandWater50 (GetLevItemIndexByForm LL0NPCWastelandWater50 WaterPurified)
+RemoveNthLevItem LL0NPCWastelandWater75 (GetLevItemIndexByForm LL0NPCWastelandWater75 WaterPurified)
+
+; [undocumented] remove food and drink loot from Powder Ganger leveled lists
+BaseRemoveItem LL0NPCPowderGangerFood50 1 ChavezPowderGangerGunAAM
+BaseRemoveItem LL0NPCPowderGangerDrink50 1 ChavezPowderGangerGunAAM
+BaseRemoveItem LL0NPCPowderGangerFood50 1 GoodspringsPowderGangerAAMTemplate
+BaseRemoveItem LL0NPCPowderGangerDrink50 1 GoodspringsPowderGangerAAMTemplate
+BaseRemoveItem LL0NPCPowderGangerFood50 1 NCRCFPowderGangerGunAAMTEMPLATE
+BaseRemoveItem LL0NPCPowderGangerDrink50 1 NCRCFPowderGangerGunAAMTEMPLATE
+BaseRemoveItem LL0NPCPowderGangerFood50 1 NCRCFPowderGangerMeleeAAMTEMPLATE
+BaseRemoveItem LL0NPCPowderGangerDrink50 1 NCRCFPowderGangerMeleeAAMTEMPLATE
+BaseRemoveItem LL0NPCPowderGangerFood50 1 PowderGanger3GunAAMTEMPLATE
+BaseRemoveItem LL0NPCPowderGangerDrink50 1 PowderGanger3GunAAMTEMPLATE
+BaseRemoveItem LL0NPCPowderGangerFood50 1 PowderGangerMeleeAAMTEMPLATE
+BaseRemoveItem LL0NPCPowderGangerDrink50 1 PowderGangerMeleeAAMTEMPLATE
+BaseRemoveItem LL0NPCPowderGangerFood50 1 PowderGangerRanchAAMTEMPLATE
+BaseRemoveItem LL0NPCPowderGangerDrink50 1 PowderGangerRanchAAMTEMPLATE
+BaseRemoveItem LL0NPCPowderGangerFood50 1 PowderGangerVault19AAM
+BaseRemoveItem LL0NPCPowderGangerDrink50 1 PowderGangerVault19AAM

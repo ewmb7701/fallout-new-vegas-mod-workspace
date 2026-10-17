@@ -1,0 +1,94 @@
+; discover ini files
+array_var iniFiles = GetFilesInFolder "Config\ActorValuePatcher" "*.ini"
+let iniFiles := Ar_SortAlpha iniFiles
+
+; SetBase: assign base actor values.
+foreach array_var setBaseFile <- iniFiles
+    ; GetINISection paths are relative to Data/Config.
+    string_var setBaseINIPath = "ActorValuePatcher\" + setBaseFile["value"]
+    array_var setBaseEntries = GetINISection "SetBase" (setBaseINIPath) 1
+
+    foreach array_var setBaseEntry <- setBaseEntries
+        string_var setBaseEntryKey = setBaseEntry["key"]
+        float requestedBaseValue = setBaseEntry["value"]
+        array_var setBaseKeyParts = Sv_Split setBaseEntryKey "."
+
+        if eval (Ar_Size setBaseKeyParts) != 2
+            continue
+        endif
+
+        string_var setBaseActorEditorID = setBaseKeyParts[0]
+        string_var setBaseActorValueName = setBaseKeyParts[1]
+
+        ; Reconstruct the key to reject extra delimiters discarded by Sv_Split.
+        if eval (setBaseActorEditorID == "") || (setBaseActorValueName == "") || (setBaseEntryKey != (setBaseActorEditorID + "." + setBaseActorValueName))
+            continue
+        endif
+
+        ref setBaseActorBase = EditorIDToFormID (setBaseActorEditorID)
+
+        if eval (!setBaseActorBase)
+            continue
+        endif
+
+        int setBaseActorFormType = GetType setBaseActorBase
+
+        ; NPC = 42, Creature = 43
+        if eval (setBaseActorFormType != 42 && setBaseActorFormType != 43)
+            continue
+        endif
+
+        int setBaseActorValueCode = StringToActorValue (setBaseActorValueName)
+
+        if eval (setBaseActorValueCode < 0)
+            continue
+        endif
+
+        SetBaseActorValue (setBaseActorValueCode) requestedBaseValue setBaseActorBase
+    loop
+loop
+
+; ModBase: adjust base actor values after all SetBase entries.
+foreach array_var modBaseFile <- iniFiles
+    string_var modBaseINIPath = "ActorValuePatcher\" + modBaseFile["value"]
+    array_var modBaseEntries = GetINISection "ModBase" (modBaseINIPath) 1
+
+    foreach array_var modBaseEntry <- modBaseEntries
+        string_var modBaseEntryKey = modBaseEntry["key"]
+        float baseValueAdjustment = modBaseEntry["value"]
+        array_var modBaseKeyParts = Sv_Split modBaseEntryKey "."
+
+        if eval (Ar_Size modBaseKeyParts) != 2
+            continue
+        endif
+
+        string_var modBaseActorEditorID = modBaseKeyParts[0]
+        string_var modBaseActorValueName = modBaseKeyParts[1]
+
+        ; Reconstruct the key to reject extra delimiters discarded by Sv_Split.
+        if eval (modBaseActorEditorID == "") || (modBaseActorValueName == "") || (modBaseEntryKey != (modBaseActorEditorID + "." + modBaseActorValueName))
+            continue
+        endif
+
+        ref modBaseActorBase = EditorIDToFormID (modBaseActorEditorID)
+
+        if eval (!modBaseActorBase)
+            continue
+        endif
+
+        int modBaseActorFormType = GetType modBaseActorBase
+
+        ; NPC = 42, Creature = 43
+        if eval (modBaseActorFormType != 42 && modBaseActorFormType != 43)
+            continue
+        endif
+
+        int modBaseActorValueCode = StringToActorValue (modBaseActorValueName)
+
+        if eval (modBaseActorValueCode < 0)
+            continue
+        endif
+
+        ModBaseAV (modBaseActorValueCode) baseValueAdjustment modBaseActorBase
+    loop
+loop

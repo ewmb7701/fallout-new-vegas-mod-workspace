@@ -1,0 +1,10 @@
+name OnMenuClose;
+
+fn(int iMenuID) {
+  float bWasWaiting = PlayerRef.AuxiliaryVariableGetFloat("*_AutosaveAfterWait_WasWaiting");
+  PlayerRef.AuxiliaryVariableErase("*_AutosaveAfterWait_WasWaiting");
+  if (!bWasWaiting) {
+    return;
+  }
+  AutoSave();
+}

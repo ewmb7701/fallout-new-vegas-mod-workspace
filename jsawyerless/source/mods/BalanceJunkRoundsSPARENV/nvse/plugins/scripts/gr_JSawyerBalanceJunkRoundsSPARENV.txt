@@ -1,0 +1,25 @@
+SetAmmoCasing JSawyerAmmo45AutoJunkRounds ; Sets the ammo casing for .45 Auto, Junk to None (which matches SPARE)
+
+; quantities copied from SPARE TTW
+SetRecipeRequiredSkillLevel JSawyerRecipe22LRJunkRounds 25
+; nb, the base game lacks Case, .22LR
+SetRecipeInputCount JSawyerRecipe22LRJunkRounds TinCan01 2
+SetRecipeOutputCount JSawyerRecipe22LRJunkRounds JSawyerRecipe22LRJunkRounds 12
+
+SetRecipeRequiredSkillLevel JSawyerRecipe45AutoJunkRounds 40
+SetRecipeInputCount JSawyerRecipe45AutoJunkRounds NVDLC02Case45Auto 5
+SetRecipeInputCount JSawyerRecipe45AutoJunkRounds TinCan01 2
+SetRecipeOutputCount JSawyerRecipe45AutoJunkRounds JSawyerAmmo45AutoJunkRounds 5
+
+SetRecipeRequiredSkillLevel JSawyerRecipe127mmJunkRounds 70
+SetRecipeInputCount JSawyerRecipe127mmJunkRounds TinCan01 2
+SetRecipeInputCount JSawyerRecipe127mmJunkRounds Case127mm 4
+SetRecipeOutputCount JSawyerRecipe127mmJunkRounds Ammo127mmJunkRounds 4
+
+; nb, recipe quantities for junk ammo recipes in the base game are set by SPARE NV
+
+; set names of rounds and recipes created by JSawyer to match SPARE (which is technically "integration" and not "balance", but whatever)
+SetName ".45 Auto, Junk" JSawyerAmmo45AutoJunkRounds
+SetName ".22LR, Junk" JSawyerRecipe22LRJunkRounds
+SetName ".45 Auto, Junk" JSawyerRecipe45AutoJunkRounds
+SetName "12.7mm, Junk" JSawyerRecipe127mmJunkRounds

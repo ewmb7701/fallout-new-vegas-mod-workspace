@@ -1,0 +1,11 @@
+ref rCompanion
+begin Function {}
+    if GetVATSMode
+        return
+    endif
+    let rCompanion := GetSelf
+    if rCompanion.GetPlayerTeammate == 0
+        return
+    endif
+    Call (CompileScript "VanillaUICompanionEnhancements/SetCompanionHealthBarTarget.txt") rCompanion
+end

@@ -1,0 +1,47 @@
+; caller supplies space, coordinates, degrees and game hours.
+Begin Function {}
+    int iAirBeforeCheck = Player.IsInAir
+    if eval (CanPlayerFastTravelWithMessage) == 0
+        WriteStringToFile "FastTravelPathing_Debug.log" 1 "ELIGIBILITY rejected air-before-check=%g%r" iAirBeforeCheck
+        Call (CompileScript "FastTravelPathing\TraceTravel.txt") "STOP native-eligibility"
+        Call (CompileScript "FastTravelPathing\ClearActivePath.txt")
+        return
+    endif
+    array_var aNext = Call (CompileScript "FastTravelPathing\GetNextPathPoint.txt")
+    if eval aNext == Ar_Null
+        Call (CompileScript "FastTravelPathing\TraceTravel.txt") "STOP no-next-point"
+        Call (CompileScript "FastTravelPathing\ClearActivePath.txt")
+        return
+    endif
+    int iNext = aNext["index"]
+    float fTime = aNext["time"]
+    ref rPoint = Player.AuxVarGetRef "*_FTP_PathPoints" iNext
+    ref rArrival = Player.AuxVarGetRef "*_FTP_PathArrivals" iNext
+    WriteStringToFile "FastTravelPathing_Debug.log" 1 "NEXT index=%g point=%i (%n) arrival=%i hours=%g%r" iNext rPoint rPoint rArrival fTime
+    if eval (Call (CompileScript "FastTravelPathing\CanTravelToPathPoint.txt") rPoint rArrival) == 0
+        Call (CompileScript "FastTravelPathing\TraceTravel.txt") "STOP waypoint-validation"
+        Call (CompileScript "FastTravelPathing\ClearActivePath.txt")
+        return
+    endif
+    ref rSpace = Player.AuxVarGetRef "*_FTP_PathWorlds" iNext
+    if rSpace == 0
+        let rSpace := Player.AuxVarGetRef "*_FTP_PathCells" iNext
+    endif
+    float fX = Player.AuxVarGetFlt "*_FTP_PathX" iNext
+    float fY = Player.AuxVarGetFlt "*_FTP_PathY" iNext
+    float fZ = Player.AuxVarGetFlt "*_FTP_PathZ" iNext
+    float fHeading = Player.AuxVarGetFlt "*_FTP_PathHeading" iNext
+    ; State precedes execution: native loading can run script callbacks.
+    Player.AuxVarSetFlt "*_FTP_PathIndex" iNext
+    Player.AuxVarSetFlt "*_FTP_PathExecuting" 1
+    Player.AuxVarSetFlt "*_FTP_PathWaitFrames" 0
+    if eval (FastTravelEx rSpace fX fY fZ 0 0 fHeading fTime) == 0
+        Call (CompileScript "FastTravelPathing\TraceTravel.txt") "STOP FastTravelEx-failed"
+        Call (CompileScript "FastTravelPathing\ClearActivePath.txt")
+        return
+    endif
+    Call (CompileScript "FastTravelPathing\TraceTravel.txt") "FastTravelEx-returned-success"
+    if (Player.AuxVarSize "*_FTP_PathPoints") > 0
+        Player.AuxVarSetFlt "*_FTP_PathExecuting" 0
+    endif
+End

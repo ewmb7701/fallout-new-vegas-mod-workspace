@@ -1,0 +1,98 @@
+ref rTarget
+float fHP
+float fMaxHP
+float fFraction
+float fHealthDisplay
+float fMaxHealthDisplay
+float fWeight
+float fCapacity
+float fWeightMode
+float fWeightDisplay
+float fDT
+float fDR
+begin Function {}
+    if eval IsComponentLoaded "HUDMainMenu/VUICE" == 0
+        return
+    endif
+    let rTarget := PlayerRef.AuxiliaryVariableGetRef "*_VUICE_CompanionStatsTarget"
+    if IsReference rTarget == 0
+        SetUIFloatAlt "HUDMainMenu/VUICE/visible" 0
+        return
+    endif
+    if rTarget.GetPlayerTeammate == 0
+        SetUIFloatAlt "HUDMainMenu/VUICE/visible" 0
+        return
+    endif
+    if eval (MenuMode) || (GetVATSMode)
+        SetUIFloatAlt "HUDMainMenu/VUICE/visible" 0
+        return
+    endif
+    ; Do not leave stats visible for a frame after activation moves away.
+    if eval rTarget != (GetCrosshairRef)
+        SetUIFloatAlt "HUDMainMenu/VUICE/visible" 0
+        return
+    endif
+    let fHP := rTarget.GetAV Health
+    let fMaxHP := (rTarget.GetPermAV Health) + (rTarget.GetActorValueModifier Health 2)
+    let fFraction := 0
+    if fMaxHP > 0
+        let fFraction := fHP / fMaxHP
+    endif
+    ; Truncate displayed HP: rounding 179.x to 180 falsely implies full health.
+    let fHealthDisplay := Floor fHP
+    let fMaxHealthDisplay := Floor fMaxHP
+    if GetUIFloatAlt "HUDMainMenu/VUICE/_HealthMode" == 3
+        if fMaxHP > 0
+            let fHealthDisplay := Floor (fFraction * 100)
+            SetUIStringAlt "HUDMainMenu/VUICE/Stats/Health/string" "%.0f%%" fHealthDisplay
+        else
+            SetUIStringAlt "HUDMainMenu/VUICE/Stats/Health/string" "--%%"
+        endif
+    elseif eval (GetUIFloatAlt "HUDMainMenu/VUICE/_HealthMode") == 4 || (GetUIFloatAlt "HUDMainMenu/VUICE/_HealthMode") == 5
+        ; Missing HP uses the same truncated values as the current/max display.
+        let fHealthDisplay := fMaxHealthDisplay - fHealthDisplay
+        if fHealthDisplay < 0
+            let fHealthDisplay := 0
+        endif
+        if GetUIFloatAlt "HUDMainMenu/VUICE/_HealthMode" == 4
+            SetUIStringAlt "HUDMainMenu/VUICE/Stats/Health/string" "-%.0f" fHealthDisplay
+        else
+            SetUIStringAlt "HUDMainMenu/VUICE/Stats/Health/string" "%.0f" fHealthDisplay
+        endif
+    elseif GetUIFloatAlt "HUDMainMenu/VUICE/_HealthMode" == 2
+        SetUIStringAlt "HUDMainMenu/VUICE/Stats/Health/string" "%.0f/%.0f" fHealthDisplay fMaxHealthDisplay
+    else
+        SetUIStringAlt "HUDMainMenu/VUICE/Stats/Health/string" "%.0f" fHealthDisplay
+    endif
+    let fWeight := rTarget.GetInventoryWeight 1
+    let fCapacity := rTarget.GetCalculatedMaxCarryWeight
+    let fDT := rTarget.GetAV DamageThreshold
+    let fWeightMode := GetUIFloatAlt "HUDMainMenu/VUICE/_WeightMode"
+    if fWeightMode == 3
+        if fCapacity > 0
+            let fWeightDisplay := (fWeight / fCapacity) * 100
+            SetUIStringAlt "HUDMainMenu/VUICE/Stats/Weight/string" "%.0f%%" fWeightDisplay
+        else
+            SetUIStringAlt "HUDMainMenu/VUICE/Stats/Weight/string" "--%%"
+        endif
+    elseif fWeightMode == 4
+        let fWeightDisplay := fCapacity - fWeight
+        if fWeightDisplay > 0
+            SetUIStringAlt "HUDMainMenu/VUICE/Stats/Weight/string" "+%.0f" fWeightDisplay
+        elseif fWeightDisplay < 0
+            SetUIStringAlt "HUDMainMenu/VUICE/Stats/Weight/string" "%.0f" fWeightDisplay
+        else
+            SetUIStringAlt "HUDMainMenu/VUICE/Stats/Weight/string" "0"
+        endif
+    elseif fWeightMode == 2
+        SetUIStringAlt "HUDMainMenu/VUICE/Stats/Weight/string" "%.0f/%.0f" fWeight fCapacity
+    else
+        SetUIStringAlt "HUDMainMenu/VUICE/Stats/Weight/string" "%.0f" fWeight
+    endif
+    SetUIStringAlt "HUDMainMenu/VUICE/Stats/Armor/string" "%.0f" fDT
+    if GetUIFloatAlt "HUDMainMenu/VUICE/_ShowDR"
+        let fDR := rTarget.GetAV DamageResist
+        SetUIStringAlt "HUDMainMenu/VUICE/Stats/Resistance/string" "%.0f%%" fDR
+    endif
+    SetUIFloatAlt "HUDMainMenu/VUICE/visible" 1
+end

@@ -1,0 +1,16 @@
+{
+  "tags": [
+    {
+      "priority": 150,
+      "tag": "(dla1)",
+      "mod": "Armor Repair Kits.esp",
+      "form": "006566"
+    },
+    {
+      "priority": 150,
+      "tag": "(jfc1)",
+      "mod": "FalloutNV.esm",
+      "form": "05B637"
+    }
+  ]
+}

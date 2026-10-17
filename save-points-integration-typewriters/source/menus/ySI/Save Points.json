@@ -1,0 +1,18 @@
+{
+  "tags": [
+    {
+      "priority": 200,
+      "tag": "(save_point)",
+      "mod": "Save Points.esp",
+      "form": "000801"
+    }
+  ],
+  "icons": [
+    {
+      "priority": 200,
+      "tag": "(save_point)",
+      "template": "ySIDefault",
+      "filename": "interface\\icons\\World_Typewriter.dds"
+    }
+  ]
+}

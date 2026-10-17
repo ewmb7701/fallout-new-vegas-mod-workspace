@@ -1,0 +1,65 @@
+; Apply marker travel and highlight states to the world map tiles.
+; Returns 1 on success or 0 if marker tiles are unavailable or a scan fails.
+
+Begin Function {array_var aEnabledStates, array_var aLitStates}
+    SetFunctionValue 0
+    ; Index paths also cover unnamed / mod-added tiles and names containing
+    ; path separators. Only MapMarkerTemplate children have _MarkerIndex.
+    string_var sRoot = "MapMenu/GLOW_BRANCH/MM_MainRect/MM_WorldMap_ClipWindow/MM_WorldMap_ParentImage/"
+    int iIndex = 0
+    int iMarkers = 0
+    string_var sTile = sRoot + "*:0"
+    while (GetUIFloatAlt (sTile + "/visible")) != -999
+        if iIndex >= 4096
+            return
+        endif
+        if (GetUIFloatAlt (sTile + "/_MarkerIndex")) != -999
+            iMarkers += 1
+            ; Use the named-tile lookup used by Fast Travel Overhaul.
+            ; First deny every marker, then enable verified destinations by name.
+            SetUIFloatAlt (sTile + "/user0") 0
+            SetUIFloatAlt (sTile + "/alpha") 128
+        endif
+        iIndex += 1
+        sTile = sRoot + "*:" + $iIndex
+    loop
+    if iMarkers == 0
+        return
+    endif
+
+    foreach array_var aNameEntry <- aEnabledStates
+        if eval aNameEntry["value"] == 0
+            continue
+        endif
+        string_var sName = aNameEntry["key"]
+        int iOccurrence = 0
+        sTile = sRoot + sName + ":0"
+        while (GetUIFloatAlt (sTile + "/user0")) != -999
+            if iOccurrence >= 4096
+                return
+            endif
+            SetUIFloatAlt (sTile + "/user0") 1
+            iOccurrence += 1
+            sTile = sRoot + sName + ":" + $iOccurrence
+        loop
+    loop
+
+    foreach array_var aNameEntry <- aLitStates
+        if eval aNameEntry["value"] == 0
+            continue
+        endif
+        string_var sName = aNameEntry["key"]
+        int iOccurrence = 0
+        sTile = sRoot + sName + ":0"
+        while (GetUIFloatAlt (sTile + "/user0")) != -999
+            if iOccurrence >= 4096
+                return
+            endif
+            SetUIFloatAlt (sTile + "/alpha") 255
+            iOccurrence += 1
+            sTile = sRoot + sName + ":" + $iOccurrence
+        loop
+    loop
+
+    SetFunctionValue 1
+End

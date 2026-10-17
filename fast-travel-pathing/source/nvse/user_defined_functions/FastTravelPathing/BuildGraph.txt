@@ -1,0 +1,73 @@
+; Build the constant directed adjacency graph once per load from the config snapshot.
+; vertices[locationID] = {center: marker, edges: destinationID -> native path distance}.
+; Consumers treat this graph as read-only. Search distances/predecessors live separately.
+; Duplicate directed edges are calculated once; reverse edges are never inferred.
+Begin Function {array_var aConfig}
+    SetFunctionValue Ar_Null
+    if eval aConfig == Ar_Null
+        return
+    endif
+    array_var aGraph = Ar_Construct "stringmap"
+    array_var aLocations = aConfig["locations"]
+    if eval (Ar_Size aLocations) <= 0
+        return
+    endif
+    foreach array_var aEntry <- aLocations
+        array_var aLocation = aEntry["value"]
+        array_var aScope = aLocation["scope"]
+        ref rCenter = aScope["centerRef"]
+        if eval rCenter == 0 || (rCenter.IsMapMarker == 0)
+            return
+        endif
+        array_var aVertex = Ar_Construct "stringmap"
+        let aVertex["center"] := rCenter
+        let aVertex["edges"] := Ar_Construct "stringmap"
+        let aGraph[aEntry["key"]] := aVertex
+    loop
+    array_var aConnections = aConfig["connections"]
+    foreach aEntry <- aConnections
+        array_var aConnection = aEntry["value"]
+        string_var sOrigin = aConnection["origin"]
+        string_var sDestination = aConnection["destinationID"]
+        ; Keep failures separate so the console identifies the actual bad input.
+        if eval (Ar_HasKey aGraph sOrigin) == 0
+            return
+        endif
+        if eval (Ar_HasKey aGraph sDestination) == 0
+            return
+        endif
+        array_var aTarget = aGraph[sDestination]
+        if eval aTarget["center"] != aConnection["destination"]
+            return
+        endif
+        let aVertex := aGraph[sOrigin]
+        array_var aEdges = aVertex["edges"]
+        if eval Ar_HasKey aEdges sDestination
+            continue
+        endif
+        ; Native travel resolves linked landing references before measuring distance.
+        ref rOrigin = aVertex["center"]
+        ref rDestination = aTarget["center"]
+        ref rLinked = rOrigin.GetLinkedRef
+        if rLinked
+            let rOrigin := rLinked
+        endif
+        let rLinked := rDestination.GetLinkedRef
+        if rLinked
+            let rDestination := rLinked
+        endif
+        ; Cache native distance once per load. INIs define connectivity only.
+        array_var aPath = GetPath rOrigin rDestination
+        if eval aPath == Ar_Null
+            continue
+        endif
+        float fDistance = aPath["distance"]
+        ; Only the scalar edge cost is retained; native points are not cached.
+        let aPath := Ar_Null
+        if eval fDistance < 0 || (fDistance - fDistance) != 0
+            continue
+        endif
+        let aEdges[sDestination] := fDistance
+    loop
+    SetFunctionValue aGraph
+End

@@ -1,0 +1,2 @@
+; Sturdy Caravan Shotgun added to ShotgunSurgeonWeaponsList
+ListAddForm ShotgunSurgeonWeaponsList WeapPreordCaravanShotgun -2 1

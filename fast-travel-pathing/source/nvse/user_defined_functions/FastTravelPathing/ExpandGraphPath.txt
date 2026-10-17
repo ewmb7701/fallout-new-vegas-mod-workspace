@@ -1,0 +1,65 @@
+; Expand every configured marker leg, preserving its endpoint as a travel point.
+; The first leg starts at the player; subsequent legs start at marker landing refs.
+; GetPath resolves door transitions but does not resolve marker linked refs for us.
+Begin Function {array_var aGraph, array_var aIDs, ref rFinalMarker}
+    SetFunctionValue Ar_Null
+    if eval (Ar_Size aIDs) == 0
+        return
+    endif
+    array_var aMarkers = Ar_Construct "array"
+    if eval (Ar_Size aIDs) == 1
+        ; Caller validated the explicit same-center connection before expansion.
+        Ar_Append aMarkers rFinalMarker
+    endif
+    foreach array_var aID <- aIDs
+        if eval aID["key"] > 0
+            array_var aVertex = aGraph[aID["value"]]
+            Ar_Append aMarkers (aVertex["center"])
+        endif
+    loop
+    array_var aPoints = Ar_Construct "array"
+    float fDistance = 0
+    int iValid = 1
+    ref rOrigin = Player
+    foreach array_var aEntry <- aMarkers
+        ref rMarker = aEntry["value"]
+        if eval rMarker == 0 || rMarker.GetDisabled || (rMarker.GetMapMarkerVisible == 0) || (rMarker.GetMapMarkerTravel == 0)
+            let iValid := 0
+            break
+        endif
+        ref rDestination = rMarker.GetLinkedRef
+        if rDestination == 0
+            let rDestination := rMarker
+        endif
+        array_var aLeg = GetPath rOrigin rDestination
+        if eval aLeg == Ar_Null
+            let iValid := 0
+            break
+        endif
+        array_var aLegPoints = aLeg["points"]
+        if eval (Ar_Size aLegPoints) < 2
+            let iValid := 0
+            break
+        endif
+        let fDistance := fDistance + aLeg["distance"]
+        foreach array_var aPointEntry <- aLegPoints
+            array_var aPoint = aPointEntry["value"]
+            ; Adjacent legs share a landing point; keep only the preceding endpoint.
+            if eval aPointEntry["key"] == 0 && (Ar_Size aPoints) > 0
+                continue
+            endif
+            if eval aPoint["kind"] == "destination"
+                let aPoint["marker"] := rMarker
+            endif
+            Ar_Append aPoints aPoint
+        loop
+        let rOrigin := rDestination
+    loop
+    if iValid == 0
+        return
+    endif
+    array_var aResult = Ar_Construct "stringmap"
+    let aResult["distance"] := fDistance
+    let aResult["points"] := aPoints
+    SetFunctionValue aResult
+End

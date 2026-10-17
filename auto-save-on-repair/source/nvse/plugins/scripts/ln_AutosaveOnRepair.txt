@@ -1,0 +1,1 @@
+SetEventHandler "OnRepair" (CompileScript "AutosaveOnRepair/OnRepair.txt")

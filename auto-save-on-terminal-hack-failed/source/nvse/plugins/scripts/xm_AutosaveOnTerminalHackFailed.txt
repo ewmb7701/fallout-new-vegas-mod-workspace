@@ -1,0 +1,1 @@
+RemoveEventHandler "OnTerminalHackFailed" (CompileScript "AutosaveOnTerminalHackFailed/OnTerminalHackFailed.txt")

@@ -1,0 +1,45 @@
+<rect name="CompanionHealthBar">
+    <locus>1</locus><width>350</width><height>52</height>
+    <_HealthBarOffsetX>0</_HealthBarOffsetX>
+    <x><copy src="screen()" trait="width"/><div>2</div><sub>175</sub><add src="me()" trait="_HealthBarOffsetX"/></x>
+    <_HealthBarOffsetY>0</_HealthBarOffsetY>
+    <y><copy src="screen()" trait="height"/><sub>117</sub><add src="me()" trait="_HealthBarOffsetY"/></y>
+    <visible>0</visible><systemcolor>0</systemcolor><alpha>255</alpha>
+    <red>46</red><green>206</green><blue>255</blue>
+    <_HealthBarFraction>0</_HealthBarFraction>
+    <!-- Native meter: 240 units, 8-unit ticks, center at 171. -->
+    <_TotalWidth>240</_TotalWidth>
+    <_ImageWidth>8</_ImageWidth>
+    <_MaxPips><copy><floor><copy src="me()" trait="_TotalWidth"/><div src="me()" trait="_ImageWidth"/></floor></copy></_MaxPips>
+    <!-- Native centered meter (0x7748B0, mode 2) quantizes in pairs:
+         width = floor(clamp(health) * total / (2 * pitch)) * (2 * pitch).
+         Keep one pip for positive health below the first pair. -->
+    <_FilledPips>
+        <copy><floor>
+            <copy src="me()" trait="_HealthBarFraction"/><max>0</max><min>1</min>
+            <mul src="me()" trait="_TotalWidth"/>
+            <div><copy src="me()" trait="_ImageWidth"/><mul>2</mul></div>
+        </floor></copy>
+        <mul>2</mul>
+        <max><copy src="me()" trait="_HealthBarFraction"/><gt>0</gt></max>
+        <min src="me()" trait="_MaxPips"/>
+    </_FilledPips>
+
+    <image name="Bracket">
+        <filename>Interface\HUD\glow_enemy_health_seperator.dds</filename>
+        <texatlas>Interface\InterfaceShared.tai</texatlas><zoom>&scale;</zoom>
+        <x>-7</x><y>3</y><width>500</width><height>64</height>
+        <include src="VanillaUICompanionEnhancements\ParentStyle.xml"/>
+    </image>
+    <image name="Pips">
+        <filename>Interface\HUD\hud_tick_mark.dds</filename>
+        <tile>1</tile><zoom>100</zoom><height>20</height><y>3</y>
+        <x><copy>171</copy><sub><copy src="parent()" trait="_FilledPips"/><mul>8</mul><div>2</div></sub></x>
+        <width><copy src="parent()" trait="_FilledPips"/><mul>8</mul><sub>2</sub><max>0</max></width>
+        <include src="VanillaUICompanionEnhancements\ParentStyle.xml"/>
+    </image>
+    <text name="Name">
+        <string></string><font>7</font><justify>&center;</justify><x>171</x><y>35</y>
+        <include src="VanillaUICompanionEnhancements\ParentStyle.xml"/>
+    </text>
+</rect>

@@ -1,0 +1,43 @@
+; Return marker name -> lit state for all vertices reachable in the directed graph.
+; The origin has a zero-edge path to itself. Outside locations, highlight all
+; configured centers so the player can find a departure location.
+; Hidden or disabled markers stay unlit. Every marker sharing a UI name must qualify.
+; Does not mutate config or change travel-enabled states.
+
+Begin Function {array_var aGraph, array_var aSearch}
+    array_var aResult = Ar_Construct "stringmap"
+    array_var aHighlights = Ar_Construct "array"
+    array_var aDistances = aSearch["distances"]
+    array_var aHighlightLocations = aDistances
+    if eval (Ar_Size aDistances) == 0
+        let aHighlightLocations := aGraph
+    endif
+    foreach array_var aEntry <- aHighlightLocations
+        array_var aVertex = aGraph[aEntry["key"]]
+        ref rCenter = aVertex["center"]
+        if eval (Ar_Find rCenter aHighlights) == Ar_BadNumericIndex
+            Ar_Append aHighlights rCenter
+        endif
+    loop
+    array_var aMarkers = GetFormRefs MapMarker
+    foreach array_var aMarkerEntry <- aMarkers
+        ref rMarker = aMarkerEntry["value"]
+        string_var sName = rMarker.GetMapMarkerName
+        if eval (Sv_Length sName) == 0
+            continue
+        endif
+        int iLit = 0
+        if eval rMarker.GetMapMarkerVisible && (rMarker.GetDisabled == 0)
+            if eval (Ar_Find rMarker aHighlights) != Ar_BadNumericIndex
+                iLit = 1
+            endif
+        endif
+        ; UI exposes names, not references. Every duplicate must qualify.
+        if eval Ar_HasKey aResult sName
+            let aResult[sName] := aResult[sName] && iLit
+        else
+            let aResult[sName] := iLit
+        endif
+    loop
+    SetFunctionValue aResult
+End

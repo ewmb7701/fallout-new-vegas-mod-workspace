@@ -1,0 +1,6 @@
+; RepairVaultSuit [...] now includes all F:NV base Vault Suits.
+ListAddForm RepairVaultSuit VaultSuit24 -2 1
+ListAddForm RepairVaultSuit VaultSuit34 -2 1
+ListAddForm RepairVaultSuit VaultSuit21 -2 1
+ListAddForm RepairVaultSuit VaultSuit19 -2 1
+ListAddForm RepairVaultSuit VaultSuit11 -2 1

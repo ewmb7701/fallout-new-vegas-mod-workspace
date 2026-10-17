@@ -1,0 +1,1 @@
+RemoveEventHandler "OnCombatEnd" (CompileScript "AutosaveOnCombatEnd/OnCombatEnd.txt")

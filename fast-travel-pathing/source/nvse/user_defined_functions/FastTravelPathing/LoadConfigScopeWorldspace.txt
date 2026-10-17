@@ -1,0 +1,6 @@
+; Read the configured worldspace form from its plugin and local FormID.
+Begin Function {string_var sPath, string_var sSection}
+    string_var sMod = GetINIString (sSection + ":sModName") (sPath)
+    string_var sForm = GetINIString (sSection + ":sWorldspaceFormId") (sPath)
+    SetFunctionValue (GetFormFromMod (sMod) (sForm))
+End

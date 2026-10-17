@@ -1,0 +1,7 @@
+<x>
+  <copy src="sibling(Text)" trait="x"/>
+</x>
+<y>
+  <copy src="sibling(Icon)" trait="y"/>
+  <sub><copy>0.2</copy><mult src="parent" trait="zoom"/></sub>
+</y>

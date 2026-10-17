@@ -1,0 +1,13 @@
+; Missing In Shining Armor torso armor
+ListAddForm NVDLC01ArmorVsBeamTorso NVDLC04ArmorPowerNCRScorched -2 1
+ListAddForm NVDLC01ArmorVsBeamTorso NVDLC04ArmorLegateCustom -2 1
+ListAddForm NVDLC01ArmorVsBeamTorso NVDLC02ArmorMetalReinforcedGecko -2 1
+ListAddForm NVDLC01ArmorVsBeamTorso NVDLC02ArmorMetalGecko -2 1
+ListAddForm NVDLC01ArmorVsBeamTorso ArmorPowerNCRSalvaged -2 1
+ListAddForm NVDLC01ArmorVsBeamTorso PreordArmorMetal -2 1
+
+; Missing In Shining Armor eyewear armor
+ListAddForm NVDLC01ArmorVsBeamEyewear NVDLC04HelmetMarkedBeastFace -2 1
+ListAddForm NVDLC01ArmorVsBeamEyewear NVDLC04HelmetMarkedBeastEyes -2 1
+ListAddForm NVDLC01ArmorVsBeamEyewear NVDLC04HelmetMarkedBeast -2 1
+ListAddForm NVDLC01ArmorVsBeamEyewear NVDLC04HelmetLegateHelm -2 1

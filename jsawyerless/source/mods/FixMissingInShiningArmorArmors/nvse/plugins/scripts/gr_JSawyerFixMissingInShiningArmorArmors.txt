@@ -1,0 +1,8 @@
+; Missing In Shining Armor torso armor
+let ref rJSawyerArmorUniqueMetalReinforced := EditorIDToFormID "JSawyerArmorUniqueMetalReinforced"
+if eval IsFormValid rJSawyerArmorUniqueMetalReinforced
+    ListAddForm NVDLC01ArmorVsBeamTorso rJSawyerArmorUniqueMetalReinforced -2 1
+endif
+
+; Composite Recon Armor removed from In Shining Armor list.
+ListRemoveForm NVDLC01ArmorVsBeamTorso ArmorUniqueRecon

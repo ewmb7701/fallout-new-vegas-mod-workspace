@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fomod>
+  <Name>Alternate Vanilla HUD Brackets</Name>
+  <Description>Choose each HUD bracket independently: Default, Flat, or Split on the left; Default, Flat, or Divided on the right. Default is recommended and leaves that bracket unchanged. Divided uses the mirrored vanilla left bracket with its compass mark; Flat removes the mark. Select whether you have Vanilla UI Plus and The HUD Editor installed, and set Texture Source to Vanilla or Clean Vanilla HUD (CVH) to match your installed HUD textures. All installation options are selected manually. Requires UIO - User Interface Organizer.</Description>
+</fomod>

@@ -1,0 +1,5 @@
+name OnWait;
+
+fn(int iMode) {
+  PlayerRef.AuxiliaryVariableSetFloat("*_AutosaveAfterWait_WasWaiting", 1);
+}

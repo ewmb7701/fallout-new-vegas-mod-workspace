@@ -1,0 +1,21 @@
+; Return unique center markers at the ends of the origin's outgoing directed edges.
+; Used for departure notifications and preserving explicit same-center exits.
+
+Begin Function {array_var aGraph, string_var sLocationID}
+    array_var aDestinations = Ar_Construct "array"
+    SetFunctionValue aDestinations
+    if eval (Ar_HasKey aGraph sLocationID) == 0
+        return
+    endif
+    array_var aOrigin = aGraph[sLocationID]
+    array_var aEdges = aOrigin["edges"]
+    foreach array_var aEntry <- aEdges
+        array_var aTarget = aGraph[aEntry["key"]]
+        ref rDestination = aTarget["center"]
+        if eval (Ar_Find rDestination aDestinations) != Ar_BadNumericIndex
+            continue
+        endif
+        Ar_Append aDestinations rDestination
+    loop
+    SetFunctionValue aDestinations
+End

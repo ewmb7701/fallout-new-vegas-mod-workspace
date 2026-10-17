@@ -1,0 +1,370 @@
+<?xml version='1.0' encoding='utf-8'?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://qconsulting.ca/fo3/ModConfig5.0.xsd">
+  <moduleName>Alternate Vanilla HUD Brackets</moduleName>
+  <installSteps order="Explicit">
+    <installStep name="Bracket appearance">
+      <optionalFileGroups order="Explicit">
+        <group name="Installed UI mods" type="SelectAny">
+          <plugins order="Explicit">
+            <plugin name="VUI+ Installed">
+              <description>Check this if you have Vanilla UI Plus installed.</description>
+              <conditionFlags>
+                <flag name="VUIInstalled">Yes</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Optional" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="The HUD Editor Installed">
+              <description>Check this if you have The HUD Editor installed.</description>
+              <conditionFlags>
+                <flag name="THEInstalled">Yes</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Optional" />
+              </typeDescriptor>
+            </plugin>
+          </plugins>
+        </group>
+        <group name="Texture Source" type="SelectExactlyOne">
+          <plugins order="Explicit">
+            <plugin name="Vanilla">
+              <description>Select Vanilla if you use the original HUD textures. UIO - User Interface Organizer is required for the bracket configs.</description>
+              <conditionFlags>
+                <flag name="TextureSource">Vanilla</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Recommended" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Clean Vanilla HUD (CVH)">
+              <description>Select Clean Vanilla HUD (CVH) if it is your HUD texture source, including when using its Vanilla UI Plus patch. UIO - User Interface Organizer is required for the bracket configs.</description>
+              <conditionFlags>
+                <flag name="TextureSource">CVH</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Optional" />
+              </typeDescriptor>
+            </plugin>
+          </plugins>
+        </group>
+        <group name="Left bracket" type="SelectExactlyOne">
+          <plugins order="Explicit">
+            <plugin name="Default">
+              <description>Leave the left bracket unchanged. No left bracket textures or UIO config will be installed.</description>
+              <conditionFlags>
+                <flag name="LeftStyle">Default</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Recommended" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Split">
+              <description>Use the mirrored vanilla right bracket on the left. The matching textures and UIO config use your Texture Source and installed UI mod selections.</description>
+              <image path="images\preview_left_split.png" />
+              <conditionFlags>
+                <flag name="LeftStyle">Split</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Optional" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Flat">
+              <description>Use the vanilla left bracket without the center mark. The matching textures and UIO config use your Texture Source and installed UI mod selections.</description>
+              <image path="images\preview_left_flat.png" />
+              <conditionFlags>
+                <flag name="LeftStyle">Flat</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Optional" />
+              </typeDescriptor>
+            </plugin>
+          </plugins>
+        </group>
+        <group name="Right bracket" type="SelectExactlyOne">
+          <plugins order="Explicit">
+            <plugin name="Default">
+              <description>Leave the right bracket unchanged. No right bracket textures or UIO config will be installed.</description>
+              <conditionFlags>
+                <flag name="RightStyle">Default</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Recommended" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Divided">
+              <description>Use the mirrored vanilla left bracket on the right, with the center mark. The matching textures and UIO config use your Texture Source and installed UI mod selections.</description>
+              <image path="images\preview_right_divided.png" />
+              <conditionFlags>
+                <flag name="RightStyle">Divided</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Optional" />
+              </typeDescriptor>
+            </plugin>
+            <plugin name="Flat">
+              <description>Use the mirrored vanilla left bracket on the right, without the center mark. The matching textures and UIO config use your Texture Source and installed UI mod selections.</description>
+              <image path="images\preview_right_flat.png" />
+              <conditionFlags>
+                <flag name="RightStyle">Flat</flag>
+              </conditionFlags>
+              <typeDescriptor>
+                <type name="Optional" />
+              </typeDescriptor>
+            </plugin>
+          </plugins>
+        </group>
+      </optionalFileGroups>
+    </installStep>
+  </installSteps>
+  <conditionalFileInstalls>
+    <patterns>
+      <!-- Left files install only when that side has a style selected. -->
+      <pattern>
+        <dependencies operator="And">
+          <dependencies operator="Or">
+            <flagDependency flag="LeftStyle" value="Flat" />
+            <flagDependency flag="LeftStyle" value="Split" />
+          </dependencies>
+          <flagDependency flag="THEInstalled" value="" />
+        </dependencies>
+        <files>
+          <folder source="options\configs\Left\Vanilla" destination="" />
+        </files>
+      </pattern>
+      <pattern>
+        <dependencies operator="And">
+          <dependencies operator="Or">
+            <flagDependency flag="LeftStyle" value="Flat" />
+            <flagDependency flag="LeftStyle" value="Split" />
+          </dependencies>
+          <dependencies operator="And">
+            <flagDependency flag="THEInstalled" value="Yes" />
+            <flagDependency flag="VUIInstalled" value="" />
+          </dependencies>
+        </dependencies>
+        <files>
+          <folder source="options\configs\Left\THE" destination="" />
+        </files>
+      </pattern>
+      <pattern>
+        <dependencies operator="And">
+          <dependencies operator="Or">
+            <flagDependency flag="LeftStyle" value="Flat" />
+            <flagDependency flag="LeftStyle" value="Split" />
+          </dependencies>
+          <dependencies operator="And">
+            <flagDependency flag="THEInstalled" value="Yes" />
+            <flagDependency flag="VUIInstalled" value="Yes" />
+          </dependencies>
+        </dependencies>
+        <files>
+          <folder source="options\configs\Left\THE-VUI" destination="" />
+        </files>
+      </pattern>
+      <pattern>
+        <dependencies operator="And">
+          <flagDependency flag="LeftStyle" value="Split" />
+          <flagDependency flag="TextureSource" value="Vanilla" />
+          <flagDependency flag="THEInstalled" value="" />
+        </dependencies>
+        <files>
+          <folder source="options\textures\Left\Full\Split\Vanilla" destination="textures" />
+        </files>
+      </pattern>
+      <pattern>
+        <dependencies operator="And">
+          <flagDependency flag="LeftStyle" value="Split" />
+          <flagDependency flag="TextureSource" value="CVH" />
+          <flagDependency flag="THEInstalled" value="" />
+        </dependencies>
+        <files>
+          <folder source="options\textures\Left\Full\Split\CVH" destination="textures" />
+        </files>
+      </pattern>
+      <pattern>
+        <dependencies operator="And">
+          <flagDependency flag="LeftStyle" value="Flat" />
+          <flagDependency flag="TextureSource" value="Vanilla" />
+          <flagDependency flag="THEInstalled" value="" />
+        </dependencies>
+        <files>
+          <folder source="options\textures\Left\Full\Flat\Vanilla" destination="textures" />
+        </files>
+      </pattern>
+      <pattern>
+        <dependencies operator="And">
+          <flagDependency flag="LeftStyle" value="Flat" />
+          <flagDependency flag="TextureSource" value="CVH" />
+          <flagDependency flag="THEInstalled" value="" />
+        </dependencies>
+        <files>
+          <folder source="options\textures\Left\Full\Flat\CVH" destination="textures" />
+        </files>
+      </pattern>
+      <pattern>
+        <dependencies operator="And">
+          <flagDependency flag="LeftStyle" value="Split" />
+          <flagDependency flag="TextureSource" value="Vanilla" />
+          <flagDependency flag="THEInstalled" value="Yes" />
+        </dependencies>
+        <files>
+          <folder source="options\textures\Left\Bottom\Split\Vanilla" destination="textures" />
+        </files>
+      </pattern>
+      <pattern>
+        <dependencies operator="And">
+          <flagDependency flag="LeftStyle" value="Split" />
+          <flagDependency flag="TextureSource" value="CVH" />
+          <flagDependency flag="THEInstalled" value="Yes" />
+        </dependencies>
+        <files>
+          <folder source="options\textures\Left\Bottom\Split\CVH" destination="textures" />
+        </files>
+      </pattern>
+      <pattern>
+        <dependencies operator="And">
+          <flagDependency flag="LeftStyle" value="Flat" />
+          <flagDependency flag="TextureSource" value="Vanilla" />
+          <flagDependency flag="THEInstalled" value="Yes" />
+        </dependencies>
+        <files>
+          <folder source="options\textures\Left\Bottom\Flat\Vanilla" destination="textures" />
+        </files>
+      </pattern>
+      <pattern>
+        <dependencies operator="And">
+          <flagDependency flag="LeftStyle" value="Flat" />
+          <flagDependency flag="TextureSource" value="CVH" />
+          <flagDependency flag="THEInstalled" value="Yes" />
+        </dependencies>
+        <files>
+          <folder source="options\textures\Left\Bottom\Flat\CVH" destination="textures" />
+        </files>
+      </pattern>
+      <!-- Right files install only when that side has a style selected. -->
+      <pattern>
+        <dependencies operator="And">
+          <dependencies operator="Or">
+            <flagDependency flag="RightStyle" value="Flat" />
+            <flagDependency flag="RightStyle" value="Divided" />
+          </dependencies>
+          <flagDependency flag="THEInstalled" value="" />
+        </dependencies>
+        <files>
+          <folder source="options\configs\Right\Vanilla" destination="" />
+        </files>
+      </pattern>
+      <pattern>
+        <dependencies operator="And">
+          <dependencies operator="Or">
+            <flagDependency flag="RightStyle" value="Flat" />
+            <flagDependency flag="RightStyle" value="Divided" />
+          </dependencies>
+          <dependencies operator="And">
+            <flagDependency flag="THEInstalled" value="Yes" />
+            <flagDependency flag="VUIInstalled" value="" />
+          </dependencies>
+        </dependencies>
+        <files>
+          <folder source="options\configs\Right\THE" destination="" />
+        </files>
+      </pattern>
+      <pattern>
+        <dependencies operator="And">
+          <dependencies operator="Or">
+            <flagDependency flag="RightStyle" value="Flat" />
+            <flagDependency flag="RightStyle" value="Divided" />
+          </dependencies>
+          <dependencies operator="And">
+            <flagDependency flag="THEInstalled" value="Yes" />
+            <flagDependency flag="VUIInstalled" value="Yes" />
+          </dependencies>
+        </dependencies>
+        <files>
+          <folder source="options\configs\Right\THE-VUI" destination="" />
+        </files>
+      </pattern>
+      <pattern>
+        <dependencies operator="And">
+          <flagDependency flag="RightStyle" value="Divided" />
+          <flagDependency flag="TextureSource" value="Vanilla" />
+          <flagDependency flag="THEInstalled" value="" />
+        </dependencies>
+        <files>
+          <folder source="options\textures\Right\Full\Divided\Vanilla" destination="textures" />
+        </files>
+      </pattern>
+      <pattern>
+        <dependencies operator="And">
+          <flagDependency flag="RightStyle" value="Divided" />
+          <flagDependency flag="TextureSource" value="CVH" />
+          <flagDependency flag="THEInstalled" value="" />
+        </dependencies>
+        <files>
+          <folder source="options\textures\Right\Full\Divided\CVH" destination="textures" />
+        </files>
+      </pattern>
+      <pattern>
+        <dependencies operator="And">
+          <flagDependency flag="RightStyle" value="Flat" />
+          <flagDependency flag="TextureSource" value="Vanilla" />
+          <flagDependency flag="THEInstalled" value="" />
+        </dependencies>
+        <files>
+          <folder source="options\textures\Right\Full\Flat\Vanilla" destination="textures" />
+        </files>
+      </pattern>
+      <pattern>
+        <dependencies operator="And">
+          <flagDependency flag="RightStyle" value="Flat" />
+          <flagDependency flag="TextureSource" value="CVH" />
+          <flagDependency flag="THEInstalled" value="" />
+        </dependencies>
+        <files>
+          <folder source="options\textures\Right\Full\Flat\CVH" destination="textures" />
+        </files>
+      </pattern>
+      <pattern>
+        <dependencies operator="And">
+          <flagDependency flag="RightStyle" value="Divided" />
+          <flagDependency flag="TextureSource" value="Vanilla" />
+          <flagDependency flag="THEInstalled" value="Yes" />
+        </dependencies>
+        <files>
+          <folder source="options\textures\Right\Bottom\Divided\Vanilla" destination="textures" />
+        </files>
+      </pattern>
+      <pattern>
+        <dependencies operator="And">
+          <flagDependency flag="RightStyle" value="Divided" />
+          <flagDependency flag="TextureSource" value="CVH" />
+          <flagDependency flag="THEInstalled" value="Yes" />
+        </dependencies>
+        <files>
+          <folder source="options\textures\Right\Bottom\Divided\CVH" destination="textures" />
+        </files>
+      </pattern>
+      <pattern>
+        <dependencies operator="And">
+          <flagDependency flag="RightStyle" value="Flat" />
+          <flagDependency flag="TextureSource" value="Vanilla" />
+          <flagDependency flag="THEInstalled" value="Yes" />
+        </dependencies>
+        <files>
+          <folder source="options\textures\Right\Bottom\Flat\Vanilla" destination="textures" />
+        </files>
+      </pattern>
+      <pattern>
+        <dependencies operator="And">
+          <flagDependency flag="RightStyle" value="Flat" />
+          <flagDependency flag="TextureSource" value="CVH" />
+          <flagDependency flag="THEInstalled" value="Yes" />
+        </dependencies>
+        <files>
+          <folder source="options\textures\Right\Bottom\Flat\CVH" destination="textures" />
+        </files>
+      </pattern>
+    </patterns>
+  </conditionalFileInstalls>
+</config>

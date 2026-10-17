@@ -1,0 +1,22 @@
+ref rTarget
+ref rCompanion
+int iType
+begin Function {rTarget}
+    let rCompanion := 0
+    if GetVATSMode == 0
+        if IsReference rTarget
+            let iType := rTarget.GetObjectType
+            if eval iType == 42 || iType == 43
+                if rTarget.GetPlayerTeammate
+                    let rCompanion := rTarget
+                endif
+            endif
+        endif
+    endif
+    Call (CompileScript "VanillaUICompanionEnhancements/SetCompanionStatsTarget.txt") rCompanion
+    if rCompanion
+        if SetEnemyHealthTarget
+            UpdateCrosshairPrompt
+        endif
+    endif
+end

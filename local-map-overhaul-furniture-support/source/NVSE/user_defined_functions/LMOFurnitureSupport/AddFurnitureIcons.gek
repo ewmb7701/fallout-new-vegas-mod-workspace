@@ -1,0 +1,65 @@
+int iDist
+int iSize
+int iDepth
+ref rIcon
+array_var aRefs
+string_var sParent
+string_var sUIPath
+string_var sTexture
+
+begin Function {}
+	; Only draw while the map menu is open.
+	if MenuMode 1023 == 0
+		return
+	endif
+
+	; Require LMO's initialized ySI map UI, not just its installed files.
+	if eval Goo1.AuxVarGetFlt "*_ySI-SortingIcons" == 0
+		return
+	endif
+	iDist = GetUIFloatAlt "MapMenu\_LMO+Distance"
+	if iDist <= 0
+		return
+	endif
+	; Check the existing map image, not the container created by LMO's handler.
+	if eval GetUIFloatAlt "MapMenu\GLOW_BRANCH\MM_MainRect\MM_LocalMap_ClipWindow\MM_LocalMap_ParentImage\visible" == -999
+		return
+	endif
+
+	; Own a sibling container, at the same nesting level as LMO's Map_Icons.
+	; Rebuild only our icons; never clear or replace LMO's tiles.
+	sParent = "MapMenu\GLOW_BRANCH\MM_MainRect\MM_LocalMap_ClipWindow\LMOFurniture_Icons"
+	UnloadUIComponent sParent
+	AddTileFromTemplate "MapMenu\GLOW_BRANCH\MM_MainRect\MM_LocalMap_ClipWindow|Map_Icons|LMOFurniture_Icons"
+	iDepth = 0
+
+	aRefs = Player.GetRefs 39 2 1 iDist ; Furniture only
+	if eval (iSize = Ar_Size aRefs) > 0
+		while (iSize -= 1) > -1
+			rIcon = aRefs[iSize]
+			if eval IsReference rIcon && rIcon.GetDisabled == 0 && rIcon.HasLoaded3D && rIcon.GetDestroyed == 0
+				if eval AuxVarGetFlt "*LocalMapIcon" 0 (rIcon.GBO) || HasKeyword rIcon "LocalMapIcon"
+					sTexture = rIcon.ySIGetTrait "filename"
+					if eval (Sv_Length sTexture) > 0
+						AddTileFromTemplate (sParent + "|Icon_Template|Icon")
+						sUIPath = sParent + "\Icon:0\"
+						; LMO's neutral branch uses the configured Pip-Boy system color.
+						SetUIFloatAlt (sUIPath + "_Hostile") 0
+						SetUIFloatAlt (sUIPath + "_PosX") (rIcon.GetPos X)
+						SetUIFloatAlt (sUIPath + "_PosY") (rIcon.GetPos Y)
+						SetUIFloatAlt (sUIPath + "_PosZ") (rIcon.GetPos Z)
+						SetUIFloatAlt (sUIPath + "_DepthMod") (iDepth += 2)
+						SetUIFloatAlt (sUIPath + "_Dist") (Player.GetDistance3D rIcon)
+						SetUIStringAlt (sUIPath + "_Name") (rIcon.LNGetName)
+						SetUIStringAlt (sUIPath + "_RefID") (GetFormIDString rIcon)
+						; Evaluate the string contents, matching LMO/Modern Minimap.
+						SetUIStringAlt (sUIPath + "filename") (sTexture)
+					endif
+				endif
+			endif
+		loop
+	endif
+
+	aRefs = ar_Null
+	sv_Destruct sParent sUIPath sTexture
+end

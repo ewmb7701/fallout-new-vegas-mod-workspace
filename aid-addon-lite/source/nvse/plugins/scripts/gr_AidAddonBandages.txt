@@ -1,0 +1,54 @@
+; Bleeding compatibility and use handler. Runs once per game session.
+ref rBleed
+ref rNewBloodList
+
+; Restrict removal to the same known bleeding spells as the original Aid Addon.
+if IsModLoaded "BLEED.esp" || IsModLoaded "BLEEDNV.esp"
+	let rBleed := EditorIDToFormID "BLEEDBleedSpell"
+	if IsFormValid rBleed
+		if ListGetFormIndex FLSTBleedingEffects rBleed == -1
+			ListAddForm FLSTBleedingEffects rBleed
+		endif
+	endif
+	let rBleed := EditorIDToFormID "BLEEDBleedSpellHeavy"
+	if IsFormValid rBleed
+		if ListGetFormIndex FLSTBleedingEffects rBleed == -1
+			ListAddForm FLSTBleedingEffects rBleed
+		endif
+	endif
+	let rBleed := EditorIDToFormID "BLEEDBleedSpellCritical"
+	if IsFormValid rBleed
+		if ListGetFormIndex FLSTBleedingEffects rBleed == -1
+			ListAddForm FLSTBleedingEffects rBleed
+		endif
+	endif
+endif
+if IsModLoaded "New Blood.esp"
+	let rNewBloodList := GetFormFromMod "New Blood.esp" "009BF1"
+	if IsFormValid rNewBloodList
+		foreach rBleed <- rNewBloodList
+			if IsFormValid rBleed
+				if ListGetFormIndex FLSTBleedingEffects rBleed == -1
+					ListAddForm FLSTBleedingEffects rBleed
+				endif
+			endif
+		loop
+	endif
+endif
+
+; The event's calling reference is the consumer, including NPCs.
+; Use the bleeding list directly; no runner variables are captured.
+SetOnUseAidItemEventHandler (begin function {ref rAidItem}
+	ref rActor
+	ref rEffect
+	let rActor := ThisAlt
+	if IsFormValid rActor == 0
+		return
+	endif
+
+	foreach rEffect <- FLSTBleedingEffects
+		if rActor.IsSpellTargetAlt rEffect
+			rActor.Dispel rEffect
+		endif
+	loop
+end) 1 Bandage
