@@ -1,7 +1,0 @@
-dist
-target
-
-# Visual Studio local caches and per-user settings
-.vs/
-*.suo
-*.user

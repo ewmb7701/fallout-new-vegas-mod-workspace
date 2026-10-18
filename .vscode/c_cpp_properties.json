@@ -1,0 +1,44 @@
+{
+  "version": 4,
+  "configurations": [
+    {
+      "name": "ewmb-nvse Win32",
+      "includePath": [
+        "${workspaceFolder}/source/ewmb-nvse",
+        "${workspaceFolder}/source/ewmb-nvse/**"
+      ],
+      "defines": [
+        "WIN32",
+        "_DEBUG",
+        "_WINDOWS",
+        "_USRDLL",
+        "EWMB_NVSE_EXPORTS",
+        "RUNTIME",
+        "RUNTIME_VERSION=0x040020D0"
+      ],
+      "forcedInclude": [
+        "${workspaceFolder}/source/ewmb-nvse/prefix.h"
+      ],
+      "windowsSdkVersion": "10.0.0",
+      "intelliSenseMode": "windows-msvc-x86",
+      "cppStandard": "c++20",
+      "cStandard": "c17"
+    },
+    {
+      "name": "fast-travel-pipboy Win32",
+      "includePath": [
+        "${workspaceFolder}/source/fast-travel-pipboy",
+        "${workspaceFolder}/source/fast-travel-pipboy/**"
+      ],
+      "defines": [
+        "WIN32",
+        "WIN32_LEAN_AND_MEAN",
+        "NOMINMAX"
+      ],
+      "windowsSdkVersion": "10.0.0",
+      "intelliSenseMode": "windows-msvc-x86",
+      "cppStandard": "c++17",
+      "cStandard": "c17"
+    }
+  ]
+}
