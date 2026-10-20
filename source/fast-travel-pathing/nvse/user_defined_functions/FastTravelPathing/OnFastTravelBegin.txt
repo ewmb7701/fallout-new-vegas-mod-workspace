@@ -2,20 +2,20 @@
 Begin Function {ref rMarker, array_var aState}
     WriteStringToFile "FastTravelPathing_Debug.log" 1 "BEGIN destination=%i (%n)%r" rMarker rMarker
     SetFunctionValue 1
-    Call (CompileScript "FastTravelPathing\ClearActivePath.txt")
+    Call (CompileScript "FastTravelPathing\ClearActiveWaypointPath.txt")
     if eval rMarker == 0 || (rMarker.IsMapMarker == 0)
         return
     endif
     SetFunctionValue 0
     ; Keep native map confirmation/eligibility, then replace its marker request.
-    array_var aPath = Call (CompileScript "FastTravelPathing\GetMarkerPath.txt") rMarker aState
-    if eval aPath == Ar_Null
+    array_var aWaypointPath = Call (CompileScript "FastTravelPathing\GetMarkerWaypointPath.txt") rMarker aState
+    if eval aWaypointPath == Ar_Null
         return
     endif
-    if eval (Call (CompileScript "FastTravelPathing\BuildActivePath.txt") aPath rMarker) == 0
+    if eval (Call (CompileScript "FastTravelPathing\BuildActiveWaypointPath.txt") aWaypointPath rMarker) == 0
         return
     endif
     ; Index -1 makes the next update start the first leg. The native request must
     ; be cancelled/freed before submitting coordinate travel; never travel here.
-    Call (CompileScript "FastTravelPathing\StartActivePath.txt")
+    Call (CompileScript "FastTravelPathing\StartActiveWaypointPath.txt")
 End

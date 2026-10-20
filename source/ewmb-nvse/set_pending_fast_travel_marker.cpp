@@ -10,7 +10,7 @@ namespace
     *result = 0;
     TESObjectREFR *marker = nullptr;
     if (ExtractArgs(EXTRACT_ARGS, &marker) &&
-        marker && marker->IsAvailableMapMarker() && CanPlayerFastTravelWithMessage())
+        marker && marker->IsAvailableMapMarker() && GetPCCanFastTravelWithMessage())
     {
       auto *request = GetPlayerPositionRequest();
       if (request && request->marker)

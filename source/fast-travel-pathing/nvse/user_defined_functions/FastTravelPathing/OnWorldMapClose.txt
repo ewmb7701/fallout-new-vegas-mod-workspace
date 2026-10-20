@@ -1,4 +1,4 @@
 ; Closing the map during native travel does not cancel the active path.
 Begin Function {int iMenu}
-    Call (CompileScript "FastTravelPathing\UnloadWorldMapSelectedPathUIComponents.txt")
+    Call (CompileScript "FastTravelPathing\UnloadWorldMapSelectedWaypointPathUIComponents.txt")
 End

@@ -21,19 +21,18 @@ Begin Function {ref rPoint, ref rArrival}
     elseif rPoint.GetTeleportDoor != rArrival
         return
     endif
-    array_var aCheck = GetPath Player rArrival
+    ; Planning mode can include doors that fail access checks; validate with strict mode.
+    array_var aCheck = GetWaypointPath Player rArrival 0
     if eval aCheck == Ar_Null
         return
     endif
     if rPoint.IsMapMarker == 0
-        ref rLastExit = 0
-        array_var aPoints = aCheck["points"]
-        foreach array_var aEntry <- aPoints
-            array_var aPoint = aEntry["value"]
-            if eval aPoint["kind"] == "exit"
-                let rLastExit := aPoint["reference"]
-            endif
-        loop
+        array_var aTransitions = aCheck["transitions"]
+        if eval (Ar_Size aTransitions) == 0
+            return
+        endif
+        array_var aLastTransition = aTransitions[(Ar_Size aTransitions) - 1]
+        ref rLastExit = aLastTransition["door"]
         if rLastExit != rPoint
             return
         endif

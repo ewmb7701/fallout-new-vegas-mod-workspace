@@ -1,0 +1,107 @@
+; coordinates, space and heading belong to FTP.
+Begin Function {array_var aWaypointPath, ref rFinalMarker}
+    SetFunctionValue 0
+    array_var aLegs = aWaypointPath["legs"]
+    if eval (Ar_Size aLegs) == 0 || rFinalMarker == 0
+        return
+    endif
+    array_var aTravelPoints = Ar_Construct "array"
+    array_var aArrivals = Ar_Construct "array"
+    array_var aWorlds = Ar_Construct "array"
+    array_var aCells = Ar_Construct "array"
+    array_var aTimes = Ar_Construct "array"
+    array_var aX = Ar_Construct "array"
+    array_var aY = Ar_Construct "array"
+    array_var aZ = Ar_Construct "array"
+    array_var aHeading = Ar_Construct "array"
+    ; Sample timing inputs once when travel is confirmed. GetWaypointPath is geometry only.
+    float fSpeed = Player.GetRunSpeed
+    float fScale = TimeScale
+    foreach array_var aEntry <- aLegs
+        array_var aLeg = aEntry["value"]
+        array_var aPath = aLeg["path"]
+        array_var aSpaces = aPath["spaces"]
+        array_var aTransitions = aPath["transitions"]
+        array_var aPrevious = aPath["origin"]
+        int iTransition = 0
+        ; Each transition is one travel action; the final action reaches the leg endpoint.
+        while iTransition <= (Ar_Size aTransitions)
+            ref rPoint = 0
+            ref rArrivalRef = 0
+            float fHeading = 0
+            array_var aArrival = Ar_Null
+            array_var aSpace = Ar_Null
+            array_var aDeparture = Ar_Null
+            if eval iTransition < (Ar_Size aTransitions)
+                array_var aTransition = aTransitions[iTransition]
+                let rPoint := aTransition["door"]
+                if rPoint == 0
+                    return
+                endif
+                let rArrivalRef := rPoint.GetTeleportDoor
+                let aArrival := aTransition["arrival"]
+                let aSpace := aSpaces[iTransition + 1]
+                let fHeading := rPoint.GetDoorTeleportRot
+                let aDeparture := Ar_Construct "stringmap"
+                let aDeparture["x"] := rPoint.GetPos X
+                let aDeparture["y"] := rPoint.GetPos Y
+                let aDeparture["z"] := rPoint.GetPos Z
+            else
+                let rPoint := aLeg["marker"]
+                let rArrivalRef := aLeg["destinationRef"]
+                let aArrival := aPath["destination"]
+                let aSpace := aSpaces[iTransition]
+                let aDeparture := aArrival
+                if rArrivalRef
+                    let fHeading := rArrivalRef.GetAngle Z
+                endif
+            endif
+            if eval rPoint == 0 || rArrivalRef == 0
+                return
+            endif
+            float fTime = Call (CompileScript "FastTravelPathing\GetSegmentTravelTime.txt") aPrevious aDeparture fSpeed fScale
+            if eval fTime < 0 || (fTime - fTime) != 0
+                return
+            endif
+            ref rCell = aSpace["cell"]
+            ref rWorld = aSpace["worldspace"]
+            if rWorld
+                ; Resolve and store the landing CELL, including nonresident records,
+                ; without loading its references.
+                ; Missing cells stay unresolved and retain their travel points.
+                ; GetExteriorCellEx takes grid indices; floor before assigning integers.
+                int iGridX = Floor (aArrival["x"] / 4096)
+                int iGridY = Floor (aArrival["y"] / 4096)
+                let rCell := GetExteriorCellEx rWorld iGridX iGridY
+            elseif rCell == 0
+                let rCell := rArrivalRef.GetParentCell
+            endif
+            Ar_Append aTimes fTime
+            Ar_Append aTravelPoints rPoint
+            Ar_Append aArrivals rArrivalRef
+            Ar_Append aWorlds (aSpace["worldspace"])
+            Ar_Append aCells rCell
+            Ar_Append aX (aArrival["x"])
+            Ar_Append aY (aArrival["y"])
+            Ar_Append aZ (aArrival["z"])
+            Ar_Append aHeading fHeading
+            let aPrevious := aArrival
+            iTransition += 1
+        loop
+    loop
+    if eval (Ar_Size aTravelPoints) == 0
+        return
+    endif
+    Player.AuxVarSetFromArr "*_FTP_WaypointPathPoints" aTravelPoints
+    Player.AuxVarSetFromArr "*_FTP_WaypointPathArrivals" aArrivals
+    Player.AuxVarSetFromArr "*_FTP_WaypointPathWorlds" aWorlds
+    Player.AuxVarSetFromArr "*_FTP_WaypointPathCells" aCells
+    Player.AuxVarSetFromArr "*_FTP_WaypointPathTimes" aTimes
+    Player.AuxVarSetFromArr "*_FTP_WaypointPathX" aX
+    Player.AuxVarSetFromArr "*_FTP_WaypointPathY" aY
+    Player.AuxVarSetFromArr "*_FTP_WaypointPathZ" aZ
+    Player.AuxVarSetFromArr "*_FTP_WaypointPathHeading" aHeading
+    Player.AuxVarSetFlt "*_FTP_WaypointPathIndex" -1
+    Player.AuxVarSetFlt "*_FTP_WaypointPathWaitFrames" 0
+    SetFunctionValue 1
+End

@@ -3,23 +3,23 @@
 ; intermediate cells may be skipped. Unresolved/unvisited cells and the final point stay.
 Begin Function {}
     SetFunctionValue Ar_Null
-    int iIndex = (Player.AuxVarGetFlt "*_FTP_PathIndex") + 1
-    int iCount = Player.AuxVarSize "*_FTP_PathPoints"
+    int iIndex = (Player.AuxVarGetFlt "*_FTP_WaypointPathIndex") + 1
+    int iCount = Player.AuxVarSize "*_FTP_WaypointPathPoints"
     if eval iIndex < 0 || iIndex >= iCount
         return
     endif
     float fTime = 0
     while iIndex < iCount
-        float fLegTime = Player.AuxVarGetFlt "*_FTP_PathTimes" iIndex
+        float fLegTime = Player.AuxVarGetFlt "*_FTP_WaypointPathTimes" iIndex
         let fTime := fTime + fLegTime
-        ref rCell = Player.AuxVarGetRef "*_FTP_PathCells" iIndex
+        ref rCell = Player.AuxVarGetRef "*_FTP_WaypointPathCells" iIndex
         int iVisited = -1
         int iExpired = -1
         int iResolved = 0
-        ref rWorld = Player.AuxVarGetRef "*_FTP_PathWorlds" iIndex
+        ref rWorld = Player.AuxVarGetRef "*_FTP_WaypointPathWorlds" iIndex
         if rWorld
-            float fX = Player.AuxVarGetFlt "*_FTP_PathX" iIndex
-            float fY = Player.AuxVarGetFlt "*_FTP_PathY" iIndex
+            float fX = Player.AuxVarGetFlt "*_FTP_WaypointPathX" iIndex
+            float fY = Player.AuxVarGetFlt "*_FTP_WaypointPathY" iIndex
             ; Resolve the CELL record even when it is absent from the resident cell map.
             int iGridX = Floor (fX / 4096)
             int iGridY = Floor (fY / 4096)

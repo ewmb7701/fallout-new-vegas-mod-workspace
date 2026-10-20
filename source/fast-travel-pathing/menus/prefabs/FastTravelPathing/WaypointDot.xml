@@ -1,5 +1,5 @@
 <!-- Native waypoint node appearance, positioned at a path location center. -->
-<template name="FTPPathDot">
+<template name="FTPWaypointDot">
   <image name="FTP_Dot">
     <filename> Interface\Worldmap\waypoint_node.dds </filename>
     <zoom> &scale; </zoom>

@@ -2,7 +2,7 @@
 ; Requires a visible, enabled marker with vanilla fast travel enabled.
 ; Every marker sharing a UI name must qualify. Does not mutate config.
 
-Begin Function {array_var aGraph, string_var sLocationID, array_var aPathsByMarkerFormID}
+Begin Function {array_var aGraph, string_var sLocationID, array_var aWaypointPathsByMarkerFormID}
     array_var aDestinations = Call (CompileScript "FastTravelPathing\GetLocationConnectionDestinations.txt") aGraph sLocationID
     array_var aResult = Ar_Construct "stringmap"
     array_var aMarkers = GetFormRefs MapMarker
@@ -20,9 +20,9 @@ Begin Function {array_var aGraph, string_var sLocationID, array_var aPathsByMark
                 iAllowed = rMarker.GetMapMarkerTravel
             endif
             string_var sMarker = GetFormIDString rMarker
-            if eval Ar_HasKey aPathsByMarkerFormID sMarker
-                array_var aPath = aPathsByMarkerFormID[sMarker]
-                if eval (Ar_Size aPath) > 1
+            if eval Ar_HasKey aWaypointPathsByMarkerFormID sMarker
+                array_var aWaypointPath = aWaypointPathsByMarkerFormID[sMarker]
+                if eval (Ar_Size aWaypointPath) > 1
                     iAllowed = rMarker.GetMapMarkerTravel
                 endif
             endif

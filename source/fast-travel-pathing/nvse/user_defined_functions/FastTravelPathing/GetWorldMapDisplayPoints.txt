@@ -1,40 +1,31 @@
-; Native quest waypoints use one exterior door reference per transition.
-; Keep this display list separate from the teleport landing coordinates for travel.
-Begin Function {array_var aPathPoints}
-    array_var aDisplayPoints = Ar_Construct "array"
-    foreach array_var aEntry <- aPathPoints
-        array_var aPoint = aEntry["value"]
-        if eval aPoint["kind"] == "arrival"
-            continue
+; Display the same coordinates and spaces consumed by BuildActiveWaypointPath.
+; Interior slots remain in the sequence, but have no world-map projection.
+Begin Function {array_var aLegs}
+    array_var aPoints = Ar_Construct "array"
+    foreach array_var aEntry <- aLegs
+        array_var aLeg = aEntry["value"]
+        array_var aPath = aLeg["path"]
+        array_var aSpaces = aPath["spaces"]
+        array_var aTransitions = aPath["transitions"]
+        array_var aPoint = Ar_Null
+        if eval (Ar_Size aPoints) == 0
+            let aPoint := Ar_Construct "stringmap"
+            let aPoint["position"] := aPath["origin"]
+            let aPoint["space"] := aSpaces[0]
+            Ar_Append aPoints aPoint
         endif
-        if eval aPoint["kind"] == "exit"
-            ; Prefer the departure door. For an interior departure, use the
-            ; linked exterior door reference carried by the next arrival point.
-            if eval aPoint["worldspace"] == 0
-                int iArrival = aEntry["key"] + 1
-                if eval iArrival >= (Ar_Size aPathPoints)
-                    continue
-                endif
-                let aPoint := aPathPoints[iArrival]
-                if eval aPoint["kind"] != "arrival" || aPoint["worldspace"] == 0
-                    continue
-                endif
-                ref rDoor = aPoint["reference"]
-                if rDoor == 0
-                    continue
-                endif
-                array_var aDoorPoint = Ar_Construct "stringmap"
-                let aDoorPoint["kind"] := "exit"
-                let aDoorPoint["reference"] := rDoor
-                let aDoorPoint["worldspace"] := aPoint["worldspace"]
-                let aDoorPoint["cell"] := aPoint["cell"]
-                let aDoorPoint["x"] := rDoor.GetPos X
-                let aDoorPoint["y"] := rDoor.GetPos Y
-                let aDoorPoint["z"] := rDoor.GetPos Z
-                let aPoint := aDoorPoint
-            endif
-        endif
-        Ar_Append aDisplayPoints aPoint
+        foreach array_var aTransitionEntry <- aTransitions
+            array_var aTransition = aTransitionEntry["value"]
+            int iSpace = aTransitionEntry["key"] + 1
+            let aPoint := Ar_Construct "stringmap"
+            let aPoint["position"] := aTransition["arrival"]
+            let aPoint["space"] := aSpaces[iSpace]
+            Ar_Append aPoints aPoint
+        loop
+        let aPoint := Ar_Construct "stringmap"
+        let aPoint["position"] := aPath["destination"]
+        let aPoint["space"] := aSpaces[(Ar_Size aTransitions)]
+        Ar_Append aPoints aPoint
     loop
-    SetFunctionValue aDisplayPoints
+    SetFunctionValue aPoints
 End

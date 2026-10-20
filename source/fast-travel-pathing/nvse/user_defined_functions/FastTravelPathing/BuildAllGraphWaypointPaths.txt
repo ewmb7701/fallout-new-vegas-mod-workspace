@@ -4,7 +4,7 @@ Begin Function {array_var aGraph}
     array_var aCache = Ar_Construct "stringmap"
     foreach array_var aEntry <- aGraph
         string_var sOrigin = aEntry["key"]
-        let aCache[sOrigin] := Call (CompileScript "FastTravelPathing\BuildGraphPaths.txt") aGraph sOrigin
+        let aCache[sOrigin] := Call (CompileScript "FastTravelPathing\BuildGraphWaypointPaths.txt") aGraph sOrigin
     loop
     ; Outside all configured scopes is handled by callers, without an empty key.
     SetFunctionValue aCache

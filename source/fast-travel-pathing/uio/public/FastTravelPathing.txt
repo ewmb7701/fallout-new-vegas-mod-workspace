@@ -1,6 +1,6 @@
 FastTravelPathing\ConnectionLine.xml::MapMenu::MapMenu
 true
-FastTravelPathing\PathDot.xml::MapMenu::MapMenu
+FastTravelPathing\WaypointDot.xml::MapMenu::MapMenu
 true
 FastTravelPathing\Connections.xml::MapMenu::MM_WorldMap_ClipWindow
 true

@@ -1,13 +1,13 @@
 ; Unregister handlers and clear the owned connection lines.
 Begin Function {}
-    Call (CompileScript "FastTravelPathing\ClearActivePath.txt")
-    ref rOldUpdate = Player.AuxVarGetRef "*_FTP_rActivePathUpdateHandler"
+    Call (CompileScript "FastTravelPathing\ClearActiveWaypointPath.txt")
+    ref rOldUpdate = Player.AuxVarGetRef "*_FTP_rActiveWaypointPathUpdateHandler"
     if rOldUpdate
         Player.SetGameMainLoopCallback rOldUpdate 0
     endif
-    Player.AuxVarErase "*_FTP_rActivePathUpdateHandler"
-    Player.AuxVarErase "*_FTP_ActivePathMarkers"
-    Player.AuxVarErase "*_FTP_ActivePathIndex"
+    Player.AuxVarErase "*_FTP_rActiveWaypointPathUpdateHandler"
+    Player.AuxVarErase "*_FTP_ActiveWaypointPathMarkers"
+    Player.AuxVarErase "*_FTP_ActiveWaypointPathIndex"
     ref rTravelBegin = Player.AuxVarGetRef "*_FTP_rFastTravelBeginHandler"
     if rTravelBegin
         RemoveEventHandler "OnFastTravelBegin" rTravelBegin
@@ -42,5 +42,5 @@ Begin Function {}
     Player.AuxVarErase "*_FTP_bPrevLocationValid"
     RemoveEventHandler "OnWorldMapBuild" (CompileScript "FastTravelPathing\OnWorldMapBuild.txt")
     SetOnMenuCloseEventHandler (CompileScript "FastTravelPathing\OnWorldMapClose.txt") 0 1023
-    Call (CompileScript "FastTravelPathing\UnloadWorldMapSelectedPathUIComponents.txt")
+    Call (CompileScript "FastTravelPathing\UnloadWorldMapSelectedWaypointPathUIComponents.txt")
 End

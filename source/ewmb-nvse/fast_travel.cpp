@@ -9,7 +9,7 @@ namespace
   {
     *result = 0;
     TESObjectREFR *marker = nullptr;
-    if (ExtractArgs(EXTRACT_ARGS, &marker) && marker && marker->IsAvailableMapMarker() && CanPlayerFastTravelWithMessage())
+    if (ExtractArgs(EXTRACT_ARGS, &marker) && marker && marker->IsAvailableMapMarker() && GetPCCanFastTravelWithMessage())
       *result = QueueFastTravelToMarker(marker) ? 1 : 0;
     return true;
   }

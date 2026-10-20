@@ -62,7 +62,7 @@ TESObjectREFR *MapMenu::GetSelectedMarker() const
   return GetMarkerForTile(selectedMarkerTile);
 }
 
-bool CanPlayerFastTravelWithMessage()
+bool GetPCCanFastTravelWithMessage()
 {
   void *player = *reinterpret_cast<void **>(0x11DEA3C);
   constexpr std::uintptr_t eligibilityCall = 0x798026;

@@ -2,8 +2,8 @@
 ; Unreachable destinations return an empty array; origin -> origin has one vertex.
 ; Does not alter the graph or the cached shortest-path tree.
 Begin Function {array_var aSearch, string_var sDestination}
-    array_var aPath = Ar_Construct "array"
-    SetFunctionValue aPath
+    array_var aWaypointPath = Ar_Construct "array"
+    SetFunctionValue aWaypointPath
     array_var aDistances = aSearch["distances"]
     array_var aPrevious = aSearch["previous"]
     string_var sOrigin = aSearch["origin"]
@@ -20,7 +20,7 @@ Begin Function {array_var aSearch, string_var sDestination}
         if eval sCurrent == sOrigin
             int iIndex = (Ar_Size aReverse) - 1
             while iIndex >= 0
-                Ar_Append aPath (aReverse[iIndex])
+                Ar_Append aWaypointPath (aReverse[iIndex])
                 iIndex -= 1
             loop
             break

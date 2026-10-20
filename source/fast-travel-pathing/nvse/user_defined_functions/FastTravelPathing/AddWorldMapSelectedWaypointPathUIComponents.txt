@@ -1,12 +1,12 @@
 ; Draw consecutive projected path points, including visible door transitions.
-Begin Function {array_var aPathPoints, array_var aMapPointsByPointIndex}
+Begin Function {array_var aWaypointPathPoints, array_var aMapPointsByPointIndex}
     SetFunctionValue 0
     string_var sMapClipTilePath = "MapMenu/GLOW_BRANCH/MM_MainRect/MM_WorldMap_ClipWindow"
     string_var sConnectionsTilePath = sMapClipTilePath + "/FTP_Connections"
     string_var sMapImageTilePath = sMapClipTilePath + "/MM_WorldMap_ParentImage/"
     float fMapWidth = GetUIFloatAlt (sMapImageTilePath + "width")
     float fMapHeight = GetUIFloatAlt (sMapImageTilePath + "height")
-    if eval fMapWidth <= 0 || fMapHeight <= 0 || (Ar_Size aPathPoints) == 0
+    if eval fMapWidth <= 0 || fMapHeight <= 0 || (Ar_Size aWaypointPathPoints) == 0
         return
     endif
     if IsComponentLoaded (sConnectionsTilePath) == 0
@@ -15,7 +15,7 @@ Begin Function {array_var aPathPoints, array_var aMapPointsByPointIndex}
     SetUIFloatAlt (sConnectionsTilePath + "/visible") 0
     int iDrawnSegmentCount = 0
     int iPointIndex = 1
-    while iPointIndex < (Ar_Size aPathPoints)
+    while iPointIndex < (Ar_Size aWaypointPathPoints)
         string_var sStartIndex = $(iPointIndex - 1)
         string_var sEndIndex = $iPointIndex
         iPointIndex += 1
@@ -51,7 +51,7 @@ Begin Function {array_var aPathPoints, array_var aMapPointsByPointIndex}
         iDrawnSegmentCount += 1
     loop
     int iDrawnDotCount = 0
-    foreach array_var aPointEntry <- aPathPoints
+    foreach array_var aPointEntry <- aWaypointPathPoints
         string_var sPointIndex = $(aPointEntry["key"])
         if eval (Ar_HasKey aMapPointsByPointIndex sPointIndex) == 0
             continue
@@ -59,7 +59,7 @@ Begin Function {array_var aPathPoints, array_var aMapPointsByPointIndex}
         array_var aNormalizedPoint = aMapPointsByPointIndex[sPointIndex]
         string_var sDotTileName = "Dot" + $iDrawnDotCount
         string_var sDotTilePath = sConnectionsTilePath + "/" + sDotTileName
-        AddTileFromTemplate (sConnectionsTilePath + "|FTPPathDot|" + sDotTileName)
+        AddTileFromTemplate (sConnectionsTilePath + "|FTPWaypointDot|" + sDotTileName)
         SetUIFloatAlt (sDotTilePath + "/_x") (aNormalizedPoint[0])
         SetUIFloatAlt (sDotTilePath + "/_y") (aNormalizedPoint[1])
         SetUIFloatAlt (sDotTilePath + "/visible") 1

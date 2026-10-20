@@ -12,18 +12,18 @@ Begin Function {ref rMarker, array_var aState}
     array_var aLocations = aConfig["locations"]
     array_var aGraph = aState["graph"]
     string_var sOrigin = Call (CompileScript "FastTravelPathing\GetPlayerLocation.txt") aLocations
-    array_var aCache = aState["graphPaths"]
+    array_var aCache = aState["graphWaypointPaths"]
     if eval (Ar_HasKey aCache sOrigin) == 0
         ; Outside configured scopes there is no cached route to select.
         return
     endif
     array_var aSearch = aCache[sOrigin]
-    array_var aPaths = aSearch["paths"]
+    array_var aWaypointPaths = aSearch["paths"]
     string_var sMarker = GetFormIDString rMarker
-    if eval (Ar_HasKey aPaths sMarker) == 0
+    if eval (Ar_HasKey aWaypointPaths sMarker) == 0
         return
     endif
-    array_var aEnabled = Call (CompileScript "FastTravelPathing\GetWorldMapMarkerEnabledStates.txt") aGraph sOrigin aPaths
+    array_var aEnabled = Call (CompileScript "FastTravelPathing\GetWorldMapMarkerEnabledStates.txt") aGraph sOrigin aWaypointPaths
     string_var sName = rMarker.GetMapMarkerName
     if eval (Ar_HasKey aEnabled sName) == 0
         return
@@ -31,6 +31,6 @@ Begin Function {ref rMarker, array_var aState}
     if eval aEnabled[sName] == 0
         return
     endif
-    array_var aIDs = aPaths[sMarker]
-    SetFunctionValue (Call (CompileScript "FastTravelPathing\ExpandGraphPath.txt") aGraph aIDs rMarker)
+    array_var aIDs = aWaypointPaths[sMarker]
+    SetFunctionValue (Call (CompileScript "FastTravelPathing\ExpandGraphWaypointPath.txt") aGraph aIDs rMarker)
 End

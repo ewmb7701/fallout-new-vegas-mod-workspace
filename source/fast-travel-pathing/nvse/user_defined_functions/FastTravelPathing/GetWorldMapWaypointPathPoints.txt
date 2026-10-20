@@ -1,7 +1,5 @@
-; Anchor each visible world to native marker tiles, then project stored path xyz.
-; JIP's reference projection supplies extra samples in single-marker child worlds.
-; Markerless child-world door references use JIP's parent-map projection.
-Begin Function {array_var aPathPoints}
+; Project travel coordinates using native marker anchors and reference samples.
+Begin Function {array_var aDisplayPoints, array_var aLegs}
     array_var aPoints = Ar_Construct "stringmap"
     array_var aProjection = Ar_Construct "stringmap"
     string_var sMap = "MapMenu/GLOW_BRANCH/MM_MainRect/MM_WorldMap_ClipWindow/MM_WorldMap_ParentImage/"
@@ -70,27 +68,69 @@ Begin Function {array_var aPathPoints}
             endif
         endif
     endif
-    ; A child world may have only one marker (Freeside's Strip North Gate).
-    ; Path references supply a second sample without needing another visible
-    ; marker or the player in that world. GetWorldMapPosMults includes the
-    ; child's scale/offset and parent map bounds. Keep the native tile anchor
-    ; to avoid introducing JIP's small reciprocal-rounding offset.
-    foreach aEntry <- aPathPoints
-        array_var aSample = aEntry["value"]
-        rWorld = aSample["worldspace"]
+    ; Sample both sides of every door, including departure references that are
+    ; no longer displayed. They calibrate landing offsets in markerless worlds.
+    array_var aSamples = Ar_Construct "array"
+    foreach aEntry <- aLegs
+        array_var aLeg = aEntry["value"]
+        Ar_Append aSamples (aLeg["originRef"])
+        Ar_Append aSamples (aLeg["destinationRef"])
+        array_var aPath = aLeg["path"]
+        foreach array_var aTransitionEntry <- (aPath["transitions"])
+            array_var aTransition = aTransitionEntry["value"]
+            ref rDoor = aTransition["door"]
+            Ar_Append aSamples rDoor
+            Ar_Append aSamples (rDoor.GetTeleportDoor)
+        loop
+    loop
+    foreach aEntry <- aMarkers
+        Ar_Append aSamples (aEntry["value"])
+    loop
+    foreach aEntry <- aSamples
+        ref rSample = aEntry["value"]
+        if rSample == 0
+            continue
+        endif
+        rWorld = rSample.GetParentWorldspace
         if rWorld == 0
             continue
         endif
         sWorld = GetFormIDString rWorld
         if eval (Ar_HasKey aProjection sWorld) == 0
-            continue
+            ; Anchor a markerless child to its displayed ancestor, preserving
+            ; JIP's child-world scale and offset in the native sample.
+            ref rMapParent = GetWorldspaceParentWorldspace rWorld
+            int iParentDepth = 0
+            string_var sParent = ""
+            while rMapParent && iParentDepth < 32
+                sParent = GetFormIDString rMapParent
+                if eval Ar_HasKey aProjection sParent
+                    break
+                endif
+                let rMapParent := GetWorldspaceParentWorldspace rMapParent
+                iParentDepth += 1
+            loop
+            if eval rMapParent == 0 || iParentDepth >= 32
+                continue
+            endif
+            array_var aParentAxis = aProjection[sParent]
+            fNativeX = -999
+            fNativeY = -999
+            rSample.GetWorldMapPosMults (fNativeX) (fNativeY)
+            if eval fNativeX == -999 || fNativeY == -999 || aParentAxis["nativeX"] == -999 || aParentAxis["nativeY"] == -999
+                continue
+            endif
+            let aAxis := Ar_Construct "stringmap"
+            let aAxis["worldX"] := rSample.GetPos X
+            let aAxis["worldY"] := rSample.GetPos Y
+            let aAxis["nativeX"] := fNativeX
+            let aAxis["nativeY"] := fNativeY
+            let aAxis["mapX"] := fNativeX + aParentAxis["mapX"] - aParentAxis["nativeX"]
+            let aAxis["mapY"] := fNativeY + aParentAxis["mapY"] - aParentAxis["nativeY"]
+            let aProjection[sWorld] := aAxis
         endif
         let aAxis := aProjection[sWorld]
         if eval (Ar_HasKey aAxis "scaleX") && (Ar_HasKey aAxis "scaleY")
-            continue
-        endif
-        ref rSample = aSample["reference"]
-        if eval rSample == 0 || rSample.GetParentWorldspace != rWorld
             continue
         endif
         fNativeX = -999
@@ -99,8 +139,6 @@ Begin Function {array_var aPathPoints}
         if eval fNativeX == -999 || fNativeY == -999 || aAxis["nativeX"] == -999 || aAxis["nativeY"] == -999
             continue
         endif
-        ; Use the reference's position for the sample, NOT the path point's
-        ; position: teleport arrival xyz can be offset from the linked door.
         fWorldX = rSample.GetPos X
         fWorldY = rSample.GetPos Y
         if eval (Ar_HasKey aAxis "scaleX") == 0 && (Abs (fWorldX - aAxis["worldX"])) > 1
@@ -110,50 +148,16 @@ Begin Function {array_var aPathPoints}
             let aAxis["scaleY"] := (fNativeY - aAxis["nativeY"]) / (fWorldY - aAxis["worldY"])
         endif
     loop
-    foreach aEntry <- aPathPoints
+    foreach aEntry <- aDisplayPoints
         array_var aPoint = aEntry["value"]
-        rWorld = aPoint["worldspace"]
+        array_var aSpace = aPoint["space"]
+        array_var aPosition = aPoint["position"]
+        let rWorld := aSpace["worldspace"]
         if rWorld == 0
             continue
         endif
         sWorld = GetFormIDString rWorld
         if eval (Ar_HasKey aProjection sWorld) == 0
-            ; Freeside North has no marker of its own. Its exterior doors still
-            ; belong on the parent's map. Find a displayed ancestor, then let
-            ; JIP apply the child's map scale/offset instead of borrowing the
-            ; ancestor's world-coordinate transform.
-            ref rMapParent = GetWorldspaceParentWorldspace rWorld
-            int iParentDepth = 0
-            while rMapParent && iParentDepth < 32
-                sWorld = GetFormIDString rMapParent
-                if eval Ar_HasKey aProjection sWorld
-                    break
-                endif
-                let rMapParent := GetWorldspaceParentWorldspace rMapParent
-                iParentDepth += 1
-            loop
-            if eval rMapParent == 0 || iParentDepth >= 32
-                continue
-            endif
-            ref rDisplayRef = aPoint["reference"]
-            if eval rDisplayRef == 0 || rDisplayRef.GetParentWorldspace != rWorld
-                continue
-            endif
-            ; This fallback projects reference positions only. Never replace
-            ; a stored landing offset with the linked reference's coordinates.
-            if eval aPoint["x"] != (rDisplayRef.GetPos X) || aPoint["y"] != (rDisplayRef.GetPos Y)
-                continue
-            endif
-            let aAxis := aProjection[sWorld]
-            fNativeX = -999
-            fNativeY = -999
-            rDisplayRef.GetWorldMapPosMults (fNativeX) (fNativeY)
-            if eval fNativeX != -999 && fNativeY != -999 && aAxis["nativeX"] != -999 && aAxis["nativeY"] != -999
-                fX = fNativeX + aAxis["mapX"] - aAxis["nativeX"]
-                fY = fNativeY + aAxis["mapY"] - aAxis["nativeY"]
-                string_var sChildIndex = $(aEntry["key"])
-                let aPoints[sChildIndex] := Ar_List fX fY
-            endif
             continue
         endif
         let aAxis := aProjection[sWorld]
@@ -161,17 +165,17 @@ Begin Function {array_var aPathPoints}
         ; marker's own point must not disappear just because both scales are absent.
         fX = aAxis["mapX"]
         fY = aAxis["mapY"]
-        if eval aPoint["x"] != aAxis["worldX"]
+        if eval aPosition["x"] != aAxis["worldX"]
             if eval (Ar_HasKey aAxis "scaleX") == 0
                 continue
             endif
-            fX = fX + (aPoint["x"] - aAxis["worldX"]) * aAxis["scaleX"]
+            fX = fX + (aPosition["x"] - aAxis["worldX"]) * aAxis["scaleX"]
         endif
-        if eval aPoint["y"] != aAxis["worldY"]
+        if eval aPosition["y"] != aAxis["worldY"]
             if eval (Ar_HasKey aAxis "scaleY") == 0
                 continue
             endif
-            fY = fY + (aPoint["y"] - aAxis["worldY"]) * aAxis["scaleY"]
+            fY = fY + (aPosition["y"] - aAxis["worldY"]) * aAxis["scaleY"]
         endif
         string_var sPointIndex = $(aEntry["key"])
         let aPoints[sPointIndex] := Ar_List fX fY

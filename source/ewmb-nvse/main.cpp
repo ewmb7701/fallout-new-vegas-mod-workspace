@@ -7,18 +7,17 @@
 #include "set_pending_fast_travel_marker.h"
 #include "on_enemy_health_target_change.h"
 #include "set_enemy_health_target.h"
-#include "get_enemy_health_target.h"
-#include "get_path.h"
+#include "get_waypoint_path.h"
 #include "is_cell_visited_ex.h"
 #include "is_cell_expired_ex.h"
 #include "get_exterior_cell_ex.h"
 #include "fast_travel_ex.h"
-#include "can_player_fast_travel_with_message.h"
+#include "get_pc_can_fast_travel_with_message.h"
 
 #include "on_world_map_build.h"
 #include "on_world_map_marker_selection_change.h"
 
-#define EWMB_VERSION 8
+#define EWMB_VERSION 11
 
 namespace
 {
@@ -57,7 +56,7 @@ bool NVSEPlugin_Load(NVSEInterface *nvse)
   auto *arrays = static_cast<NVSEArrayVarInterface *>(nvse->QueryInterface(kInterface_ArrayVar));
   if (!arrays)
     return false;
-  RegisterPathArrayInterface(arrays);
+  RegisterWaypointPathArrayInterface(arrays);
   auto *messaging = static_cast<NVSEMessagingInterface *>(nvse->QueryInterface(kInterface_Messaging));
   auto *events = static_cast<NVSEEventManagerInterface *>(nvse->QueryInterface(kInterface_EventManager));
   OnWorldMapBuild::RegisterEvent(events);
@@ -72,14 +71,15 @@ bool NVSEPlugin_Load(NVSEInterface *nvse)
   /*0x4319*/ nvse->RegisterCommand(&kCommandInfo_FastTravel);
   /*0x431A*/ nvse->RegisterCommand(&kCommandInfo_SetPendingFastTravelMarker);
   /*0x431B*/ nvse->RegisterCommand(&kCommandInfo_SetEnemyHealthTarget);
-  /*0x431C*/ nvse->RegisterTypedCommand(&kCommandInfo_GetEnemyHealthTarget, kRetnType_Form);
-  /*0x431D*/ nvse->RegisterTypedCommand(&kCommandInfo_GetPath, kRetnType_Array);
+  // 0x431C retired: GetEnemyHealthTarget duplicates JIP LN NVSE.
+  nvse->SetOpcodeBase(0x431D);
+  /*0x431D*/ nvse->RegisterTypedCommand(&kCommandInfo_GetWaypointPath, kRetnType_Array);
   /*0x431E*/ nvse->RegisterCommand(&kCommandInfo_FastTravelEx);
   /*0x431F*/ nvse->RegisterCommand(&kCommandInfo_IsCellVisitedEx);
   /*0x4320*/ nvse->RegisterCommand(&kCommandInfo_IsCellExpiredEx);
   /*0x4321*/ nvse->RegisterTypedCommand(&kCommandInfo_GetExteriorCellEx, kRetnType_Form);
 
-  /*0x4322*/ nvse->RegisterCommand(&kCommandInfo_CanPlayerFastTravelWithMessage);
+  /*0x4322*/ nvse->RegisterCommand(&kCommandInfo_GetPCCanFastTravelWithMessage);
 
   PrintLog("ewmb NVSE loaded successfully");
 

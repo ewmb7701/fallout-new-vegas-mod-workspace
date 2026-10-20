@@ -12,7 +12,7 @@ Begin Function {}
     endif
     let aState["config"] := aConfig
     let aState["graph"] := aGraph
-    let aState["graphPaths"] := Call (CompileScript "FastTravelPathing\BuildAllGraphPaths.txt") aGraph
+    let aState["graphWaypointPaths"] := Call (CompileScript "FastTravelPathing\BuildAllGraphWaypointPaths.txt") aGraph
     let aState["enabled"] := Ar_Construct "stringmap"
     ref rBuild = ({} => Call (CompileScript "FastTravelPathing\OnWorldMapBuild.txt") aState)
     Player.AuxVarSetRef "*_FTP_rBuildHandler" rBuild

@@ -5,7 +5,7 @@
 
 class TESObjectREFR;
 
-bool CanPlayerFastTravelWithMessage();
+bool GetPCCanFastTravelWithMessage();
 
 // Actor displayed by HUDMainMenu/EnemyHealth (also used by VATS).
 // The XML name does not imply hostility: friendly actors are valid targets.

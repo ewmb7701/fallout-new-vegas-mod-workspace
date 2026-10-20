@@ -1,5 +1,5 @@
 ; Build the constant directed adjacency graph once per load from the config snapshot.
-; vertices[locationID] = {center: marker, edges: destinationID -> native path distance}.
+; vertices[locationID] = {center: marker, edges: destinationID -> native path length}.
 ; Consumers treat this graph as read-only. Search distances/predecessors live separately.
 ; Duplicate directed edges are calculated once; reverse edges are never inferred.
 Begin Function {array_var aConfig}
@@ -45,7 +45,7 @@ Begin Function {array_var aConfig}
         if eval Ar_HasKey aEdges sDestination
             continue
         endif
-        ; Native travel resolves linked landing references before measuring distance.
+        ; Native travel resolves linked landing references before measuring path length.
         ref rOrigin = aVertex["center"]
         ref rDestination = aTarget["center"]
         ref rLinked = rOrigin.GetLinkedRef
@@ -56,18 +56,18 @@ Begin Function {array_var aConfig}
         if rLinked
             let rDestination := rLinked
         endif
-        ; Cache native distance once per load. INIs define connectivity only.
-        array_var aPath = GetPath rOrigin rDestination
-        if eval aPath == Ar_Null
+        ; Cache native path length once per load. INIs define connectivity only.
+        array_var aWaypointPath = GetWaypointPath rOrigin rDestination 2
+        if eval aWaypointPath == Ar_Null
             continue
         endif
-        float fDistance = aPath["distance"]
-        ; Only the scalar edge cost is retained; native points are not cached.
-        let aPath := Ar_Null
-        if eval fDistance < 0 || (fDistance - fDistance) != 0
+        float fLength = aWaypointPath["length"]
+        ; Only the scalar edge cost is retained; native path arrays are not cached.
+        let aWaypointPath := Ar_Null
+        if eval fLength < 0 || (fLength - fLength) != 0
             continue
         endif
-        let aEdges[sDestination] := fDistance
+        let aEdges[sDestination] := fLength
     loop
     SetFunctionValue aGraph
 End

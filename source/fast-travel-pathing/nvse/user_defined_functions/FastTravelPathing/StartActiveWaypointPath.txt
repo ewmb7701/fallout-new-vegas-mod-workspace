@@ -1,0 +1,9 @@
+Begin Function {}
+    ref rUpdate = Player.AuxVarGetRef "*_FTP_rActiveWaypointPathUpdateHandler"
+    if rUpdate
+        return
+    endif
+    let rUpdate := ({} => Call (CompileScript "FastTravelPathing\UpdateActiveWaypointPath.txt"))
+    Player.AuxVarSetRef "*_FTP_rActiveWaypointPathUpdateHandler" rUpdate
+    Player.SetGameMainLoopCallback rUpdate 1 1 11
+End
