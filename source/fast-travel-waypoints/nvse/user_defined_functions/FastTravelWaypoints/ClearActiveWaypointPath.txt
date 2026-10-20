@@ -1,0 +1,23 @@
+; Temporary aux values contain references and scalars, never saved array IDs.
+Begin Function {}
+    if (Player.AuxVarSize "*_FTW_WaypointPathPoints") > 0
+        Call (CompileScript "FastTravelWaypoints\TraceTravel.txt") "CLEAR active-path"
+    endif
+    ref rUpdate = Player.AuxVarGetRef "*_FTW_rActiveWaypointPathUpdateHandler"
+    if rUpdate
+        Player.SetGameMainLoopCallback rUpdate 0
+    endif
+    Player.AuxVarErase "*_FTW_rActiveWaypointPathUpdateHandler"
+    Player.AuxVarErase "*_FTW_WaypointPathPoints"
+    Player.AuxVarErase "*_FTW_WaypointPathArrivals"
+    Player.AuxVarErase "*_FTW_WaypointPathWorlds"
+    Player.AuxVarErase "*_FTW_WaypointPathCells"
+    Player.AuxVarErase "*_FTW_WaypointPathTimes"
+    Player.AuxVarErase "*_FTW_WaypointPathX"
+    Player.AuxVarErase "*_FTW_WaypointPathY"
+    Player.AuxVarErase "*_FTW_WaypointPathZ"
+    Player.AuxVarErase "*_FTW_WaypointPathHeading"
+    Player.AuxVarErase "*_FTW_WaypointPathIndex"
+    Player.AuxVarErase "*_FTW_WaypointPathExecuting"
+    Player.AuxVarErase "*_FTW_WaypointPathWaitFrames"
+End

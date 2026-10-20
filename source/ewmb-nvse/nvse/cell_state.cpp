@@ -1,5 +1,6 @@
 #include "cell_state.h"
 #include "saved_cell_state.h"
+#include "../utility.h"
 #include <cstring>
 
 namespace CellStateHelpers
@@ -56,5 +57,61 @@ namespace CellStateHelpers
     const float gameDays = days ? *reinterpret_cast<float *>(reinterpret_cast<UInt8 *>(days) + 0x24) : 1.0f;
     return SavedCellState::Expired(state.detachStatus == 1, state.detachTime,
         gameDays, *reinterpret_cast<UInt32 *>(0x11CA164));
+  }
+
+  bool ReadExteriorCellState(TESForm *world, int x, int y, CellState &state)
+  {
+    state = {false, 0, 0};
+    if (!world || world->typeID != 0x41 || (world->flags & 0x20) ||
+        x < -32768 || x > 32767 || y < -32768 || y > 32767)
+      return false;
+    // TESWorldSpace::GetCellAtPos only consults the resident cell map.
+    if (auto *cell = NativeCall::Method<TESForm *>(0x5875A0, world, x, y))
+    {
+      state = ReadCellState(cell);
+      return true;
+    }
+    auto *manager = *reinterpret_cast<UInt8 **>(0x11DDF38);
+    if (!manager) return false;
+    // BGSSaveLoadGame + 0x0C: visited-worldspace form ID -> saved index map.
+    // Its values are integers, unlike the pointers in the cell change map.
+    state = ReadSavedExteriorCellState(*reinterpret_cast<ChangeMap **>(manager),
+        *reinterpret_cast<WorldIndexMap **>(manager + 0xC), world->refID, x, y);
+    return true;
+  }
+
+  CellState ReadSavedExteriorCellState(const ChangeMap *changes, const WorldIndexMap *worlds,
+      UInt32 worldID, int x, int y)
+  {
+    if (!worlds || !worlds->table || !worlds->buckets) return {false, 0, 0};
+    UInt32 worldIndex = 0;
+    bool foundWorld = false;
+    for (auto *node = worlds->table[worldID % worlds->buckets]; node; node = node->next)
+      if (node->key == worldID)
+      {
+        worldIndex = node->value;
+        foundWorld = true;
+        break;
+      }
+    if (!foundWorld || worldIndex > 0xFFFF) return {false, 0, 0};
+    if (!changes || !changes->table) return {false, 0, 0};
+    for (UInt32 bucket = 0; bucket < changes->buckets; ++bucket)
+      for (auto *node = changes->table[bucket]; node; node = node->next)
+      {
+        const auto *change = node->value;
+        if (!change || !change->data) continue;
+        const auto header = SavedCellState::HeaderSize(change->data[0]);
+        if (!header) continue;
+        const auto offset = change->flags & 0x20000000 ? 4 : 6;
+        SavedCellState::Exterior exterior{};
+        // Read only the fixed CELL preload prefix, as in ReadCellState.
+        if (SavedCellState::ExteriorPosition(change->flags, change->data,
+                header + offset + 4, exterior) &&
+            exterior.worldIndex == worldIndex && exterior.x == x && exterior.y == y)
+        {
+          return {SavedCellState::Visited(false, change->flags), 1, exterior.detachTime};
+        }
+      }
+    return {false, 0, 0};
   }
 }

@@ -1,3 +1,0 @@
-Begin Function {array_var aState}
-    Call (CompileScript "FastTravelPathing\SetupWorldMap.txt") aState
-End

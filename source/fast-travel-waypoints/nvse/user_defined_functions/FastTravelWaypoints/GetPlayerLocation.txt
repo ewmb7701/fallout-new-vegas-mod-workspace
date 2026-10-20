@@ -1,0 +1,22 @@
+; Find the player's location using spatial restrictions.
+; Locations with an explicit scope center distance take priority over other matching locations.
+; Return an empty string outside all locations. Ties use the first match.
+Begin Function {array_var aConfigLocations}
+    SetFunctionValue ""
+    string_var sFallbackLocationID = ""
+    foreach array_var aEntry <- aConfigLocations
+        array_var aConfigLocation = aEntry["value"]
+        if eval (Call (CompileScript "FastTravelWaypoints\IsPlayerAtLocation.txt") aConfigLocation) == 1
+            array_var aConfigScope = aConfigLocation["scope"]
+            if eval Ar_HasKey aConfigScope "centerDistanceMax"
+                ; Unwind our foreach before returning to a caller with active loops.
+                let sFallbackLocationID := aEntry["key"]
+                break
+            endif
+            if eval (Sv_Length sFallbackLocationID) == 0
+                let sFallbackLocationID := aEntry["key"]
+            endif
+        endif
+    loop
+    SetFunctionValue sFallbackLocationID
+End

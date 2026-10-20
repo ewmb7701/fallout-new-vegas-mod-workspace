@@ -1,0 +1,11 @@
+; Cache location-ID sequences for every origin before registering callbacks.
+; Native waypoint arrays are not stored here.
+Begin Function {array_var aGraph}
+    array_var aCache = Ar_Construct "stringmap"
+    foreach array_var aEntry <- aGraph
+        string_var sOrigin = aEntry["key"]
+        let aCache[sOrigin] := Call (CompileScript "FastTravelWaypoints\BuildGraphWaypointPaths.txt") aGraph sOrigin
+    loop
+    ; Outside all configured scopes is handled by callers, without an empty key.
+    SetFunctionValue aCache
+End

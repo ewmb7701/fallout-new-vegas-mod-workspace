@@ -87,8 +87,7 @@
     <ClCompile Include="nvse\cell_state.cpp" />
     <ClCompile Include="is_cell_visited_ex.cpp" />
     <ClCompile Include="is_cell_expired_ex.cpp" />
-    <ClCompile Include="get_exterior_cell_ex.cpp" />
-    <ClCompile Include="nvse/exterior_cell.cpp" />
+    <ClCompile Include="get_exterior_cell_state.cpp" />
     <ClCompile Include="fast_travel_ex.cpp" />
     <ClCompile Include="get_pc_can_fast_travel_with_message.cpp" />
     <ClCompile Include="on_world_map_menu_build.cpp" />
@@ -114,8 +113,7 @@
     <ClInclude Include="nvse/cell_state.h" />
     <ClInclude Include="is_cell_visited_ex.h" />
     <ClInclude Include="is_cell_expired_ex.h" />
-    <ClInclude Include="get_exterior_cell_ex.h" />
-    <ClInclude Include="nvse/exterior_cell.h" />
+    <ClInclude Include="get_exterior_cell_state.h" />
     <ClInclude Include="fast_travel_ex.h" />
     <ClInclude Include="get_pc_can_fast_travel_with_message.h" />
     <ClInclude Include="on_world_map_menu_build.h" />

@@ -1,0 +1,2 @@
+; Register after each load. EWMB flushes OnWorldMapMenuBuild handlers when loading a save.
+Call (CompileScript "FastTravelWaypoints\Initialize.txt")

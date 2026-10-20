@@ -1,0 +1,6 @@
+FastTravelWaypoints\ConnectionLine.xml::MapMenu::MapMenu
+true
+FastTravelWaypoints\WaypointDot.xml::MapMenu::MapMenu
+true
+FastTravelWaypoints\Connections.xml::MapMenu::MM_WorldMap_ClipWindow
+true

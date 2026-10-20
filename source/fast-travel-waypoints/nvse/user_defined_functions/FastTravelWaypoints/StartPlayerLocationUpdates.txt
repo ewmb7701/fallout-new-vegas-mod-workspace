@@ -1,0 +1,8 @@
+; Register location notifications every 60 gameplay frames (about 1s at 60 FPS).
+; The closure retains config/graph. Flag 9 runs only in GameMode and auto-removes
+; the callback on save load/main menu; Shutdown explicitly unregisters it too.
+Begin Function {array_var aConfig, array_var aGraph}
+    ref rLocationUpdateHandler = ({} => Call (CompileScript "FastTravelWaypoints\OnPlayerLocationUpdate.txt") aConfig aGraph)
+    Player.AuxVarSetRef "*_FTW_rLocationUpdateHandler" rLocationUpdateHandler
+    Player.SetGameMainLoopCallback rLocationUpdateHandler 1 60 9
+End

@@ -1,0 +1,35 @@
+; Notify when connection availability changes. Moving between equally eligible locations is silent.
+; Config is a read-only snapshot passed by the scheduler. No map tiles or game settings are updated.
+; Availability requires a visible, enabled, travel-enabled connection destination.
+; Temporary vanilla restrictions such as combat are outside this location notification.
+Begin Function {array_var aConfig, array_var aGraph}
+    if MenuMode
+        return
+    endif
+    array_var aConfigLocations = aConfig["locations"]
+    string_var sLocationId = Call (CompileScript "FastTravelWaypoints\GetPlayerLocation.txt") aConfigLocations
+    int bLocationValid = 0
+    array_var aDestinations = Call (CompileScript "FastTravelWaypoints\GetLocationConnectionDestinations.txt") aGraph sLocationId
+    foreach array_var aEntry <- aDestinations
+        ref rMarker = aEntry["value"]
+        if eval rMarker.GetMapMarkerVisible && rMarker.GetDisabled == 0 && rMarker.GetMapMarkerTravel
+            bLocationValid = 1
+            break
+        endif
+    loop
+    ; A missing previous value means this is the first observation.
+    if eval (Player.AuxVarSize "*_FTW_bPrevLocationValid") > 0
+        int bPrevLocationValid = Player.AuxVarGetFlt "*_FTW_bPrevLocationValid"
+        if eval bLocationValid == bPrevLocationValid
+            return
+        endif
+    endif
+    string_var sMessage = GetINIStringOrDefault_Cached "Messages:sLocationTravelUnavailable" "FastTravelWaypoints\Messages.ini" "No fast travel connections available from here."
+    if bLocationValid
+        let sMessage := GetINIStringOrDefault_Cached "Messages:sLocationTravelAvailable" "FastTravelWaypoints\Messages.ini" "Fast travel connections available from here."
+        MessageEx "%z" sMessage
+    else
+        MessageExAlt 3 "#0|%z" sMessage
+    endif
+    Player.AuxVarSetFlt "*_FTW_bPrevLocationValid" bLocationValid
+End

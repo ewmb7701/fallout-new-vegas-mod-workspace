@@ -1,0 +1,71 @@
+Begin Function {}
+    int iCount = Player.AuxVarSize "*_FTW_WaypointPathPoints"
+    if iCount <= 0
+        Call (CompileScript "FastTravelWaypoints\ClearActiveWaypointPath.txt")
+        return
+    endif
+    if eval (Player.AuxVarGetFlt "*_FTW_WaypointPathExecuting") == 1
+        return
+    endif
+    if MenuMode 1007
+        return
+    endif
+    int iWait = (Player.AuxVarGetFlt "*_FTW_WaypointPathWaitFrames") + 1
+    Player.AuxVarSetFlt "*_FTW_WaypointPathWaitFrames" iWait
+    ; Bound waiting for native seen data.
+    if iWait > 600
+        Call (CompileScript "FastTravelWaypoints\TraceTravel.txt") "STOP arrival-timeout"
+        Call (CompileScript "FastTravelWaypoints\ClearActiveWaypointPath.txt")
+        return
+    endif
+    int iIndex = Player.AuxVarGetFlt "*_FTW_WaypointPathIndex"
+    if eval iWait == 1 || iWait == 600
+        Call (CompileScript "FastTravelWaypoints\TraceTravel.txt") "UPDATE arrival-check"
+    endif
+    if iIndex == -1
+        Call (CompileScript "FastTravelWaypoints\TravelToNextWaypointPathPoint.txt")
+        return
+    endif
+    if eval iIndex < 0 || iIndex >= iCount
+        return
+    endif
+    ref rDestinationCell = Player.AuxVarGetRef "*_FTW_WaypointPathCells" iIndex
+    ref rDestinationWorld = Player.AuxVarGetRef "*_FTW_WaypointPathWorlds" iIndex
+    ref rActualCell = Player.GetParentCell
+    int iArrivalMatches = 0
+    if rDestinationWorld
+        ref rActualWorld = Player.GetParentWorldspace
+        float fDestinationX = Player.AuxVarGetFlt "*_FTW_WaypointPathX" iIndex
+        float fDestinationY = Player.AuxVarGetFlt "*_FTW_WaypointPathY" iIndex
+        int iDestinationGridX = Floor (fDestinationX / 4096)
+        int iDestinationGridY = Floor (fDestinationY / 4096)
+        int iActualGridX = Floor ((Player.GetPos X) / 4096)
+        int iActualGridY = Floor ((Player.GetPos Y) / 4096)
+        if eval rActualCell != 0 && rActualWorld == rDestinationWorld && iActualGridX == iDestinationGridX && iActualGridY == iDestinationGridY
+            let iArrivalMatches := 1
+        endif
+    elseif eval rDestinationCell != 0 && rActualCell == rDestinationCell
+        let iArrivalMatches := 1
+    endif
+    if iArrivalMatches == 0
+        WriteStringToFile "FastTravelWaypoints_Debug.log" 1 "ERROR arrival mismatch index=%g expected-cell=%i expected-world=%i actual-cell=%i%r" iIndex rDestinationCell rDestinationWorld rActualCell
+        Print ("Fast Travel Waypoints: arrival mismatch at point " + $iIndex)
+        Call (CompileScript "FastTravelWaypoints\ClearActiveWaypointPath.txt")
+        Assert iArrivalMatches == 1
+        return
+    endif
+    if iIndex == (iCount - 1)
+        Call (CompileScript "FastTravelWaypoints\TraceTravel.txt") "COMPLETE final-point"
+        Call (CompileScript "FastTravelWaypoints\ClearActiveWaypointPath.txt")
+    else
+        ; Matching destination: wait for its live seen data before continuing.
+        if (IsCellVisited rActualCell) == 0
+            if eval iWait == 1 || iWait == 600
+                Call (CompileScript "FastTravelWaypoints\TraceTravel.txt") "WAIT destination-cell-unvisited"
+            endif
+            return
+        endif
+        Call (CompileScript "FastTravelWaypoints\TraceTravel.txt") "ARRIVED continuing"
+        Call (CompileScript "FastTravelWaypoints\TravelToNextWaypointPathPoint.txt")
+    endif
+End

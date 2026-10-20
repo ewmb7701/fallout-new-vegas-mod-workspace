@@ -1,0 +1,47 @@
+; caller supplies space, coordinates, degrees and game hours.
+Begin Function {}
+    int iAirBeforeCheck = Player.IsInAir
+    if eval (GetPCCanFastTravelWithMessage) == 0
+        WriteStringToFile "FastTravelWaypoints_Debug.log" 1 "ELIGIBILITY rejected air-before-check=%g%r" iAirBeforeCheck
+        Call (CompileScript "FastTravelWaypoints\TraceTravel.txt") "STOP native-eligibility"
+        Call (CompileScript "FastTravelWaypoints\ClearActiveWaypointPath.txt")
+        return
+    endif
+    array_var aNext = Call (CompileScript "FastTravelWaypoints\GetNextWaypointPathPoint.txt")
+    if eval aNext == Ar_Null
+        Call (CompileScript "FastTravelWaypoints\TraceTravel.txt") "STOP no-next-point"
+        Call (CompileScript "FastTravelWaypoints\ClearActiveWaypointPath.txt")
+        return
+    endif
+    int iNext = aNext["index"]
+    float fTime = aNext["time"]
+    ref rPoint = Player.AuxVarGetRef "*_FTW_WaypointPathPoints" iNext
+    ref rArrival = Player.AuxVarGetRef "*_FTW_WaypointPathArrivals" iNext
+    WriteStringToFile "FastTravelWaypoints_Debug.log" 1 "NEXT index=%g point=%i (%n) arrival=%i hours=%g%r" iNext rPoint rPoint rArrival fTime
+    if eval (Call (CompileScript "FastTravelWaypoints\CanTravelToWaypointPathPoint.txt") rPoint rArrival) == 0
+        Call (CompileScript "FastTravelWaypoints\TraceTravel.txt") "STOP waypoint-validation"
+        Call (CompileScript "FastTravelWaypoints\ClearActiveWaypointPath.txt")
+        return
+    endif
+    ref rSpace = Player.AuxVarGetRef "*_FTW_WaypointPathWorlds" iNext
+    if rSpace == 0
+        let rSpace := Player.AuxVarGetRef "*_FTW_WaypointPathCells" iNext
+    endif
+    float fX = Player.AuxVarGetFlt "*_FTW_WaypointPathX" iNext
+    float fY = Player.AuxVarGetFlt "*_FTW_WaypointPathY" iNext
+    float fZ = Player.AuxVarGetFlt "*_FTW_WaypointPathZ" iNext
+    float fHeading = Player.AuxVarGetFlt "*_FTW_WaypointPathHeading" iNext
+    ; State precedes execution: native loading can run script callbacks.
+    Player.AuxVarSetFlt "*_FTW_WaypointPathIndex" iNext
+    Player.AuxVarSetFlt "*_FTW_WaypointPathExecuting" 1
+    Player.AuxVarSetFlt "*_FTW_WaypointPathWaitFrames" 0
+    if eval (FastTravelEx rSpace fX fY fZ 0 0 fHeading fTime) == 0
+        Call (CompileScript "FastTravelWaypoints\TraceTravel.txt") "STOP FastTravelEx-failed"
+        Call (CompileScript "FastTravelWaypoints\ClearActiveWaypointPath.txt")
+        return
+    endif
+    Call (CompileScript "FastTravelWaypoints\TraceTravel.txt") "FastTravelEx-returned-success"
+    if (Player.AuxVarSize "*_FTW_WaypointPathPoints") > 0
+        Player.AuxVarSetFlt "*_FTW_WaypointPathExecuting" 0
+    endif
+End

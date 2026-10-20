@@ -1,0 +1,46 @@
+; Unregister handlers and clear the owned connection lines.
+Begin Function {}
+    Call (CompileScript "FastTravelWaypoints\ClearActiveWaypointPath.txt")
+    ref rOldUpdate = Player.AuxVarGetRef "*_FTW_rActiveWaypointPathUpdateHandler"
+    if rOldUpdate
+        Player.SetGameMainLoopCallback rOldUpdate 0
+    endif
+    Player.AuxVarErase "*_FTW_rActiveWaypointPathUpdateHandler"
+    Player.AuxVarErase "*_FTW_ActiveWaypointPathMarkers"
+    Player.AuxVarErase "*_FTW_ActiveWaypointPathIndex"
+    ref rTravelBegin = Player.AuxVarGetRef "*_FTW_rBeforeFastTravelHandler"
+    if rTravelBegin
+        RemoveEventHandler "OnBeforeFastTravel" rTravelBegin
+    endif
+    Player.AuxVarErase "*_FTW_rBeforeFastTravelHandler"
+    ref rTravel = Player.AuxVarGetRef "*_FTW_rFastTravelHandler"
+    if rTravel
+        SetOnFastTravelEventHandler rTravel 0
+    endif
+    Player.AuxVarErase "*_FTW_rFastTravelHandler"
+    ref rLocationUpdateHandler = Player.AuxVarGetRef "*_FTW_rLocationUpdateHandler"
+    if rLocationUpdateHandler
+        Player.SetGameMainLoopCallback rLocationUpdateHandler 0
+    endif
+    Player.AuxVarErase "*_FTW_rLocationUpdateHandler"
+    ref rHover = Player.AuxVarGetRef "*_FTW_rHoverHandler"
+    if rHover
+        RemoveEventHandler "OnWorldMapMenuSelectionChange" rHover
+    endif
+    Player.AuxVarErase "*_FTW_rHoverHandler"
+    ref rBuild = Player.AuxVarGetRef "*_FTW_rBuildHandler"
+    if rBuild
+        RemoveEventHandler "OnWorldMapMenuBuild" rBuild
+    endif
+    ref rClose = Player.AuxVarGetRef "*_FTW_rCloseHandler"
+    if rClose
+        SetOnMenuCloseEventHandler rClose 0 1023
+    endif
+    Player.AuxVarErase "*_FTW_rBuildHandler"
+    Player.AuxVarErase "*_FTW_rCloseHandler"
+    Player.AuxVarErase "*_FTW_sPrevLocationId"
+    Player.AuxVarErase "*_FTW_bPrevLocationValid"
+    RemoveEventHandler "OnWorldMapMenuBuild" (CompileScript "FastTravelWaypoints\OnWorldMapMenuBuild.txt")
+    SetOnMenuCloseEventHandler (CompileScript "FastTravelWaypoints\OnWorldMapClose.txt") 0 1023
+    Call (CompileScript "FastTravelWaypoints\UnloadWorldMapSelectedWaypointPathUIComponents.txt")
+End

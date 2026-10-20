@@ -1,0 +1,3 @@
+Begin Function {array_var aState}
+    Call (CompileScript "FastTravelWaypoints\SetupWorldMap.txt") aState
+End

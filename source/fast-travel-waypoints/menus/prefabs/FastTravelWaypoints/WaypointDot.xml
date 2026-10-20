@@ -1,0 +1,21 @@
+<!-- Native waypoint node appearance, positioned at a path location center. -->
+<template name="FTWWaypointDot">
+  <image name="FTW_Dot">
+    <filename> Interface\Worldmap\waypoint_node.dds </filename>
+    <zoom> &scale; </zoom>
+    <clips>1</clips><depth>3</depth><target>0</target>
+    <visible>0</visible><alpha>255</alpha><systemcolor>&pipboy;</systemcolor>
+    <_x>0</_x><_y>0</_y>
+    <x>
+      <copy src="me" trait="_x"/><mul src="parent" trait="width"/>
+      <sub><copy src="me" trait="width"/><div>2</div></sub>
+    </x>
+    <y>
+      <copy src="me" trait="_y"/><mul src="parent" trait="height"/>
+      <sub><copy src="me" trait="height"/><div>2</div></sub>
+    </y>
+    <width><copy src="MM_WorldMap_ParentImage" trait="user0"/><mul>0.8</mul></width>
+    <height><copy src="MM_WorldMap_ParentImage" trait="user0"/><mul>0.8</mul></height>
+    <brightness><copy src="MM_WorldMapCursor" trait="brightness"/></brightness>
+  </image>
+</template>

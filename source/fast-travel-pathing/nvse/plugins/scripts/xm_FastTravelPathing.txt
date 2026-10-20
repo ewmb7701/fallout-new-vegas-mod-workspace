@@ -1,1 +1,0 @@
-Call (CompileScript "FastTravelPathing\Shutdown.txt")

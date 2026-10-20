@@ -1,0 +1,21 @@
+; coordinate travel runs after cancellation cleanup.
+Begin Function {ref rMarker, array_var aState}
+    WriteStringToFile "FastTravelWaypoints_Debug.log" 1 "BEGIN destination=%i (%n)%r" rMarker rMarker
+    SetFunctionValue 1
+    Call (CompileScript "FastTravelWaypoints\ClearActiveWaypointPath.txt")
+    if eval rMarker == 0 || (rMarker.IsMapMarker == 0)
+        return
+    endif
+    SetFunctionValue 0
+    ; Keep native map confirmation/eligibility, then replace its marker request.
+    array_var aWaypointPath = Call (CompileScript "FastTravelWaypoints\GetMarkerWaypointPath.txt") rMarker aState
+    if eval aWaypointPath == Ar_Null
+        return
+    endif
+    if eval (Call (CompileScript "FastTravelWaypoints\BuildActiveWaypointPath.txt") aWaypointPath rMarker) == 0
+        return
+    endif
+    ; Index -1 makes the next update start the first leg. The native request must
+    ; be cancelled/freed before submitting coordinate travel; never travel here.
+    Call (CompileScript "FastTravelWaypoints\StartActiveWaypointPath.txt")
+End

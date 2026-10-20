@@ -1,0 +1,29 @@
+; Apply graph permissions immediately after native marker creation.
+; Native leg expansion belongs to selection/confirmation, not the map build.
+Begin Function {array_var aState}
+    Call (CompileScript "FastTravelWaypoints\UnloadWorldMapSelectedWaypointPathUIComponents.txt")
+    array_var aConfig = aState["config"]
+    array_var aLocations = aConfig["locations"]
+    array_var aGraph = aState["graph"]
+    string_var sOrigin = Call (CompileScript "FastTravelWaypoints\GetPlayerLocation.txt") aLocations
+    array_var aCache = aState["graphWaypointPaths"]
+    array_var aOriginWaypointPaths = Ar_Null
+    if eval (Ar_HasKey aCache sOrigin) == 0
+        let sOrigin := ""
+        ; Build an empty result without indexing the cache with an empty key.
+        let aOriginWaypointPaths := Call (CompileScript "FastTravelWaypoints\BuildGraphWaypointPaths.txt") aGraph sOrigin
+    else
+        let aOriginWaypointPaths := aCache[sOrigin]
+    endif
+    array_var aSearch = aOriginWaypointPaths["search"]
+    array_var aLit = Call (CompileScript "FastTravelWaypoints\GetWorldMapMarkerLitStates.txt") aGraph aSearch
+    array_var aGraphWaypointPaths = aOriginWaypointPaths["paths"]
+    array_var aEnabled = Call (CompileScript "FastTravelWaypoints\GetWorldMapMarkerEnabledStates.txt") aGraph sOrigin aGraphWaypointPaths
+    let aState["enabled"] := aEnabled
+    Call (CompileScript "FastTravelWaypoints\ApplyWorldMapMarkerStates.txt") aEnabled aLit
+    string_var sMessage = GetINIStringOrDefault_Cached "Messages:sCannotArrive" "FastTravelWaypoints\Messages.ini" "You cannot fast travel to that location."
+    if eval (Sv_Length sOrigin) == 0
+        let sMessage := GetINIStringOrDefault_Cached "Messages:sCannotDepart" "FastTravelWaypoints\Messages.ini" "You cannot fast travel from this location."
+    endif
+    SetStringSetting "sNoFastTravelUndiscovered" (sMessage)
+End

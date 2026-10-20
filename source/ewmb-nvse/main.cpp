@@ -10,14 +10,14 @@
 #include "get_waypoint_path.h"
 #include "is_cell_visited_ex.h"
 #include "is_cell_expired_ex.h"
-#include "get_exterior_cell_ex.h"
+#include "get_exterior_cell_state.h"
 #include "fast_travel_ex.h"
 #include "get_pc_can_fast_travel_with_message.h"
 
 #include "on_world_map_menu_build.h"
 #include "on_world_map_menu_selection_change.h"
 
-#define EWMB_VERSION 12
+#define EWMB_VERSION 13
 
 namespace
 {
@@ -57,6 +57,7 @@ bool NVSEPlugin_Load(NVSEInterface *nvse)
   if (!arrays)
     return false;
   RegisterWaypointPathArrayInterface(arrays);
+  RegisterExteriorCellStateArrayInterface(arrays);
   auto *messaging = static_cast<NVSEMessagingInterface *>(nvse->QueryInterface(kInterface_Messaging));
   auto *events = static_cast<NVSEEventManagerInterface *>(nvse->QueryInterface(kInterface_EventManager));
   OnWorldMapMenuBuild::RegisterEvent(events);
@@ -71,15 +72,16 @@ bool NVSEPlugin_Load(NVSEInterface *nvse)
   /*0x4319*/ nvse->RegisterCommand(&kCommandInfo_FastTravel);
   /*0x431A*/ nvse->RegisterCommand(&kCommandInfo_SetPendingFastTravelMarker);
   /*0x431B*/ nvse->RegisterCommand(&kCommandInfo_SetEnemyHealthTarget);
-  // 0x431C retired: GetEnemyHealthTarget duplicates JIP LN NVSE.
+  // 0x431C retired: GetEnemyHealthTarget undocumented and duplicates JIP LN NVSE.
   nvse->SetOpcodeBase(0x431D);
   /*0x431D*/ nvse->RegisterTypedCommand(&kCommandInfo_GetWaypointPath, kRetnType_Array);
   /*0x431E*/ nvse->RegisterCommand(&kCommandInfo_FastTravelEx);
   /*0x431F*/ nvse->RegisterCommand(&kCommandInfo_IsCellVisitedEx);
   /*0x4320*/ nvse->RegisterCommand(&kCommandInfo_IsCellExpiredEx);
-  /*0x4321*/ nvse->RegisterTypedCommand(&kCommandInfo_GetExteriorCellEx, kRetnType_Form);
-
+  // 0x4321 retired: GetExteriorCellEx undocumented and experimental/ unstable.
+  nvse->SetOpcodeBase(0x4322);
   /*0x4322*/ nvse->RegisterCommand(&kCommandInfo_GetPCCanFastTravelWithMessage);
+  /*0x4323*/ nvse->RegisterTypedCommand(&kCommandInfo_GetExteriorCellState, kRetnType_Array);
 
   PrintLog("ewmb NVSE loaded successfully");
 

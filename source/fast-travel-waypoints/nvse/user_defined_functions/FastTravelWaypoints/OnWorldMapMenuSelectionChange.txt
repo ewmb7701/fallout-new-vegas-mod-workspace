@@ -1,0 +1,15 @@
+Begin Function {ref rSelectedMarker, array_var aState}
+    Call (CompileScript "FastTravelWaypoints\UnloadWorldMapSelectedWaypointPathUIComponents.txt")
+    if rSelectedMarker == 0
+        return
+    endif
+    ; Selection can fire before OnWorldMapMenuBuild. GetMarkerWaypointPath checks current
+    ; graph permissions (including duplicate names), without a map-state dependency.
+    array_var aWaypointPath = Call (CompileScript "FastTravelWaypoints\GetMarkerWaypointPath.txt") rSelectedMarker aState
+    if eval aWaypointPath == Ar_Null
+        return
+    endif
+    array_var aPoints = Call (CompileScript "FastTravelWaypoints\GetWorldMapDisplayPoints.txt") (aWaypointPath["legs"])
+    array_var aProjected = Call (CompileScript "FastTravelWaypoints\GetWorldMapWaypointPathPoints.txt") aPoints (aWaypointPath["legs"])
+    Call (CompileScript "FastTravelWaypoints\AddWorldMapSelectedWaypointPathUIComponents.txt") aPoints aProjected
+End

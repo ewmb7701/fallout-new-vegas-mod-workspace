@@ -1,0 +1,21 @@
+; Delete connection line and path dot tiles from the owned overlay before rebuilding or closing the map.
+; Keep the UIO-created container and template definitions. Returns 1 on success, 0 on failure.
+Begin Function {}
+    SetFunctionValue 1
+    string_var sRoot = "MapMenu/GLOW_BRANCH/MM_MainRect/MM_WorldMap_ClipWindow/FTW_Connections"
+    if IsComponentLoaded (sRoot) == 0
+        return
+    endif
+    SetUIFloatAlt (sRoot + "/visible") 0
+    ; Children shift after removal. Always delete the first child of our container.
+    string_var sChild = sRoot + "/*:0"
+    int iRemoved = 0
+    while IsComponentLoaded (sChild)
+        if iRemoved >= 4096
+            SetFunctionValue 0
+            return
+        endif
+        UnloadUIComponent (sChild)
+        iRemoved += 1
+    loop
+End

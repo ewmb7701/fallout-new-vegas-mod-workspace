@@ -1,0 +1,41 @@
+; keep path permissions in FTW, outside coordinate relocation.
+Begin Function {ref rPoint, ref rArrival}
+    SetFunctionValue 0
+    if eval rPoint == 0 || rArrival == 0
+        return
+    endif
+    if eval rPoint.GetDisabled || rArrival.GetDisabled
+        return
+    endif
+    if rPoint.IsMapMarker
+        if eval rPoint.GetMapMarkerVisible == 0 || rPoint.GetMapMarkerTravel == 0
+            return
+        endif
+        ref rLanding = rPoint.GetLinkedRef
+        if rLanding == 0
+            let rLanding := rPoint
+        endif
+        if rLanding != rArrival
+            return
+        endif
+    elseif rPoint.GetTeleportDoor != rArrival
+        return
+    endif
+    ; Planning mode can include doors that fail access checks; validate with strict mode.
+    array_var aCheck = GetWaypointPath Player rArrival 0
+    if eval aCheck == Ar_Null
+        return
+    endif
+    if rPoint.IsMapMarker == 0
+        array_var aTransitions = aCheck["transitions"]
+        if eval (Ar_Size aTransitions) == 0
+            return
+        endif
+        array_var aLastTransition = aTransitions[(Ar_Size aTransitions) - 1]
+        ref rLastExit = aLastTransition["door"]
+        if rLastExit != rPoint
+            return
+        endif
+    endif
+    SetFunctionValue 1
+End

@@ -1,0 +1,44 @@
+; Load where a player must be to match a location. All supplied scope restrictions apply.
+; Coordinate limits and center distance are optional and stored only when configured.
+Begin Function {string_var sPath}
+    array_var aConfigScope = Ar_Construct "stringmap"
+    ref rScopeWorldspace = Call (CompileScript "FastTravelWaypoints\LoadConfigScopeWorldspace.txt") sPath "Scope Worldspace"
+    let aConfigScope["worldspace"] := rScopeWorldspace
+    let aConfigScope["region"] := 0
+    let aConfigScope["centerRef"] := 0
+    array_var aSections = GetINISectionNames (sPath)
+    foreach array_var aSection <- aSections
+        string_var sSection = aSection["value"]
+        if eval (Sv_Compare "Scope Region" sSection) == 0
+            ref rScopeRegion = Call (CompileScript "FastTravelWaypoints\LoadConfigScopeRegion.txt") sPath sSection
+            let aConfigScope["region"] := rScopeRegion
+        elseif eval (Sv_Compare "Scope Coordinates" sSection) == 0
+            array_var aEntries = GetINISection "Scope Coordinates" (sPath)
+            foreach array_var aEntry <- aEntries
+                string_var sKey = aEntry["key"]
+                if eval (Sv_Compare "sCenterRefFormId" sKey) == 0
+                    string_var sMod = GetINIString "Scope Coordinates:sModName" (sPath)
+                    string_var sForm = GetINIString "Scope Coordinates:sCenterRefFormId" (sPath)
+                    ref rCenterRef = GetFormFromMod (sMod) (sForm)
+                    let aConfigScope["centerRef"] := rCenterRef
+                elseif eval (Sv_Compare "fCenterDistanceMax" sKey) == 0
+                    float fCenterDistanceMax = GetINIFloat "Scope Coordinates:fCenterDistanceMax" (sPath)
+                    let aConfigScope["centerDistanceMax"] := fCenterDistanceMax
+                elseif eval (Sv_Compare "fPositionMinX" sKey) == 0
+                    float fPositionMinX = GetINIFloat "Scope Coordinates:fPositionMinX" (sPath)
+                    let aConfigScope["positionMinX"] := fPositionMinX
+                elseif eval (Sv_Compare "fPositionMinY" sKey) == 0
+                    float fPositionMinY = GetINIFloat "Scope Coordinates:fPositionMinY" (sPath)
+                    let aConfigScope["positionMinY"] := fPositionMinY
+                elseif eval (Sv_Compare "fPositionMaxX" sKey) == 0
+                    float fPositionMaxX = GetINIFloat "Scope Coordinates:fPositionMaxX" (sPath)
+                    let aConfigScope["positionMaxX"] := fPositionMaxX
+                elseif eval (Sv_Compare "fPositionMaxY" sKey) == 0
+                    float fPositionMaxY = GetINIFloat "Scope Coordinates:fPositionMaxY" (sPath)
+                    let aConfigScope["positionMaxY"] := fPositionMaxY
+                endif
+            loop
+        endif
+    loop
+    SetFunctionValue aConfigScope
+End

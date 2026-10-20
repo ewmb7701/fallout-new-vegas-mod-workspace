@@ -1,0 +1,32 @@
+; Configured directed graph selects markers; native paths expand each selected leg.
+Begin Function {}
+    Call (CompileScript "FastTravelWaypoints\Shutdown.txt")
+    if (GetPluginVersion "ewmb NVSE") < 13
+        return
+    endif
+    array_var aState = Ar_Construct "stringmap"
+    array_var aConfig = Call (CompileScript "FastTravelWaypoints\LoadConfig.txt")
+    array_var aGraph = Call (CompileScript "FastTravelWaypoints\BuildGraph.txt") aConfig
+    if eval aGraph == Ar_Null || (Ar_Size aGraph) == 0
+        return
+    endif
+    let aState["config"] := aConfig
+    let aState["graph"] := aGraph
+    let aState["graphWaypointPaths"] := Call (CompileScript "FastTravelWaypoints\BuildAllGraphWaypointPaths.txt") aGraph
+    let aState["enabled"] := Ar_Construct "stringmap"
+    ref rBuild = ({} => Call (CompileScript "FastTravelWaypoints\OnWorldMapMenuBuild.txt") aState)
+    Player.AuxVarSetRef "*_FTW_rBuildHandler" rBuild
+    SetEventHandler "OnWorldMapMenuBuild" rBuild
+    ref rClose = ({int iMenu} => Call (CompileScript "FastTravelWaypoints\OnWorldMapClose.txt") iMenu)
+    Player.AuxVarSetRef "*_FTW_rCloseHandler" rClose
+    SetOnMenuCloseEventHandler rClose 1 1023
+    ref rHover = ({ref rSelectedMarker} => Call (CompileScript "FastTravelWaypoints\OnWorldMapMenuSelectionChange.txt") rSelectedMarker aState)
+    Player.AuxVarSetRef "*_FTW_rHoverHandler" rHover
+    SetEventHandler "OnWorldMapMenuSelectionChange" rHover
+    ref rBegin = (begin function {ref rMarker}
+        SetFunctionValue (Call (CompileScript "FastTravelWaypoints\OnBeforeFastTravel.txt") rMarker aState)
+    end)
+    Player.AuxVarSetRef "*_FTW_rBeforeFastTravelHandler" rBegin
+    SetEventHandler "OnBeforeFastTravel" rBegin
+    Call (CompileScript "FastTravelWaypoints\StartPlayerLocationUpdates.txt") aConfig aGraph
+End

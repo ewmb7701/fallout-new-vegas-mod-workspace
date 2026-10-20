@@ -1,0 +1,38 @@
+; Return marker name -> travel-enabled state for nonempty reachable paths.
+; Requires a visible, enabled marker with vanilla fast travel enabled.
+; Every marker sharing a UI name must qualify. Does not mutate config.
+
+Begin Function {array_var aGraph, string_var sLocationID, array_var aWaypointPathsByMarkerFormID}
+    array_var aDestinations = Call (CompileScript "FastTravelWaypoints\GetLocationConnectionDestinations.txt") aGraph sLocationID
+    array_var aResult = Ar_Construct "stringmap"
+    array_var aMarkers = GetFormRefs MapMarker
+    foreach array_var aMarkerEntry <- aMarkers
+        ref rMarker = aMarkerEntry["value"]
+        string_var sName = rMarker.GetMapMarkerName
+        if eval (Sv_Length sName) == 0
+            continue
+        endif
+        int iAllowed = 0
+        if eval rMarker.GetMapMarkerVisible && (rMarker.GetDisabled == 0)
+            ; Preserve explicit same-center exits even when the cheapest cached
+            ; path to this marker is the zero-edge path to the current vertex.
+            if eval (Ar_Find rMarker aDestinations) != Ar_BadNumericIndex
+                iAllowed = rMarker.GetMapMarkerTravel
+            endif
+            string_var sMarker = GetFormIDString rMarker
+            if eval Ar_HasKey aWaypointPathsByMarkerFormID sMarker
+                array_var aWaypointPath = aWaypointPathsByMarkerFormID[sMarker]
+                if eval (Ar_Size aWaypointPath) > 1
+                    iAllowed = rMarker.GetMapMarkerTravel
+                endif
+            endif
+        endif
+        ; UI exposes names, not references. Every duplicate must qualify.
+        if eval Ar_HasKey aResult sName
+            let aResult[sName] := aResult[sName] && iAllowed
+        else
+            let aResult[sName] := iAllowed
+        endif
+    loop
+    SetFunctionValue aResult
+End

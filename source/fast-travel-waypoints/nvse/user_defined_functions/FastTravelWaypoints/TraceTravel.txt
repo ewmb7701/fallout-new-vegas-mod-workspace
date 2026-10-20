@@ -1,0 +1,23 @@
+; Temporary diagnostics only. Do not call eligibility again here: it emits UI messages.
+Begin Function {string_var sEvent}
+    int iIndex = Player.AuxVarGetFlt "*_FTW_WaypointPathIndex"
+    int iCount = Player.AuxVarSize "*_FTW_WaypointPathPoints"
+    int iWait = Player.AuxVarGetFlt "*_FTW_WaypointPathWaitFrames"
+    int iAir = Player.IsInAir
+    int iCombat = Player.IsInCombat
+    int iDead = Player.GetDead
+    ref rCell = Player.GetParentCell
+    ref rWorld = Player.GetParentWorldspace
+    float fX = Player.GetPos X
+    float fY = Player.GetPos Y
+    float fZ = Player.GetPos Z
+    WriteStringToFile "FastTravelWaypoints_Debug.log" 1 "%z index=%g count=%g wait=%g air=%g combat=%g dead=%g cell=%i world=%i xyz=%g,%g,%g%r" sEvent iIndex iCount iWait iAir iCombat iDead rCell rWorld fX fY fZ
+    if eval iIndex >= 0 && iIndex < iCount
+        ref rPoint = Player.AuxVarGetRef "*_FTW_WaypointPathPoints" iIndex
+        ref rArrival = Player.AuxVarGetRef "*_FTW_WaypointPathArrivals" iIndex
+        float fDX = fX - (Player.AuxVarGetFlt "*_FTW_WaypointPathX" iIndex)
+        float fDY = fY - (Player.AuxVarGetFlt "*_FTW_WaypointPathY" iIndex)
+        float fDZ = fZ - (Player.AuxVarGetFlt "*_FTW_WaypointPathZ" iIndex)
+        WriteStringToFile "FastTravelWaypoints_Debug.log" 1 "  current=%i (%n) arrival=%i delta=%g,%g,%g%r" rPoint rPoint rArrival fDX fDY fDZ
+    endif
+End

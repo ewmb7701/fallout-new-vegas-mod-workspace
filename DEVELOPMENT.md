@@ -48,19 +48,6 @@ The DLL is built directly into `target/<package_id>/`. Native ZIPs contain only
 the DLL under `NVSE/Plugins/`; compiler intermediates, test executables, and
 documentation are excluded. The existing runtime DLL filenames are preserved.
 
-### Native tests
-
-```powershell
-./scripts/source-latest-character-save.ps1
-./scripts/build-nvse-plugin.ps1 -Configuration Release -Test
-./scripts/package-zip.ps1
-```
-
-`latest-character-save` includes its native integration test harness.
-`fast-travel-pipboy` references a `tests.cpp` file absent from the imported
-sources, so requesting `-Test` reports that missing harness. `ewmb-nvse` has
-no native test target. Native tests do not replace in-game validation.
-
 ## FOMODs
 
 ```powershell
