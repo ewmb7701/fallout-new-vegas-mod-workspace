@@ -1,7 +1,7 @@
 ; Configured directed graph selects markers; native paths expand each selected leg.
 Begin Function {}
     Call (CompileScript "FastTravelPathing\Shutdown.txt")
-    if (GetPluginVersion "ewmb NVSE") < 11
+    if (GetPluginVersion "ewmb NVSE") < 12
         return
     endif
     array_var aState = Ar_Construct "stringmap"
