@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <cstring>
 
-namespace WorldMapBuildHook
+namespace WorldMapMenuBuildHook
 {
   inline void MakeJump(UInt8 *bytes, uintptr_t from, uintptr_t to)
   {

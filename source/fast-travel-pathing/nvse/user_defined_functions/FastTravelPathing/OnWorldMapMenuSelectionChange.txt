@@ -3,7 +3,7 @@ Begin Function {ref rSelectedMarker, array_var aState}
     if rSelectedMarker == 0
         return
     endif
-    ; Selection can fire before OnWorldMapBuild. GetMarkerWaypointPath checks current
+    ; Selection can fire before OnWorldMapMenuBuild. GetMarkerWaypointPath checks current
     ; graph permissions (including duplicate names), without a map-state dependency.
     array_var aWaypointPath = Call (CompileScript "FastTravelPathing\GetMarkerWaypointPath.txt") rSelectedMarker aState
     if eval aWaypointPath == Ar_Null

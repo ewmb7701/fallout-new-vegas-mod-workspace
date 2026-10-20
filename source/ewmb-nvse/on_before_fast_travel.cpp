@@ -1,39 +1,39 @@
-#include "on_fast_travel_begin.h"
+#include "on_before_fast_travel.h"
 #include "utility.h"
 #include "nvse/GameObjects.h"
 
 namespace
 {
-  constexpr char kFastTravelBeginEventName[] = "OnFastTravelBegin";
+  constexpr char kBeforeFastTravelEventName[] = "OnBeforeFastTravel";
   NVSEEventManagerInterface *nvse_event_manager = nullptr;
 
-  bool HandleFastTravelBeginResult(NVSEEventManagerInterface::ResultElement &result, void *data)
+  bool HandleBeforeFastTravelResult(NVSEEventManagerInterface::ResultElement &result, void *data)
   {
     if (result.type == 1 && result.number == 0)
       *static_cast<bool *>(data) = true;
     return true;
   }
 
-  bool __stdcall DispatchFastTravelBegin(PlayerPositionRequest *request)
+  bool __stdcall DispatchBeforeFastTravel(PlayerPositionRequest *request)
   {
     // Ordinary position changes use the other branch and do not dispatch.
     if (!request || !request->marker)
       return true;
     bool cancel = false;
-    nvse_event_manager->DispatchEventAlt(kFastTravelBeginEventName, HandleFastTravelBeginResult, &cancel,
+    nvse_event_manager->DispatchEventAlt(kBeforeFastTravelEventName, HandleBeforeFastTravelResult, &cancel,
                                          nullptr, request->marker);
     return !cancel;
   }
 
   // Shared position-request processor, before marker/linked-ref resolution and JIP OnFastTravel.
-  __declspec(naked) void FastTravelBeginHook()
+  __declspec(naked) void BeforeFastTravelHook()
   {
     __asm {
       pushfd
       pushad
       mov eax, [ebp - 0x24]
       push dword ptr [eax + 0x1EC]
-      call DispatchFastTravelBegin
+      call DispatchBeforeFastTravel
       test al, al
       jz cancelled
       popad
@@ -52,14 +52,14 @@ namespace
 
 }
 
-void OnFastTravelBegin::RegisterEvent(NVSEEventManagerInterface *eventInterface)
+void OnBeforeFastTravel::RegisterEvent(NVSEEventManagerInterface *eventInterface)
 {
   nvse_event_manager = eventInterface;
   static NVSEEventManagerInterface::ParamType params[] = {
       NVSEEventManagerInterface::eParamType_Reference};
-  nvse_event_manager->RegisterEvent(kFastTravelBeginEventName, 1, params, NVSEEventManagerInterface::kFlag_FlushOnLoad);
+  nvse_event_manager->RegisterEvent(kBeforeFastTravelEventName, 1, params, NVSEEventManagerInterface::kFlag_FlushOnLoad);
 }
-void OnFastTravelBegin::InstallHook()
+void OnBeforeFastTravel::InstallHook()
 {
-  WriteRelJump(0x93BED8, reinterpret_cast<uintptr_t>(&FastTravelBeginHook));
+  WriteRelJump(0x93BED8, reinterpret_cast<uintptr_t>(&BeforeFastTravelHook));
 }

@@ -1,2 +1,2 @@
-; Register after each load. EWMB flushes OnWorldMapBuild handlers when loading a save.
+; Register after each load. EWMB flushes OnWorldMapMenuBuild handlers when loading a save.
 Call (CompileScript "FastTravelPathing\Initialize.txt")

@@ -1,11 +1,11 @@
-#include "on_world_map_marker_selection_change.h"
+#include "on_world_map_menu_selection_change.h"
 #include "utility.h"
 #include "nvse/GameUI.h"
 #include <cstdint>
 
 namespace
 {
-  constexpr char kEventName[] = "OnWorldMapMarkerSelectionChange";
+  constexpr char kEventName[] = "OnWorldMapMenuSelectionChange";
   NVSEEventManagerInterface *eventInterface = nullptr;
 
   void __stdcall DispatchSelectionChange(MapMenu *mapMenu)
@@ -53,7 +53,7 @@ namespace
 
 }
 
-void OnWorldMapMarkerSelectionChange::RegisterEvent(NVSEEventManagerInterface *events)
+void OnWorldMapMenuSelectionChange::RegisterEvent(NVSEEventManagerInterface *events)
 {
   eventInterface = events;
   static NVSEEventManagerInterface::ParamType params[] = {NVSEEventManagerInterface::eParamType_Reference};
@@ -61,7 +61,7 @@ void OnWorldMapMarkerSelectionChange::RegisterEvent(NVSEEventManagerInterface *e
       NVSEEventManagerInterface::kFlag_FlushOnLoad);
 }
 
-void OnWorldMapMarkerSelectionChange::InstallHook()
+void OnWorldMapMenuSelectionChange::InstallHook()
 {
   WriteRelJump(0x79A0B6, reinterpret_cast<uintptr_t>(&OnSelectedMarkerChangedHook));
   WriteRelJump(0x79A104, reinterpret_cast<uintptr_t>(&OnSelectedMarkerClearedHook));

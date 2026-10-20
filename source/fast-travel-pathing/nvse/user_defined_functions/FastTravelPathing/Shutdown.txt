@@ -8,11 +8,11 @@ Begin Function {}
     Player.AuxVarErase "*_FTP_rActiveWaypointPathUpdateHandler"
     Player.AuxVarErase "*_FTP_ActiveWaypointPathMarkers"
     Player.AuxVarErase "*_FTP_ActiveWaypointPathIndex"
-    ref rTravelBegin = Player.AuxVarGetRef "*_FTP_rFastTravelBeginHandler"
+    ref rTravelBegin = Player.AuxVarGetRef "*_FTP_rBeforeFastTravelHandler"
     if rTravelBegin
-        RemoveEventHandler "OnFastTravelBegin" rTravelBegin
+        RemoveEventHandler "OnBeforeFastTravel" rTravelBegin
     endif
-    Player.AuxVarErase "*_FTP_rFastTravelBeginHandler"
+    Player.AuxVarErase "*_FTP_rBeforeFastTravelHandler"
     ref rTravel = Player.AuxVarGetRef "*_FTP_rFastTravelHandler"
     if rTravel
         SetOnFastTravelEventHandler rTravel 0
@@ -25,12 +25,12 @@ Begin Function {}
     Player.AuxVarErase "*_FTP_rLocationUpdateHandler"
     ref rHover = Player.AuxVarGetRef "*_FTP_rHoverHandler"
     if rHover
-        RemoveEventHandler "OnWorldMapMarkerSelectionChange" rHover
+        RemoveEventHandler "OnWorldMapMenuSelectionChange" rHover
     endif
     Player.AuxVarErase "*_FTP_rHoverHandler"
     ref rBuild = Player.AuxVarGetRef "*_FTP_rBuildHandler"
     if rBuild
-        RemoveEventHandler "OnWorldMapBuild" rBuild
+        RemoveEventHandler "OnWorldMapMenuBuild" rBuild
     endif
     ref rClose = Player.AuxVarGetRef "*_FTP_rCloseHandler"
     if rClose
@@ -40,7 +40,7 @@ Begin Function {}
     Player.AuxVarErase "*_FTP_rCloseHandler"
     Player.AuxVarErase "*_FTP_sPrevLocationId"
     Player.AuxVarErase "*_FTP_bPrevLocationValid"
-    RemoveEventHandler "OnWorldMapBuild" (CompileScript "FastTravelPathing\OnWorldMapBuild.txt")
+    RemoveEventHandler "OnWorldMapMenuBuild" (CompileScript "FastTravelPathing\OnWorldMapMenuBuild.txt")
     SetOnMenuCloseEventHandler (CompileScript "FastTravelPathing\OnWorldMapClose.txt") 0 1023
     Call (CompileScript "FastTravelPathing\UnloadWorldMapSelectedWaypointPathUIComponents.txt")
 End

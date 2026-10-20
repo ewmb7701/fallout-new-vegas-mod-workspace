@@ -14,19 +14,19 @@ Begin Function {}
     let aState["graph"] := aGraph
     let aState["graphWaypointPaths"] := Call (CompileScript "FastTravelPathing\BuildAllGraphWaypointPaths.txt") aGraph
     let aState["enabled"] := Ar_Construct "stringmap"
-    ref rBuild = ({} => Call (CompileScript "FastTravelPathing\OnWorldMapBuild.txt") aState)
+    ref rBuild = ({} => Call (CompileScript "FastTravelPathing\OnWorldMapMenuBuild.txt") aState)
     Player.AuxVarSetRef "*_FTP_rBuildHandler" rBuild
-    SetEventHandler "OnWorldMapBuild" rBuild
+    SetEventHandler "OnWorldMapMenuBuild" rBuild
     ref rClose = ({int iMenu} => Call (CompileScript "FastTravelPathing\OnWorldMapClose.txt") iMenu)
     Player.AuxVarSetRef "*_FTP_rCloseHandler" rClose
     SetOnMenuCloseEventHandler rClose 1 1023
-    ref rHover = ({ref rSelectedMarker} => Call (CompileScript "FastTravelPathing\OnWorldMapMarkerSelectionChange.txt") rSelectedMarker aState)
+    ref rHover = ({ref rSelectedMarker} => Call (CompileScript "FastTravelPathing\OnWorldMapMenuSelectionChange.txt") rSelectedMarker aState)
     Player.AuxVarSetRef "*_FTP_rHoverHandler" rHover
-    SetEventHandler "OnWorldMapMarkerSelectionChange" rHover
+    SetEventHandler "OnWorldMapMenuSelectionChange" rHover
     ref rBegin = (begin function {ref rMarker}
-        SetFunctionValue (Call (CompileScript "FastTravelPathing\OnFastTravelBegin.txt") rMarker aState)
+        SetFunctionValue (Call (CompileScript "FastTravelPathing\OnBeforeFastTravel.txt") rMarker aState)
     end)
-    Player.AuxVarSetRef "*_FTP_rFastTravelBeginHandler" rBegin
-    SetEventHandler "OnFastTravelBegin" rBegin
+    Player.AuxVarSetRef "*_FTP_rBeforeFastTravelHandler" rBegin
+    SetEventHandler "OnBeforeFastTravel" rBegin
     Call (CompileScript "FastTravelPathing\StartPlayerLocationUpdates.txt") aConfig aGraph
 End

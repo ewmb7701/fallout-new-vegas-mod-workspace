@@ -1,6 +1,6 @@
 #pragma once
 #include "nvse/PluginAPI.h"
-namespace OnWorldMapMarkerSelectionChange
+namespace OnWorldMapMenuSelectionChange
 {
   void RegisterEvent(NVSEEventManagerInterface *events);
   void InstallHook();

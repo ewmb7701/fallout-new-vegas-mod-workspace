@@ -2,7 +2,7 @@
 #include "utility.h"
 
 #include "ewmb_fn_actor.h"
-#include "on_fast_travel_begin.h"
+#include "on_before_fast_travel.h"
 #include "fast_travel.h"
 #include "set_pending_fast_travel_marker.h"
 #include "on_enemy_health_target_change.h"
@@ -14,10 +14,10 @@
 #include "fast_travel_ex.h"
 #include "get_pc_can_fast_travel_with_message.h"
 
-#include "on_world_map_build.h"
-#include "on_world_map_marker_selection_change.h"
+#include "on_world_map_menu_build.h"
+#include "on_world_map_menu_selection_change.h"
 
-#define EWMB_VERSION 11
+#define EWMB_VERSION 12
 
 namespace
 {
@@ -25,9 +25,9 @@ namespace
   {
     if (message->type == NVSEMessagingInterface::kMessage_DeferredInit)
     {
-      OnWorldMapBuild::InstallHook();
-      OnWorldMapMarkerSelectionChange::InstallHook();
-      OnFastTravelBegin::InstallHook();
+      OnWorldMapMenuBuild::InstallHook();
+      OnWorldMapMenuSelectionChange::InstallHook();
+      OnBeforeFastTravel::InstallHook();
       OnEnemyHealthTargetChange::InstallHook();
     }
   }
@@ -59,9 +59,9 @@ bool NVSEPlugin_Load(NVSEInterface *nvse)
   RegisterWaypointPathArrayInterface(arrays);
   auto *messaging = static_cast<NVSEMessagingInterface *>(nvse->QueryInterface(kInterface_Messaging));
   auto *events = static_cast<NVSEEventManagerInterface *>(nvse->QueryInterface(kInterface_EventManager));
-  OnWorldMapBuild::RegisterEvent(events);
-  OnWorldMapMarkerSelectionChange::RegisterEvent(events);
-  OnFastTravelBegin::RegisterEvent(events);
+  OnWorldMapMenuBuild::RegisterEvent(events);
+  OnWorldMapMenuSelectionChange::RegisterEvent(events);
+  OnBeforeFastTravel::RegisterEvent(events);
   OnEnemyHealthTargetChange::RegisterEvent(events);
   messaging->RegisterListener(nvse->GetPluginHandle(), "NVSE", HandleNVSEMessage);
 
